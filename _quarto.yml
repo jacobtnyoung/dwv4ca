@@ -1,0 +1,34 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Data Wrangling & Visualization for Crime Analysts"
+  reader-mode: true
+
+  page-footer:
+    left: |
+      Data Wrangling & Visualization for Crime Analysts was written by Jacob T.N. Young.
+    right: |
+      This book was built with <a href="https://quarto.org/">Quarto</a>.
+  cover-image: cover.png
+  favicon: cover.png
+  site-url: https://jacobtnyoung.github.io/dwv4ca/
+  repo-url: https://github.com/jacobtnyoung/dwv4ca/
+  repo-branch: main
+  repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+    - intro.qmd
+
+format:
+  html:
+    theme:
+      - cosmo
+      - dwv4ca.scss
+    code-link: true
+
+    author-meta: "Jacob T.N. Young"
+    callout-appearance: simple
+
+editor: source
