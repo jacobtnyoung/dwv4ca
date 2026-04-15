@@ -1,3 +1,138 @@
 # Introduction to Data Wrangling and Visualization {.unnumbered}
 
-HERE
+## What Do 911 Calls Really Tell Us? {.unnumbered}
+
+In many cities, 911 calls-for-service data are published openly and regularly updated.
+For example, the city of Phoenix, Arizona publishes [calls for service](https://www.phoenixopendata.com/dataset/calls-for-service) on a weekly basis.
+At first glance, these publicly available 911 data appear straightforward: each row represents a call, with a time, location, and call type.
+It is tempting to treat this as a direct measure of crime.
+
+But consider a simple question: Where should a police department allocate patrol resources on Friday nights?
+
+An analyst might begin by downloading a city’s 911 data and filtering for recent calls on Fridays.
+A quick count of incidents by neighborhood might seem like a reasonable starting point.
+Areas with the most calls get the most attention so resources should be deployed to these areas.
+
+However, data are often "wild" in that their format makes it hard to analyze even basic questions.
+
+For example, time is also not as simple as it appears.
+Are you analyzing when the call was received, when officers were dispatched, or when the incident actually occurred?
+Good data repositories will identify these features, but that is not always the case.
+Also, time could appear in a complicated format.
+What if your date and time for a call looked like this: "01/01/2026 12:02:15 AM".
+It occurred on January 1st, 2026 at 12:02 AM.
+There are actually several variables in this data entry.
+Working with data in this format would require some modification so we could answer our question.
+
+What about locations?
+Coordinates may be rounded, anonymized, or inconsistently recorded.
+Addresses may be partially de-dentified (e.g. "2XX W SIESTA WY") so we would need to think about how to address this gap.
+
+Before any meaningful analysis can begin, the data must be cleaned, structured, and critically evaluated.
+
+This is where data *wrangling* becomes essential.
+
+## Interpreting Use-of-Force Data {.unnumbered}
+
+Now consider a different type of open dataset: police use-of-force incidents.
+
+Many agencies now publish records describing when force was used, often including variables such as force type, subject characteristics, officer identifiers, location, and incident context.
+These datasets are frequently used in public discussions about accountability and equity.
+
+A seemingly simple question might be:
+
+Are certain types of force used more frequently in some areas or under certain conditions?
+
+Even basic aggregation can be misleading.
+A higher count of force incidents in one area may reflect higher enforcement activity, differences in reporting practices, or underlying population patterns—not necessarily a higher rate of force in comparable situations.
+
+Unlike calls-for-service data, which are often used for operational decisions, use-of-force data are frequently interpreted in evaluative or policy contexts.
+This raises the stakes of analysis.
+Misinterpretation can shape public perception, influence policy debates, and affect trust in institutions.
+
+As with 911 data, meaningful analysis depends on careful wrangling, documentation, and transparency.
+
+# From Raw Data to Meaningful Insight {.unnumbered}
+
+Although these two datasets differ in purpose and context, they share a common reality: they are messy, incomplete, and shaped by the systems that produce them.
+These data need to be wrangled!
+
+## What Is Data Wrangling? {.unnumbered}
+
+*Data wrangling* refers to the process of transforming raw data into a structured, usable format for analysis.
+In practice, this means taking data as they exist in the real world and preparing them so that meaningful questions can be asked and answered.
+This includes tasks such as:
+
+-   Filtering observations to focus on relevant cases
+-   Selecting and renaming variables
+-   Recoding categories into consistent or meaningful groupings
+-   Handling missing, duplicate, or erroneous values
+-   Combining multiple datasets
+-   Aggregating data across time, space, or groups
+
+Data wrangling is not a preliminary step that happens before “real” analysis—it is a central part of the analytical process itself.
+
+In crime analysis, data are not neutral inputs.
+Rather, they are products of reporting systems, organizational practices, and human decisions.
+A “simple” variable like call type or use-of-force category reflects a set of definitions and classifications that may vary across time and place.
+Decisions about how to group or interpret these variables are analytical decisions, not just technical ones.
+
+Data wrangling is where you engage directly with these issues.
+By approaching wrangling as a transparent, documented process, you make your assumptions visible.
+This not only improves the quality of your work, but also aligns with the principles of open science: your analysis becomes something that others can understand, critique, and build upon.
+
+In this book, we will cover tools for data wrangling, specifically focusing on the package `dplyr`.
+Tools like `dplyr` allow you to perform transformations on data that are both efficient and transparent.
+Each step in your workflow becomes explicit: what you filtered, how you grouped data, and how variables were constructed.
+
+This is critical not just for producing results, but for ensuring those results can be understood and evaluated by others.
+
+## Seeing Patterns That Tables Cannot: Visualization {.unnumbered}
+
+Once the data have been structured, the next challenge is interpretation.
+
+With 911 data, you might want to understand how call volume changes over time or differs across neighborhoods.
+With use-of-force data, you might be interested in distributions of force types, variation across units, or trends over time.
+We can build tables and calculate statistics, but tables and statistics alone are rarely sufficient.
+
+In this book, we will also add *visualization* to your crime analyst toolkit.
+We will cover the basics of good visualization then learn how to create them using `ggplot2`.
+Using `ggplot2`, you can create visualizations that make these patterns visible:
+
+-   Time series showing changes in call volume or force incidents
+-   Bar charts comparing categories across groups
+-   Faceted plots that reveal differences across locations or time periods
+-   Spatial visualizations that highlight geographic concentration
+
+And much more.
+As you will see, `ggplot2` is built using a particular approach to visualization that develops "layers".
+
+I key takeaway from this section of the book is that visualizations are not just outputs.
+They are tools we can use to identify patterns, detect inconsistencies, and refine questions.
+
+## From Analysis to Communication {.unnumbered}
+
+In practice, your work does not end with an analysis, it must inform decisions.
+
+A patrol commander may need to understand when and where demand is highest.
+A policy analyst may want to explore patterns in use-of-force incidents across time or units.
+These stakeholders often need flexibility: the ability to adjust filters, explore subsets of the data, and ask follow-up questions.
+Whereas `ggplot2` is set up to allow you to make various changes to a visualization that is useful to you, there are many contexts in which we want an end-user (like a supervisor or constituent) to be able to work with the data on their own.
+
+The final part of this book will introduce you to `shiny`, which provides a flexible framework for building interactive tools that support this kind of exploration.
+Instead of static reports, you can provide applications that allow users to engage directly with the data you have wrangled.
+
+## Why Open Science Matters {.unnumbered}
+
+Both of the case studies discussed above illustrate a central principle: analysis is only as credible as it is transparent.
+
+Because these datasets are open, others can access the same underlying data.
+But without clear, reproducible workflows, they cannot easily understand how conclusions were reached.
+
+By making your data processing explicit, through documentation and reproducible workflows, you allow others to:
+
+-   Verify your results
+-   Identify potential limitations
+-   Build on your work
+
+This is particularly important in crime analysis, where findings can influence operational decisions, public policy, and community trust.

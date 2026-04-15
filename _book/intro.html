@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jacob T.N. Young">
 
-<title>Data Wrangling &amp; Visualization for Crime Analysts</title>
+<title>Introduction to Data Wrangling and Visualization – Data Wrangling &amp; Visualization for Crime Analysts</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./intro.html" rel="next">
+<link href="./index.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html">Introduction to Data Wrangling and Visualization</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -121,13 +121,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./intro.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Introduction to Data Wrangling and Visualization</span></a>
   </div>
 </li>
@@ -141,16 +141,24 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#what-do-911-calls-really-tell-us" id="toc-what-do-911-calls-really-tell-us" class="nav-link active" data-scroll-target="#what-do-911-calls-really-tell-us">What Do 911 Calls Really Tell Us?</a></li>
+  <li><a href="#interpreting-use-of-force-data" id="toc-interpreting-use-of-force-data" class="nav-link" data-scroll-target="#interpreting-use-of-force-data">Interpreting Use-of-Force Data</a></li>
+  <li><a href="#from-raw-data-to-meaningful-insight" id="toc-from-raw-data-to-meaningful-insight" class="nav-link" data-scroll-target="#from-raw-data-to-meaningful-insight">From Raw Data to Meaningful Insight</a>
+  <ul class="collapse">
+  <li><a href="#what-is-data-wrangling" id="toc-what-is-data-wrangling" class="nav-link" data-scroll-target="#what-is-data-wrangling">What Is Data Wrangling?</a></li>
+  <li><a href="#seeing-patterns-that-tables-cannot-visualization" id="toc-seeing-patterns-that-tables-cannot-visualization" class="nav-link" data-scroll-target="#seeing-patterns-that-tables-cannot-visualization">Seeing Patterns That Tables Cannot: Visualization</a></li>
+  <li><a href="#from-analysis-to-communication" id="toc-from-analysis-to-communication" class="nav-link" data-scroll-target="#from-analysis-to-communication">From Analysis to Communication</a></li>
+  <li><a href="#why-open-science-matters" id="toc-why-open-science-matters" class="nav-link" data-scroll-target="#why-open-science-matters">Why Open Science Matters</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Wrangling &amp; Visualization for Crime Analysts</h1>
+<h1 class="title">Introduction to Data Wrangling and Visualization</h1>
 </div>
 
 
@@ -167,18 +175,81 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="what-do-911-calls-really-tell-us" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="what-do-911-calls-really-tell-us">What Do 911 Calls Really Tell Us?</h2>
+<p>In many cities, 911 calls-for-service data are published openly and regularly updated. For example, the city of Phoenix, Arizona publishes <a href="https://www.phoenixopendata.com/dataset/calls-for-service">calls for service</a> on a weekly basis. At first glance, these publicly available 911 data appear straightforward: each row represents a call, with a time, location, and call type. It is tempting to treat this as a direct measure of crime.</p>
+<p>But consider a simple question: Where should a police department allocate patrol resources on Friday nights?</p>
+<p>An analyst might begin by downloading a city’s 911 data and filtering for recent calls on Fridays. A quick count of incidents by neighborhood might seem like a reasonable starting point. Areas with the most calls get the most attention so resources should be deployed to these areas.</p>
+<p>However, data are often “wild” in that their format makes it hard to analyze even basic questions.</p>
+<p>For example, time is also not as simple as it appears. Are you analyzing when the call was received, when officers were dispatched, or when the incident actually occurred? Good data repositories will identify these features, but that is not always the case. Also, time could appear in a complicated format. What if your date and time for a call looked like this: “01/01/2026 12:02:15 AM”. It occurred on January 1st, 2026 at 12:02 AM. There are actually several variables in this data entry. Working with data in this format would require some modification so we could answer our question.</p>
+<p>What about locations? Coordinates may be rounded, anonymized, or inconsistently recorded. Addresses may be partially de-dentified (e.g.&nbsp;“2XX W SIESTA WY”) so we would need to think about how to address this gap.</p>
+<p>Before any meaningful analysis can begin, the data must be cleaned, structured, and critically evaluated.</p>
+<p>This is where data <em>wrangling</em> becomes essential.</p>
+</section>
+<section id="interpreting-use-of-force-data" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="interpreting-use-of-force-data">Interpreting Use-of-Force Data</h2>
+<p>Now consider a different type of open dataset: police use-of-force incidents.</p>
+<p>Many agencies now publish records describing when force was used, often including variables such as force type, subject characteristics, officer identifiers, location, and incident context. These datasets are frequently used in public discussions about accountability and equity.</p>
+<p>A seemingly simple question might be:</p>
+<p>Are certain types of force used more frequently in some areas or under certain conditions?</p>
+<p>Even basic aggregation can be misleading. A higher count of force incidents in one area may reflect higher enforcement activity, differences in reporting practices, or underlying population patterns—not necessarily a higher rate of force in comparable situations.</p>
+<p>Unlike calls-for-service data, which are often used for operational decisions, use-of-force data are frequently interpreted in evaluative or policy contexts. This raises the stakes of analysis. Misinterpretation can shape public perception, influence policy debates, and affect trust in institutions.</p>
+<p>As with 911 data, meaningful analysis depends on careful wrangling, documentation, and transparency.</p>
+</section>
+<section id="from-raw-data-to-meaningful-insight" class="level1 unnumbered">
+<h1 class="unnumbered">From Raw Data to Meaningful Insight</h1>
+<p>Although these two datasets differ in purpose and context, they share a common reality: they are messy, incomplete, and shaped by the systems that produce them. These data need to be wrangled!</p>
+<section id="what-is-data-wrangling" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="what-is-data-wrangling">What Is Data Wrangling?</h2>
+<p><em>Data wrangling</em> refers to the process of transforming raw data into a structured, usable format for analysis. In practice, this means taking data as they exist in the real world and preparing them so that meaningful questions can be asked and answered. This includes tasks such as:</p>
+<ul>
+<li>Filtering observations to focus on relevant cases</li>
+<li>Selecting and renaming variables</li>
+<li>Recoding categories into consistent or meaningful groupings</li>
+<li>Handling missing, duplicate, or erroneous values</li>
+<li>Combining multiple datasets</li>
+<li>Aggregating data across time, space, or groups</li>
+</ul>
+<p>Data wrangling is not a preliminary step that happens before “real” analysis—it is a central part of the analytical process itself.</p>
+<p>In crime analysis, data are not neutral inputs. Rather, they are products of reporting systems, organizational practices, and human decisions. A “simple” variable like call type or use-of-force category reflects a set of definitions and classifications that may vary across time and place. Decisions about how to group or interpret these variables are analytical decisions, not just technical ones.</p>
+<p>Data wrangling is where you engage directly with these issues. By approaching wrangling as a transparent, documented process, you make your assumptions visible. This not only improves the quality of your work, but also aligns with the principles of open science: your analysis becomes something that others can understand, critique, and build upon.</p>
+<p>In this book, we will cover tools for data wrangling, specifically focusing on the package <code>dplyr</code>. Tools like <code>dplyr</code> allow you to perform transformations on data that are both efficient and transparent. Each step in your workflow becomes explicit: what you filtered, how you grouped data, and how variables were constructed.</p>
+<p>This is critical not just for producing results, but for ensuring those results can be understood and evaluated by others.</p>
+</section>
+<section id="seeing-patterns-that-tables-cannot-visualization" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="seeing-patterns-that-tables-cannot-visualization">Seeing Patterns That Tables Cannot: Visualization</h2>
+<p>Once the data have been structured, the next challenge is interpretation.</p>
+<p>With 911 data, you might want to understand how call volume changes over time or differs across neighborhoods. With use-of-force data, you might be interested in distributions of force types, variation across units, or trends over time. We can build tables and calculate statistics, but tables and statistics alone are rarely sufficient.</p>
+<p>In this book, we will also add <em>visualization</em> to your crime analyst toolkit. We will cover the basics of good visualization then learn how to create them using <code>ggplot2</code>. Using <code>ggplot2</code>, you can create visualizations that make these patterns visible:</p>
+<ul>
+<li>Time series showing changes in call volume or force incidents</li>
+<li>Bar charts comparing categories across groups</li>
+<li>Faceted plots that reveal differences across locations or time periods</li>
+<li>Spatial visualizations that highlight geographic concentration</li>
+</ul>
+<p>And much more. As you will see, <code>ggplot2</code> is built using a particular approach to visualization that develops “layers”.</p>
+<p>I key takeaway from this section of the book is that visualizations are not just outputs. They are tools we can use to identify patterns, detect inconsistencies, and refine questions.</p>
+</section>
+<section id="from-analysis-to-communication" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="from-analysis-to-communication">From Analysis to Communication</h2>
+<p>In practice, your work does not end with an analysis, it must inform decisions.</p>
+<p>A patrol commander may need to understand when and where demand is highest. A policy analyst may want to explore patterns in use-of-force incidents across time or units. These stakeholders often need flexibility: the ability to adjust filters, explore subsets of the data, and ask follow-up questions. Whereas <code>ggplot2</code> is set up to allow you to make various changes to a visualization that is useful to you, there are many contexts in which we want an end-user (like a supervisor or constituent) to be able to work with the data on their own.</p>
+<p>The final part of this book will introduce you to <code>shiny</code>, which provides a flexible framework for building interactive tools that support this kind of exploration. Instead of static reports, you can provide applications that allow users to engage directly with the data you have wrangled.</p>
+</section>
+<section id="why-open-science-matters" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="why-open-science-matters">Why Open Science Matters</h2>
+<p>Both of the case studies discussed above illustrate a central principle: analysis is only as credible as it is transparent.</p>
+<p>Because these datasets are open, others can access the same underlying data. But without clear, reproducible workflows, they cannot easily understand how conclusions were reached.</p>
+<p>By making your data processing explicit, through documentation and reproducible workflows, you allow others to:</p>
+<ul>
+<li>Verify your results</li>
+<li>Identify potential limitations</li>
+<li>Build on your work</li>
+</ul>
+<p>This is particularly important in crime analysis, where findings can influence operational decisions, public policy, and community trust.</p>
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1><p><img src="cover.png" title="Data Wrangling &amp; Visualization for Crime Analysts" class="quarto-cover-image nolightbox img-fluid"></p>
-<p>You are entering a field at a moment of profound transition. Vast amounts of data are now publicly available: calls for service, incident reports, court records, demographic indicators, mobility data, and more. These open data sources have the potential to deepen our understanding of crime patterns, inform policy, and improve public safety. Yet access alone is not enough as data must be cleaned, interpreted, visualized, and questioned. Put simply: availability and <em>accessibility</em> are not synonymous.</p>
-<p>This course, and this text, are built around that reality. “Data Wrangling and Visualization for Crime Analysts” is not just about learning technical skills. It is about developing a way of thinking. You will learn how to transform messy, real-world datasets into meaningful insights, but also how to evaluate the quality of those data, communicate uncertainty, and avoid common analytical pitfalls. These skills are central to responsible crime analysis.</p>
-<p>A key foundation of this work is the set of principles often referred to as open science. In practice, this means your analyses should be transparent, reproducible, and accessible. Others should be able to understand how you arrived at your conclusions, replicate your methods, and build upon your work. In a field that directly shapes public policy and community outcomes, this level of accountability is not just ideal, it is essential.</p>
-<p>For crime analysts, open science has particular significance. The decisions informed by your work (e.g.&nbsp;resource allocation, intervention strategies, policy recommendations, and so on) carry real consequences. By adopting open and reproducible practices, you help ensure that those decisions are grounded in evidence that can be scrutinized, improved, and trusted.</p>
-<p>At the same time, this book recognizes the realities you will face. Data will be incomplete. Definitions will vary across jurisdictions. Systems will not align cleanly. You will often work under time constraints, with stakeholders who need clear answers. You will build something, then it will break (it happens). This text is designed to prepare you for that environment by emphasizing practical skills: data wrangling, exploratory analysis, and visualization techniques that make complex information understandable and actionable.</p>
-<p>You should expect to engage actively with the material. The examples and exercises are drawn from real-world data and reflect the kinds of challenges you will encounter in professional settings. The goal is not simply to teach you how to do something, but to help you understand why it matters and when it is appropriate.</p>
-<p>Ultimately, this book is about building your capacity as a thoughtful, ethical, and effective analyst. If you take one idea from it, let it be this: good analysis is not just about producing results, it is about producing results that others can trust, understand, and use.</p>
 
-
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -584,11 +655,11 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./intro.html" class="pagination-link" aria-label="Introduction to Data Wrangling and Visualization">
-        <span class="nav-page-text">Introduction to Data Wrangling and Visualization</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -599,7 +670,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
