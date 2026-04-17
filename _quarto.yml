@@ -20,6 +20,8 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
+    - dwc4ca-intro-to-r.qmd
+    - dwc4ca-r-rmarkdown.qmd
 
 format:
   html:
