@@ -1,0 +1,58 @@
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = FALSE,
+  message=FALSE, 
+  warning=FALSE, 
+  fig.width = 10,
+  fig.align = "center"
+  )
+
+```
+
+# Data Wrangling with `dplyr` {.unnumbered}
+
+## What is `dplyr`?
+
+The `dplyr` package is designed to make data wrangling faster, clearer, and more intuitive by providing a consistent way to manipulate data.
+
+At its core, `dplyr` is built around the idea of **“verbs”** where each function represents a common action you perform on data:
+
+-   `filter()`: keep certain rows
+-   `select()`: choose specific columns
+-   `mutate()`: create or modify variables
+-   `arrange()`: sort the data
+-   `summarize()`: compute summary statistics
+-   `group_by()`: apply operations within groups
+
+These verbs can be combined to create a step-by-step workflow that mirrors how analysts actually think.
+Another way to think of this is like a "data recipe" where we stipulate a set of steps to follow to give us a particular data set.
+
+## Why This Matters for Crime Analysts
+
+Crime data is often messy, complex, and large.
+Analysts regularly need to:
+
+-   Isolate specific types of incidents (e.g., use of force)
+-   Focus on certain time periods or locations
+-   Create new variables (e.g., month, crime categories)
+-   Summarize patterns across groups (e.g., by neighborhood or offense type)
+
+`dplyr` makes these tasks:
+
+-   **Readable**: Code looks like a sequence of logical steps
+-   **Efficient**: Handles large datasets quickly
+-   **Reproducible**: Every step is documented and can be rerun
+
+Instead of manually filtering or copying data in spreadsheets, analysts can build a clear, repeatable workflow that turns raw data into meaningful insight.
+As you work through this section, the advantages of these features should become more clear.
+To facilitate that, let's look at some data on *use of force* incidents.
+
+## Use of Force in Phoenix
+
+HERE
+
+<br>
+
+## Test Your Knowledge Exercises

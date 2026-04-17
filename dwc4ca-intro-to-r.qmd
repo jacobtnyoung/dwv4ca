@@ -13,18 +13,18 @@ knitr::opts_chunk$set(
 
 # Getting Started with R {.unnumbered}
 
-In this tutorial, you will be introduced to the programming language R.
-The tutorial is designed for those who have no experience with R.
+In this chapter, you will be introduced to the programming language R.
+The chapter (and this book) is designed for those who have no experience with R.
 We begin with what R is, how you install it, and work through how to navigate the environment.
 We will also cover RStudio.
-Even if you have used R and/or RStudio before (awesome!), I would encourage you to review the tutorial as a refresher.
+Even if you have used R and/or RStudio before (awesome!), I would encourage you to review this chapter as a refresher.
 
-As a reminder, this tutorial (and the tutorials throughout this book) will contain R code, which is in "code chunks".
+As a reminder, this chapter (and the chapters throughout this book) will contain R code, which is in "code chunks".
 You will notice a code chunk because the font will change.
 Code chunks will have text that `looks like this`.
 There is also regular text.
 The R code chunks can be copied and pasted directly into R and RStudio.
-As you work through the tutorials, follow along in the software by copying and pasting the `code` and seeing it work on your end.
+As you work through the chapters, follow along in the software by copying and pasting the `code` and seeing it work on your end.
 
 <br>
 
