@@ -1,16 +1,17 @@
 # Preface {.unnumbered}
 
-You are entering a field at a moment of profound transition.
+In the last decade, the field of crime analysis has experienced a profound transition.
 Vast amounts of data are now publicly available: calls for service, incident reports, court records, demographic indicators, mobility data, and more.
 These open data sources have the potential to deepen our understanding of crime patterns, inform policy, and improve public safety.
 Yet access alone is not enough as data must be cleaned, interpreted, visualized, and questioned.
-Put simply: availability and *accessibility* are not synonymous.
 
-This course, and this text, are built around that reality.
-“Data Wrangling and Visualization for Crime Analysts” is not just about learning technical skills.
-It is about developing a way of thinking.
-You will learn how to transform messy, real-world datasets into meaningful insights, but also how to evaluate the quality of those data, communicate uncertainty, and avoid common analytical pitfalls.
-These skills are central to responsible crime analysis.
+Put simply: *availability* and *accessibility* are not synonymous.
+
+[Data Wrangling and Visualization for Crime Analysts](https://jacobtnyoung.github.io/dwv4ca/) is built with this reality in mind.
+My goal in writing this text is not just to teach you technical skills.
+Rather, my goal is to help you develop a way of thinking about *accessibility*.
+You will learn how to transform messy, real-world datasets (i.e. data wrangling) into insightful graphics and visual displays (i.e. visualization).
+These skills are essential tools for any crime analyst.
 
 A key foundation of this work is the set of principles often referred to as open science.
 In practice, this means your analyses should be transparent, reproducible, and accessible.
