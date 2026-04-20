@@ -9,6 +9,8 @@ knitr::opts_chunk$set(
   fig.align = "center"
   )
 
+library( DWVpack )
+
 ```
 
 # Data Wrangling with `dplyr` {.unnumbered}
@@ -29,7 +31,7 @@ At its core, `dplyr` is built around the idea of **“verbs”** where each func
 These verbs can be combined to create a step-by-step workflow that mirrors how analysts actually think.
 Another way to think of this is like a "data recipe" where we stipulate a set of steps to follow to give us a particular data set.
 
-## Why This Matters for Crime Analysts
+### Why This Matters for Crime Analysts
 
 Crime data is often messy, complex, and large.
 Analysts regularly need to:
@@ -47,11 +49,353 @@ Analysts regularly need to:
 
 Instead of manually filtering or copying data in spreadsheets, analysts can build a clear, repeatable workflow that turns raw data into meaningful insight.
 As you work through this section, the advantages of these features should become more clear.
+
 To facilitate that, let's look at some data on *use of force* incidents.
 
-## Use of Force in Phoenix
+# Use of Force in Phoenix
 
-HERE
+Imagine you are a crime analyst working for a non-profit in Phoenix, Arizona.
+Your supervisor asks: “We’ve been getting questions from local constituents about use of force.
+Can you tell me what’s going on?”
+At first glance, this sounds straightforward: just open the data and look (since these are publicly available, it is easy to do so).
+
+The `DWVpack` package contains a data set for use of force incidents from 2018-2024 in Phoenix.
+(As a reminder, if you have not not installed the `DWVpack` package, please review the [Getting Started with R]() chapter where this is covered.) To look at the data, we need to first load the `DWVpack` package and then examine the data, called `phx_uof_2018_2024` in the package, using the `View()` function.
+This function takes an object and creates a separate viewing pane where we can "view" the data.
+
+Here are the commands:
+
+```{r}
+
+# load the package
+library( DWVpack )
+
+# look at the data 
+View( phx_uof_2018_2024 )
+
+```
+
+Take a look through the data file and think about what we have.
+In the *rows*, we have each incident from 2018-2024.
+If you scroll to the bottom of the file, you will see that there are `r dim(phx_uof_2018_2024)[1]` total incidents.
+In the *columns* we have the variables.
+
+Let's take a look at the first column, which is the variable `INC_IA_NO`.
+According to the [data dictionary](https://www.phoenixopendata.com/dataset/ouof/resource/c79b2135-e936-439e-a8a3-79e61d4518d2) for these data, the first variable `INC_IA_NO` is a record number to use as a unique identifier for each officer Use of Force report (aka officer use of force report).
+A Use of Force report is completed for each involved individual within an incident.
+This field is available beginning in 2021 when Phoenix Police Department implemented a new application for tracking UOF interactions to allow for additional information to be collected about each UOF interaction.
+
+What about the tenth column, `HUNDRED_BLOCK`?
+This is the address of the incident, anonymized to the hundred block.
+As you can see if you scroll through the incidents, there are some listed as "Not Available", meaning that (for some reason) the location information was not entered.
+
+If you keep looking through the data (go ahead, I can wait), you will see that we can't just dive into analyzing the data.
+We need to clean and structure the data.
+This is where data wrangling comes in.
+
+## Analytical Questions and Workflow
+
+To guide our work, consider the types of questions we might want to answer:
+
+Are incidents increasing or decreasing over time?
+What proportion of incidents involve Male (vs. Female) individuals?
+What proportion of incidents involve the suspect having a gun?
+Are non-white suspects more prevalent in the data than White suspects?
+
+Each of these questions requires transforming raw data into a usable format as raw datasets rarely arrive ready for analysis (as we saw above).
+Instead, we typically move through a series of steps (a workflow):
+
+-   Select relevant variables
+-   Filter observations of interest
+-   Create new variables (e.g., time, categories)
+-   Group and summarize data
+-   Check for missing or unusual values
+
+The `dplyr` package is designed to make each of these steps clear, consistent, and reproducible.
+
+# `dplyr` Basics
+
+You’re about to learn the primary `dplyr` verbs (functions), which will allow you to solve the vast majority of your data manipulation challenges.
+But before we discuss their individual differences, it’s worth stating what they have in common:\
+- The first argument is always a data frame.
+- The subsequent arguments typically describe which columns to operate on using the variable names (without quotes).
+- The output is always a new data frame.
+
+Because each verb does one thing well, solving complex problems will usually require combining multiple verbs, and we’ll do so with the pipe, `|>`.
+We’ll discuss the pipe more, but in brief, the pipe takes the thing on its left and passes it along to the function on its right so that `x |> f(y)` is equivalent to `f(x, y)`, and `x |> f(y) |> g(z)` is equivalent to `g(f(x, y), z)`.
+The easiest way to pronounce the pipe is “then”.
+That makes it possible to get a sense of the following code even though you haven’t yet learned the details:
+
+``` r
+
+phx_uof_2018_2024 |>
+  filter( CIT_GENDER == "Male" ) |> 
+  group_by( INC_YEAR ) |> 
+  summarize(
+    male_uof = n()
+  )
+  
+```
+
+`dplyr`’s verbs are organized into four groups based on what they operate on: rows, columns, groups, or tables.
+In the following sections, you’ll learn the most important verbs for rows, columns, and groups.
+Let’s dive in!
+
+## Rows
+
+The most important verbs that operate on rows of a dataset are `filter()`, which changes which rows are present without changing their order, and `arrange()`, which changes the order of the rows without changing which are present.
+Both functions only affect the rows, and the columns are left unchanged.
+We’ll also discuss `distinct()` which finds rows with unique values.
+Unlike `arrange()` and `filter()` it can also optionally modify the columns.
+
+### `filter()`
+
+`filter()` allows you to keep rows based on the values of the columns.
+The first argument is the data frame.
+The second and subsequent arguments are the conditions that must be true to keep the row.
+For example, we could find all use of force incidents that involve "Male" suspects:
+
+``` r
+
+phx_uof_2018_2024 |>
+  filter( CIT_GENDER == "Male" )
+  
+```
+
+What does this say?
+It first says to get the `phx_uof_2018_2024` object, "then" (this is the `|>` operator) filter the rows that meet the condition.
+In this case we are filtering the only to only keep rows where the `CIT_GENDER` column is equal to "Male".
+
+We can use various operators for the condition.
+Above we used `==` equal to, but we could say `!=` which would give is all the values *except* "Male".
+Let's think about this.
+Here are all the unique values for the `CIT_GENDER` variable:
+
+```{r, eval=TRUE}
+
+table( phx_uof_2018_2024$CIT_GENDER )
+
+```
+
+Look at the values and think about what the following code will return:
+
+``` r
+
+phx_uof_2018_2024 |>
+  filter( CIT_GENDER != "Male" )
+  
+```
+
+For numeric variables, we can also use `>` (greater than), `>=` (greater than or equal to), `<` (less than), and `<=` (less than or equal to).
+
+For example, if we wanted all years after 2018:
+
+``` r
+
+phx_uof_2018_2024 |>
+  filter( INC_YEAR > 2018 ) 
+  
+```
+
+We can also combine conditions with `&` to indicate “and” (check for both conditions) or with `|` to indicate “or” (check for either condition):
+
+``` r
+
+# take years 2018 and Males using the & "and" operationr:
+
+phx_uof_2018_2024 |>
+  filter( CIT_GENDER == "Male" & INC_YEAR == 2018 )
+
+
+# take years 2018 and 2025 using the | "or" operationr:
+
+phx_uof_2018_2024 |>
+  filter( INC_YEAR == 2018 | INC_YEAR == 2025 ) 
+  
+```
+
+When you run `filter()` `dplyr` executes the filtering operation, creating a new data frame, and then prints it.
+It doesn’t modify the existing dataset because `dplyr` functions never modify their inputs.
+To save the result, you need to use the assignment operator, `<-`:
+
+``` r
+
+uof_2018_and_2025 <- phx_uof_2018_2024 |>
+  filter( INC_YEAR == 2018 | INC_YEAR == 2025 ) 
+  
+```
+
+### `arrange()`
+
+`arrange()` changes the order of the rows based on the value of the columns.
+It takes a data frame and a set of column names.
+If you provide more than one column name, each additional column will be used to break ties in the values of the preceding columns.
+For example, the following code sorts by `INC_YEAR` then by `CIT_GENDER`.
+
+``` r
+
+phx_uof_2018_2024 |>
+  arrange( INC_YEAR, CIT_GENDER )
+  
+```
+
+We get the earliest year first, then female, then male, then then next year, and so on.
+Note that we have not altered the values of the data, we have just arranged the data differently.
+
+### `distinct()`
+
+`distinct()` finds all the unique values of a column in a dataset.
+
+``` r
+
+phx_uof_2018_2024 |>
+  distinct( INC_YEAR )
+  
+```
+
+We can also use `distinct()` to get combinations of values for several columns:
+
+``` r
+
+phx_uof_2018_2024 |>
+  distinct( INC_YEAR, CIT_GENDER )
+  
+```
+
+Above, I used the `table()` function to essentially do the same thing, except that function returns counts.
+We can use the `count()` function in `dplyr` to achieve this:
+
+``` r
+
+phx_uof_2018_2024 |>
+  count( INC_YEAR, CIT_GENDER )
+  
+```
+
+So why not just use the `table()` function?
+A strength of `dyplr` is that we can supply multiple commands to a recipe using our pipe, `|>`.
+
+For example, let's use `filter()` to take incidents involving Males and then look at the frequency over the years:
+
+``` r
+
+phx_uof_2018_2024 |> 
+  filter( CIT_GENDER == "Male" ) |> 
+  count( INC_YEAR )
+  
+```
+
+As we will see, we can string together many of these instructions for how we want to augment into a single command using the `|>` operator.
+
+## Columns
+
+There are also verbs that operate on the columns.
+The two we will focus on here are `select()` and `mutate()`.
+
+### `select()`
+
+It’s not uncommon to get datasets with hundreds or even thousands of variables.
+In this situation, the first challenge is often just focusing on the variables you’re interested in.
+`select()` allows you to rapidly zoom in on a useful subset using operations based on the names of the variables:
+
+-   Select columns by name
+
+``` r
+phx_uof_2018_2024 |> 
+  select( INC_YEAR, CIT_GENDER )
+```
+
+-   Select all columns between `INC_YEAR` and `CIT_GENDER`
+
+``` r
+phx_uof_2018_2024 |> 
+  select( INC_YEAR : CIT_GENDER )
+```
+
+-   Select all columns except `INC_YEAR` and `CIT_GENDER`
+
+``` r
+phx_uof_2018_2024 |> 
+  select( !INC_YEAR : CIT_GENDER )
+```
+
+Historically this operation was done with `-` instead of `!`, so you’re likely to see that in the wild.
+These two operators serve the same purpose but with subtle differences in behavior.
+I recommend using `!` because it reads as “not” and combines well with `&` and `|`.
+
+There are also a number of helper functions you can use within `select()`:
+
+-   `starts_with("abc")`: matches names that begin with “abc”.
+-   `ends_with("xyz")`: matches names that end with “xyz”.
+-   `contains("ijk")`: matches names that contain “ijk”.
+-   `num_range("x", 1:3)`: matches x1, x2 and x3.
+
+You can rename variables as you `select()` them by using `=`.
+The new name appears on the left-hand side of the `=`, and the old variable appears on the right-hand side:
+
+``` r
+phx_uof_2018_2024 |> 
+  select( year = INC_YEAR )
+```
+
+This is a nice feature when you are building a data set and the variables names are long, confusing, etc.
+
+### `mutate()`
+
+The job of `mutate()` is to add new columns that are calculated from the existing columns.
+For example, let's transform the `CIT_RACE` variable into a variable that defines the cases as "white" and "non-white".
+First, let's look at the values of the `CIT_RACE` variable:
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |> 
+  distinct( CIT_RACE )
+
+```
+
+Now, having seen there are `r dim( table( phx_uof_2018_2024$CIT_RACE ) )` distinct values for the `CIT_RACE` variable, we can reclassify them:
+
+``` r
+phx_uof_2018_2024 |> 
+  select( race = CIT_RACE ) |> 
+  mutate( white = ifelse( race == "White", "White", "Non-White" ) )
+```
+
+Here, we did a few steps.
+First, we used `select()` to just keep the `CIT_RACE` column and we renamed it to be `race`.
+Second, we created a variable called `white` using the `ifelse()` function.
+Simply, the function says "if `race` is equal to "White", then the variable `white` will be "White" and if not, then "Non-White".
+
+## Groups
+
+So far you’ve learned about functions that work with rows and columns.
+`dplyr` gets even more powerful when you add in the ability to work with groups.
+Here, we’ll focus on the most important functions: `summarize()` and `group_by()`.
+
+### `summarize()`
+
+### `group_by()`
+
+Use `group_by()` to divide your dataset into groups:
+
+```         
+phx_uof_2018_2024 |> 
+  group_by( CIT_RACE )
+```
+
+Now, you may be saying, "isn't this what `arrange()` does? Not exactly. `arrange()` sorts the rows such that the resulting data object is just re-arranged based on the variables we gave it. `group_by()` is used when we want to perform a calculation, like `mutate()`, and we first want to group the data based on a variable.
+
+For example, suppose we want to create the proportion male for each of the race/ethnic groups identified by `CIT_RACE`.
+To do so, we need to group the data and then calculate the proportion male, like so:
+
+```{r}
+
+phx_uof_2018_2024 |> 
+  select( CIT_GENDER, CIT_RACE ) |> 
+  group_by( CIT_RACE ) |>
+  summarize( CIT_GENDER )
+
+```
 
 <br>
 
