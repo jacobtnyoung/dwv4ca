@@ -368,6 +368,14 @@ Simply, the function says "if `race` is equal to "White", then the variable `whi
 
 ## Groups
 
+HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
+
+HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
+
+HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
+
+HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
+
 So far you’ve learned about functions that work with rows and columns.
 `dplyr` gets even more powerful when you add in the ability to work with groups.
 Here, we’ll focus on the most important functions: `summarize()` and `group_by()`.

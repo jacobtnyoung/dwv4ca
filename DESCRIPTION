@@ -3,3 +3,6 @@ Title: Data Wrangling and Visualization for Crime Analysts
 Version: 0.1
 URL: https://github.com/jacobtnyoung/dwv4ca
 License: CC NC ND 3.0
+Depends: 
+    R (>= 3.5)
+LazyData: true
