@@ -116,13 +116,14 @@ The `dplyr` package is designed to make each of these steps clear, consistent, a
 # `dplyr` Basics
 
 You’re about to learn the primary `dplyr` verbs (functions), which will allow you to solve the vast majority of your data manipulation challenges.
-But before we discuss their individual differences, it’s worth stating what they have in common:\
-- The first argument is always a data frame.
-- The subsequent arguments typically describe which columns to operate on using the variable names (without quotes).
-- The output is always a new data frame.
+But before we discuss their individual differences, it’s worth stating what they have in common:
+
+-   The first argument is always a data frame.
+-   The subsequent arguments typically describe which columns to operate on using the variable names (without quotes).
+-   The output is always a new data frame.
 
 Because each verb does one thing well, solving complex problems will usually require combining multiple verbs, and we’ll do so with the pipe, `|>`.
-We’ll discuss the pipe more, but in brief, the pipe takes the thing on its left and passes it along to the function on its right so that `x |> f(y)` is equivalent to `f(x, y)`, and `x |> f(y) |> g(z)` is equivalent to `g(f(x, y), z)`.
+We’ll discuss the pipe more, but in brief, the pipe allows us to string together multiple verbs.
 The easiest way to pronounce the pipe is “then”.
 That makes it possible to get a sense of the following code even though you haven’t yet learned the details:
 
@@ -140,6 +141,21 @@ phx_uof_2018_2024 |>
 `dplyr`’s verbs are organized into four groups based on what they operate on: rows, columns, groups, or tables.
 In the following sections, you’ll learn the most important verbs for rows, columns, and groups.
 Let’s dive in!
+
+To use these functions, we need to install `dyplr`:
+
+``` r
+
+install.packages( "dplyr" )
+```
+
+After installing (or if you already have the package installed), we need to use the `library()` function to load it:
+
+```{r, eval=TRUE}
+
+library( dplyr )
+
+```
 
 ## Rows
 
@@ -356,9 +372,11 @@ phx_uof_2018_2024 |>
 Now, having seen there are `r dim( table( phx_uof_2018_2024$CIT_RACE ) )` distinct values for the `CIT_RACE` variable, we can reclassify them:
 
 ``` r
+
 phx_uof_2018_2024 |> 
   select( race = CIT_RACE ) |> 
   mutate( white = ifelse( race == "White", "White", "Non-White" ) )
+  
 ```
 
 Here, we did a few steps.
@@ -368,40 +386,129 @@ Simply, the function says "if `race` is equal to "White", then the variable `whi
 
 ## Groups
 
-HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
-
-HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
-
-HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
-
-HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE
-
 So far you’ve learned about functions that work with rows and columns.
 `dplyr` gets even more powerful when you add in the ability to work with groups.
 Here, we’ll focus on the most important functions: `summarize()` and `group_by()`.
 
 ### `summarize()`
 
-### `group_by()`
+The most important grouped operation is a summary, which, if being used to calculate a single summary statistic, reduces the data frame to have a single row for each group.
+In `dplyr`, this operation is performed by `summarize()`.
+For example, let's compute the average age of citizens using the `CIT_AGE` column:
 
-Use `group_by()` to divide your dataset into groups:
+```{r, eval=TRUE}
 
-```         
 phx_uof_2018_2024 |> 
-  group_by( CIT_RACE )
+  summarize( 
+    avg_age = mean( CIT_AGE ) 
+    )
+
 ```
 
-Now, you may be saying, "isn't this what `arrange()` does? Not exactly. `arrange()` sorts the rows such that the resulting data object is just re-arranged based on the variables we gave it. `group_by()` is used when we want to perform a calculation, like `mutate()`, and we first want to group the data based on a variable.
+Huh?
+This doesn't look right.
+Notice that in the code above, we are trying to calculate a mean on a variable that has missing values (i.e. `NA`).
+For the `mean()` function to work, we need to tell it what to do with the `NA` values.
+Specifically, we need to use the `na.rm =` argument by setting it to `TRUE` such that it removes missing values.
 
-For example, suppose we want to create the proportion male for each of the race/ethnic groups identified by `CIT_RACE`.
-To do so, we need to group the data and then calculate the proportion male, like so:
-
-```{r}
+```{r, eval=TRUE}
 
 phx_uof_2018_2024 |> 
-  select( CIT_GENDER, CIT_RACE ) |> 
-  group_by( CIT_RACE ) |>
-  summarize( CIT_GENDER )
+  summarize( 
+    avg_age = mean( CIT_AGE, na.rm = TRUE )
+    )
+
+```
+
+Ah, that looks better.
+
+Note that we can include other info in the output, such as the number of cases.
+This is done using `n()` and, as we will see below, is really useful when we have multiple means.
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |> 
+  summarize( 
+    avg_age = mean( CIT_AGE, na.rm = TRUE ),
+    n = n()
+    )
+
+```
+
+### `group_by()`
+
+Many times we want to divide a dataset into groups and then perform calculations for each of those groups (e.g. mean, standard deviation, n, and so on).
+We can use `group_by()` to divide your dataset into groups in this way:
+
+``` r
+phx_uof_2018_2024 |>
+  select( INC_YEAR ) |> 
+  group_by( INC_YEAR )
+```
+
+Take a look at the output.
+You may notice that it looks a bit different.
+It returns output that is class `tibble` instead of `data.frame`.
+This is a small difference and does not augment our data, just the way it looks.
+Note that it also tells us how the data are grouped (look at where it says "Groups").
+
+Now, you may be saying, "isn't this what `arrange()` does? Not exactly. `arrange()` sorts the rows such that the resulting data object is just re-arranged based on the variables we gave it. `group_by()` is used when we want to perform a calculation, like `mutate()` or `summarize()` and we first want to group the data based on a variable.
+
+For example, now that our data are grouped, we can use the `summarize()` function to give us group specific info.
+Let's start by seeing how many cases occur each year:
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( INC_YEAR ) |> 
+  group_by( INC_YEAR ) |> 
+  summarize( 
+    total = n() 
+    )
+
+```
+
+What if we wanted to how many cases are in each race/ethnic group each year?
+Well, we could include the `CIT_RACE` variable in our selection **AND** in the `group_by()` statement:
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( INC_YEAR, CIT_RACE ) |> 
+  group_by( INC_YEAR, CIT_RACE ) |> 
+  summarize( 
+    total = n()
+    )
+
+```
+
+We can include multiple cases here if we want additional information:
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( INC_YEAR, CIT_RACE, CIT_AGE ) |> 
+  group_by( INC_YEAR, CIT_RACE ) |> 
+  summarize( 
+    total = n(),
+    mean_age = mean( CIT_AGE )
+    )
+
+```
+
+Note that some cases have `NA` for the mean.
+This is because we didn't tell the `mean()` function what to do with missing values.
+We can fix that using the `na.rm=` argument in the function:
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( INC_YEAR, CIT_RACE, CIT_AGE ) |> 
+  group_by( INC_YEAR, CIT_RACE ) |> 
+  summarize( 
+    total = n(),
+    mean_age = mean( CIT_AGE, na.rm = TRUE )
+    )
 
 ```
 
