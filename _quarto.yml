@@ -23,6 +23,7 @@ book:
     - dwc4ca-intro-to-r.qmd
     - dwc4ca-r-rmarkdown.qmd
     - dwc4ca-dplyr.qmd
+    - dwc4ca-tidy.qmd
 
 format:
   html:
