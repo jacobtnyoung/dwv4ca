@@ -514,4 +514,102 @@ phx_uof_2018_2024 |>
 
 <br>
 
+# Analytical Questions and Workflow (revisited)
+
+Now that we know how to manipulate the dataset, lets revisit our questions:
+
+-   Are incidents increasing or decreasing over time?
+-   How many incidents involve Male (vs. Female) individuals?
+-   What proportion of incidents involve the suspect having a gun (see the `SUBJ_ARMED_GUN` column)?
+-   Are non-white suspects more prevalent in the data than White suspects?
+
+Before reviewing this section, I would encourage you to take a crack at it on your own, and then work through the solutions here.
+
+## Are incidents increasing or decreasing over time?
+
+We can answer this question by creating a simple count by year of incidents:
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( INC_YEAR ) |> 
+  group_by( INC_YEAR ) |> 
+  summarize( total = n() )
+
+```
+
+With this table it is fairly easy to read and see the increase.
+But, if we had lots of cases then it might be hard to see the trend.
+One way we could make this easier would be to take all of the cases over the years and calculate what proportion each year represents.
+
+Before we write the code for it, let's think about it conceptually.
+We want: "Count incidents by year, then divide each year’s count by the total number of incidents."
+
+So our data recipe should be:
+
+1.  Group by year
+2.  Count incidents per year
+3.  Compute proportion using the total
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( INC_YEAR ) |> 
+  group_by( INC_YEAR ) |> 
+  summarize( total = n() ) |> 
+  mutate( year_proportion = total / sum( total ) )
+
+```
+
+## How many incidents involve Male (vs. Female) individuals?
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( CIT_GENDER ) |> 
+  group_by( CIT_GENDER ) |> 
+  summarize( total = n() ) 
+
+```
+
+## What proportion of incidents involve the suspect having a gun?
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( SUBJ_ARMED_GUN ) |> 
+  group_by( SUBJ_ARMED_GUN ) |> 
+  summarize( total = n() ) |> 
+  mutate( gun_proportion = total / sum( total ) )
+
+```
+
+## Are non-white suspects more prevalent in the data than White suspects?
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( CIT_RACE ) |> 
+  group_by( CIT_RACE ) |> 
+  summarize( total = n() ) |> 
+  mutate( race_proportion = total / sum( total ) )
+
+```
+
+This gives us all the categories, so we would want to create a variable that gets at White vs. Non-White.
+Remember that we did this above using `mutate( white = ifelse( race == "White", "White", "Non-White" ) )`.
+
+```{r, eval=TRUE}
+
+phx_uof_2018_2024 |>
+  select( race = CIT_RACE ) |> 
+  mutate( white = ifelse( race == "White", "White", "Non-White" ) ) |> 
+  group_by( white ) |> 
+  summarize( total = n() ) |> 
+  mutate( race_proportion = total / sum( total ) )
+
+```
+
+<br>
+
 ## Test Your Knowledge Exercises

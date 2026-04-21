@@ -215,6 +215,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#group_by" id="toc-group_by" class="nav-link" data-scroll-target="#group_by"><code>group_by()</code></a></li>
   </ul>
 </li>
+  </ul>
+</li>
+  <li>
+<a href="#analytical-questions-and-workflow-revisited" id="toc-analytical-questions-and-workflow-revisited" class="nav-link" data-scroll-target="#analytical-questions-and-workflow-revisited">Analytical Questions and Workflow (revisited)</a>
+  <ul class="collapse">
+<li><a href="#are-incidents-increasing-or-decreasing-over-time" id="toc-are-incidents-increasing-or-decreasing-over-time" class="nav-link" data-scroll-target="#are-incidents-increasing-or-decreasing-over-time">Are incidents increasing or decreasing over time?</a></li>
+  <li><a href="#how-many-incidents-involve-male-vs.-female-individuals" id="toc-how-many-incidents-involve-male-vs.-female-individuals" class="nav-link" data-scroll-target="#how-many-incidents-involve-male-vs.-female-individuals">How many incidents involve Male (vs.&nbsp;Female) individuals?</a></li>
+  <li><a href="#what-proportion-of-incidents-involve-the-suspect-having-a-gun" id="toc-what-proportion-of-incidents-involve-the-suspect-having-a-gun" class="nav-link" data-scroll-target="#what-proportion-of-incidents-involve-the-suspect-having-a-gun">What proportion of incidents involve the suspect having a gun?</a></li>
+  <li><a href="#are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" id="toc-are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" class="nav-link" data-scroll-target="#are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects">Are non-white suspects more prevalent in the data than White suspects?</a></li>
   <li><a href="#test-your-knowledge-exercises" id="toc-test-your-knowledge-exercises" class="nav-link" data-scroll-target="#test-your-knowledge-exercises">Test Your Knowledge Exercises</a></li>
   </ul>
 </li>
@@ -476,72 +485,272 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    avg_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span> <span class="op">)</span> </span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  avg_age
+1      NA</code></pre>
+</div>
 </div>
 <p>Huh? This doesn’t look right. Notice that in the code above, we are trying to calculate a mean on a variable that has missing values (i.e.&nbsp;<code>NA</code>). For the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> function to work, we need to tell it what to do with the <code>NA</code> values. Specifically, we need to use the <code>na.rm =</code> argument by setting it to <code>TRUE</code> such that it removes missing values.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    avg_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   avg_age
+1 33.13641</code></pre>
+</div>
 </div>
 <p>Ah, that looks better.</p>
 <p>Note that we can include other info in the output, such as the number of cases. This is done using <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code> and, as we will see below, is really useful when we have multiple means.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    avg_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span>,</span>
 <span>    n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   avg_age     n
+1 33.13641 12324</code></pre>
+</div>
 </div>
 </section><section id="group_by" class="level3"><h3 class="anchored" data-anchor-id="group_by"><code>group_by()</code></h3>
 <p>Many times we want to divide a dataset into groups and then perform calculations for each of those groups (e.g.&nbsp;mean, standard deviation, n, and so on). We can use <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> to divide your dataset into groups in this way:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span></span>
-<span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Take a look at the output. You may notice that it looks a bit different. It returns output that is class <code>tibble</code> instead of <code>data.frame</code>. This is a small difference and does not augment our data, just the way it looks. Note that it also tells us how the data are grouped (look at where it says “Groups”).</p>
 <p>Now, you may be saying, “isn’t this what <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> does? Not exactly. <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> sorts the rows such that the resulting data object is just re-arranged based on the variables we gave it. <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> is used when we want to perform a calculation, like <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> and we first want to group the data based on a variable.</p>
 <p>For example, now that our data are grouped, we can use the <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> function to give us group specific info. Let’s start by seeing how many cases occur each year:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> </span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 2
+  INC_YEAR total
+     &lt;int&gt; &lt;int&gt;
+1     2018  1101
+2     2019  1212
+3     2020  1391
+4     2021  1544
+5     2022  2132
+6     2023  2302
+7     2024  2642</code></pre>
+</div>
 </div>
 <p>What if we wanted to how many cases are in each race/ethnic group each year? Well, we could include the <code>CIT_RACE</code> variable in our selection <strong>AND</strong> in the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> statement:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 40 × 3
+# Groups:   INC_YEAR [7]
+   INC_YEAR CIT_RACE                         total
+      &lt;int&gt; &lt;chr&gt;                            &lt;int&gt;
+ 1     2018 American Indian / Alaskan Native    78
+ 2     2018 Asian / Pacific Islander            12
+ 3     2018 Black                              244
+ 4     2018 White                              767
+ 5     2019 American Indian / Alaskan Native    94
+ 6     2019 Asian / Pacific Islander             9
+ 7     2019 Black                              233
+ 8     2019 White                              876
+ 9     2020 American Indian / Alaskan Native    88
+10     2020 Asian / Pacific Islander             7
+# ℹ 30 more rows</code></pre>
+</div>
 </div>
 <p>We can include multiple cases here if we want additional information:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span>, <span class="va">CIT_AGE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    mean_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span> <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 40 × 4
+# Groups:   INC_YEAR [7]
+   INC_YEAR CIT_RACE                         total mean_age
+      &lt;int&gt; &lt;chr&gt;                            &lt;int&gt;    &lt;dbl&gt;
+ 1     2018 American Indian / Alaskan Native    78     31.8
+ 2     2018 Asian / Pacific Islander            12     38.6
+ 3     2018 Black                              244     NA  
+ 4     2018 White                              767     33.7
+ 5     2019 American Indian / Alaskan Native    94     30.8
+ 6     2019 Asian / Pacific Islander             9     30.8
+ 7     2019 Black                              233     32.8
+ 8     2019 White                              876     NA  
+ 9     2020 American Indian / Alaskan Native    88     31.6
+10     2020 Asian / Pacific Islander             7     39.1
+# ℹ 30 more rows</code></pre>
+</div>
 </div>
 <p>Note that some cases have <code>NA</code> for the mean. This is because we didn’t tell the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> function what to do with missing values. We can fix that using the <code>na.rm=</code> argument in the function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span>, <span class="va">CIT_AGE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    mean_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 40 × 4
+# Groups:   INC_YEAR [7]
+   INC_YEAR CIT_RACE                         total mean_age
+      &lt;int&gt; &lt;chr&gt;                            &lt;int&gt;    &lt;dbl&gt;
+ 1     2018 American Indian / Alaskan Native    78     31.8
+ 2     2018 Asian / Pacific Islander            12     38.6
+ 3     2018 Black                              244     33.9
+ 4     2018 White                              767     33.7
+ 5     2019 American Indian / Alaskan Native    94     30.8
+ 6     2019 Asian / Pacific Islander             9     30.8
+ 7     2019 Black                              233     32.8
+ 8     2019 White                              876     33.6
+ 9     2020 American Indian / Alaskan Native    88     31.6
+10     2020 Asian / Pacific Islander             7     39.1
+# ℹ 30 more rows</code></pre>
+</div>
 </div>
 <p><br></p>
-</section></section><section id="test-your-knowledge-exercises" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge-exercises">Test Your Knowledge Exercises</h2>
+</section></section></section><section id="analytical-questions-and-workflow-revisited" class="level1"><h1>Analytical Questions and Workflow (revisited)</h1>
+<p>Now that we know how to manipulate the dataset, lets revisit our questions:</p>
+<ul>
+<li>Are incidents increasing or decreasing over time?</li>
+<li>How many incidents involve Male (vs.&nbsp;Female) individuals?</li>
+<li>What proportion of incidents involve the suspect having a gun (see the <code>SUBJ_ARMED_GUN</code> column)?</li>
+<li>Are non-white suspects more prevalent in the data than White suspects?</li>
+</ul>
+<p>Before reviewing this section, I would encourage you to take a crack at it on your own, and then work through the solutions here.</p>
+<section id="are-incidents-increasing-or-decreasing-over-time" class="level2"><h2 class="anchored" data-anchor-id="are-incidents-increasing-or-decreasing-over-time">Are incidents increasing or decreasing over time?</h2>
+<p>We can answer this question by creating a simple count by year of incidents:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 2
+  INC_YEAR total
+     &lt;int&gt; &lt;int&gt;
+1     2018  1101
+2     2019  1212
+3     2020  1391
+4     2021  1544
+5     2022  2132
+6     2023  2302
+7     2024  2642</code></pre>
+</div>
+</div>
+<p>With this table it is fairly easy to read and see the increase. But, if we had lots of cases then it might be hard to see the trend. One way we could make this easier would be to take all of the cases over the years and calculate what proportion each year represents.</p>
+<p>Before we write the code for it, let’s think about it conceptually. We want: “Count incidents by year, then divide each year’s count by the total number of incidents.”</p>
+<p>So our data recipe should be:</p>
+<ol type="1">
+<li>Group by year</li>
+<li>Count incidents per year</li>
+<li>Compute proportion using the total</li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> year_proportion <span class="op">=</span> <span class="va">total</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">total</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 3
+  INC_YEAR total year_proportion
+     &lt;int&gt; &lt;int&gt;           &lt;dbl&gt;
+1     2018  1101          0.0893
+2     2019  1212          0.0983
+3     2020  1391          0.113 
+4     2021  1544          0.125 
+5     2022  2132          0.173 
+6     2023  2302          0.187 
+7     2024  2642          0.214 </code></pre>
+</div>
+</div>
+</section><section id="how-many-incidents-involve-male-vs.-female-individuals" class="level2"><h2 class="anchored" data-anchor-id="how-many-incidents-involve-male-vs.-female-individuals">How many incidents involve Male (vs.&nbsp;Female) individuals?</h2>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  CIT_GENDER    total
+  &lt;chr&gt;         &lt;int&gt;
+1 Female         1137
+2 Male          11180
+3 Not Available     6
+4 Unknown           1</code></pre>
+</div>
+</div>
+</section><section id="what-proportion-of-incidents-involve-the-suspect-having-a-gun" class="level2"><h2 class="anchored" data-anchor-id="what-proportion-of-incidents-involve-the-suspect-having-a-gun">What proportion of incidents involve the suspect having a gun?</h2>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">SUBJ_ARMED_GUN</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">SUBJ_ARMED_GUN</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> gun_proportion <span class="op">=</span> <span class="va">total</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">total</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  SUBJ_ARMED_GUN total gun_proportion
+  &lt;chr&gt;          &lt;int&gt;          &lt;dbl&gt;
+1 No             11706         0.950 
+2 Yes              618         0.0501</code></pre>
+</div>
+</div>
+</section><section id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" class="level2"><h2 class="anchored" data-anchor-id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects">Are non-white suspects more prevalent in the data than White suspects?</h2>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> race_proportion <span class="op">=</span> <span class="va">total</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">total</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+   CIT_RACE                         total race_proportion
+   &lt;chr&gt;                            &lt;int&gt;           &lt;dbl&gt;
+ 1 AmIndian                             3       0.000243 
+ 2 American Indian / Alaskan Native   782       0.0635   
+ 3 Asian / Pacific Islander            95       0.00771  
+ 4 Black                             3028       0.246    
+ 5 Black / African American            28       0.00227  
+ 6 Hispanic                             9       0.000730 
+ 7 Not Available                        6       0.000487 
+ 8 Unknown                             11       0.000893 
+ 9 White                             8361       0.678    
+10 indian                               1       0.0000811</code></pre>
+</div>
+</div>
+<p>This gives us all the categories, so we would want to create a variable that gets at White vs.&nbsp;Non-White. Remember that we did this above using <code>mutate( white = ifelse( race == "White", "White", "Non-White" ) )</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> race <span class="op">=</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> white <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span> <span class="va">race</span> <span class="op">==</span> <span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"Non-White"</span> <span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">white</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> race_proportion <span class="op">=</span> <span class="va">total</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span> <span class="va">total</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  white     total race_proportion
+  &lt;chr&gt;     &lt;int&gt;           &lt;dbl&gt;
+1 Non-White  3963           0.322
+2 White      8361           0.678</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="test-your-knowledge-exercises" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge-exercises">Test Your Knowledge Exercises</h2>
 
 
 </section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
