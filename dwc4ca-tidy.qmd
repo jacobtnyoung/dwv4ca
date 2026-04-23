@@ -10,10 +10,335 @@ knitr::opts_chunk$set(
   )
 
 library( DWVpack )
+library( tidyverse )
 
 ```
 
 # Tidy Data and Data Transformation {.unnumbered}
+
+Have you ever opened a dataset and immediately thought, “This is a mess”?
+Columns don’t make sense.
+Dates are inconsistent.
+And even if you can read it, it’s hard to actually do anything with it.
+If so, then your second thought might have been, "this is going to be a lot of work to fix".
+
+Sound familiar?
+That’s not a coincidence.
+Rather it is the reality of working with open-source data or data "in the wild".
+In data wrangling, we want to corral that wild data and get it into a format with which we can work.
+
+There’s a common misconception that data analysis is mostly about: building models, creating visualizations, creating output, etc.
+But in practice, most analysts spend the majority of their time doing something cleaning and organizing data.
+Ironically, when we (i.e. scholars) teach methods and statistics for crime analysis, most of the time is spent on analysis and very little time is spent on preparing data.
+
+"Tidying" data is one of the most important skills you can develop.
+In this chapter we are going to focus on turning messy data into something you can actually analyze.
+
+## What Is “Tidy Data”?
+
+We’re going to use a concept from the [tidyverse](https://tidyverse.org/)(a collection of R packages for data transformation) called *tidy data*.
+This gives us a standard way to structure datasets so they are easy to work with.
+Also, organizing data in this way is quickly becoming an industry standard, so knowing what it is and how to do it is valuable.
+
+A dataset is considered tidy when it follows three simple rules:
+
+1.  Each variable has its own column
+2.  Each observation has its own row
+3.  Each value lives in a single cell
+
+That might sound simple and obvious, but most "wild" datasets violate at least one of these rules and are therefore "untidy".
+Let's see some examples.
+
+### Untidy Data: Example 1
+
+```{r, echo=FALSE, eval=TRUE}
+
+bad_data_1 <- tibble(
+  incident_id = 1:4,
+  demographics = c("Male_Adult", "Female_Juvenile", "Male_Juvenile", "Female_Adult")
+)
+
+bad_data_1
+
+```
+
+See any issues?
+You probably noticed that “gender” and “age group” are mashed together in the variable `demographics`.
+This is a problem because `demographics` is actually two variables.
+How might we solve this problem?
+
+Well, we just need to create two variables:
+
+```{r, echo=FALSE, eval=TRUE}
+
+good_data_1 <- bad_data_1 |>
+  separate(demographics, into = c("gender", "age_group"), sep = "_")
+
+good_data_1
+
+```
+
+### Untidy Data: Example 2
+
+Try this one:
+
+```{r, echo=FALSE, eval=TRUE}
+
+bad_data_2 <- tibble(
+  precinct = c("A", "B"),
+  arrests_2022 = c(50, 30),
+  arrests_2023 = c(60, 45)
+)
+
+bad_data_2
+
+```
+
+If you said “year” is hidden in column names, then you win a prize!
+Data organized in this way make it hard to analyze trends by year.
+Rather, we would prefer data like this:
+
+```{r, echo=FALSE, eval=TRUE}
+
+good_data_2 <- bad_data_2 |>
+  pivot_longer(
+    cols = starts_with("arrests"),
+    names_to = "year",
+    values_to = "arrests"
+  ) |> 
+  mutate(year = str_extract(year, "\\d{4}"))
+
+good_data_2
+
+```
+
+Note the difference.
+We know have a variable for "year".
+
+### Untidy Data: Example 3
+
+Last one (you got this!):
+
+```{r, echo=FALSE, eval=TRUE}
+
+bad_data_3 <- tibble(
+  incident_id = 1:2,
+  subjects = c("John;Mike", "Sara;Anna")
+)
+
+bad_data_3
+
+```
+
+These data are untidy because two people are stored in one row.
+It would be difficult to count or analyze individuals properly.
+We can fix this by making a variable for "subjects" and listing each one:
+
+```{r, echo=FALSE, eval=TRUE}
+
+good_data_3 <- bad_data_3 |>
+  separate_rows(subjects, sep = ";")
+
+good_data_3
+
+```
+
+### Why Tidy?
+
+Why ensure that your data is tidy?
+There are two main advantages:
+
+1.  There’s a general advantage to picking one consistent way of storing data. If you have a consistent data structure, it’s easier to learn the tools that work with it because they have an underlying uniformity. 2, There’s a specific advantage to placing variables in columns because it allows R’s vectorized nature to shine. Most built-in R functions work with vectors of values. That makes transforming tidy data feel particularly natural.
+
+`dplyr` (remember `dplyr`!?!), `ggplot2`, and all the other packages in the `tidyverse` are designed to work with tidy data.
+
+Since we will be working with functions that tidy data, we need to install `tidyverse`:
+
+```{r}
+install.packages( "tidyverse" )
+```
+
+After installing (or if you already have the package installed), we need to use the `library()` function to load it:
+
+```{r}
+library( tidyverse )
+```
+
+<br>
+
+## Reshaping Data
+
+Now that we know what tidy data should look like, the next step is learning how to transform messy data into that structure.
+One of the most common problems you’ll run into is that your data is in the wrong *shape*.
+
+Take a look at this example:
+
+```{r, echo=FALSE, eval=TRUE}
+
+data_wide <- tibble(
+  precinct = c("A", "B"),
+  arrests_2022 = c(50, 30),
+  arrests_2023 = c(60, 45)
+)
+
+data_wide
+
+```
+
+If I asked you to give me a table of "arrests" over time, what problems do you see?
+
+You probably noticed that the year is embedded in column names.
+This makes it had to extract this information for year.
+
+### Wide vs Long Data
+
+This issue we saw in the example above has a specific name.
+These data are **wide**, meaning that there are many columns and the variable (in this case "year") is spread over multiple columns.
+This is in contrast to data that is **long**, where there are fewer columns and values stacked into rows
+
+Think of it like this:\
+- “Wide data spreads information across columns.” - “Long data stacks information down rows.”
+
+#### `pivot_longer`
+
+There is where the `pivot_longer` function comes in.
+
+First, let's create our simple **wide** data object:
+
+```{r, eval=TRUE}
+
+data_wide <- data.frame(
+  precinct = c( "A", "B" ),
+  arrests_2022 = c( 50, 30 ),
+  arrests_2023 = c( 60, 45 )
+)
+
+data_wide
+
+```
+
+Now, let's create the **long** data object.
+Let me show you what it does first and we will go through each line:
+
+```{r, eval=TRUE}
+
+data_long <- data_wide |>
+  pivot_longer(
+    cols = c( "arrests_2022", "arrests_2023"),
+    names_to = "year",
+    values_to = "arrests"
+  )
+
+data_long
+
+```
+
+Ok, let's see what we did:
+
+-   `cols = c( "arrests_2022", "arrests_2023")` asks "which column are we resphaping?" and we use two column names (note that we have to use `c()` to combine them into a vector.
+
+-   `names_to = "year"` tells `pivot_longer()` where the old column names are supposed to go.
+
+-   `values_to = "arrests"` tells the function what to do with the values.
+
+In this case, they are going to go to a variable called `num_arrests`.
+
+If you are a bit lost, think about it like this: we are taking column names and turning them into data.
+
+If you are a visual learner, think of it this way:
+
+```{mermaid}
+flowchart LR
+
+A["WIDE DATA<br/>(columns contain values)<br/><pre>
+┌───────────┬───────────────┬───────────────┐
+│ precinct  │ arrests_2022  │ arrests_2023  │
+├───────────┼───────────────┼───────────────┤
+│ A         │ 50            │ 30            │
+│ B         │ 60            │ 45            │
+└───────────┴───────────────┴───────────────┘
+</pre>"]
+
+B["pivot_longer()<br/>
+cols = starts_with('arrests')<br/>
+names_to = 'year'<br/>
+values_to = 'arrests'"]
+
+C["LONG DATA<br/>(values stacked into rows)<br/><pre>
+┌───────────┬────────────────┬─────────┐
+│ precinct  │ year           │ arrests │
+├───────────┼────────────────┼─────────┤
+│ A         │ arrests_2022   │ 50      │
+│ A         │ arrests_2023   │ 60      │
+│ B         │ arrests_2022   │ 30      │
+│ B         │ arrests_2023   │ 45      │
+└───────────┴────────────────┴─────────┘
+</pre>"]
+
+A --> B --> C
+```
+
+We are almost to a tidy dataset.
+What is missing?
+Take a look at the values for the `year` variable.
+It contains the string "arrests\_" which was carried over from our transformation.
+What we need to is remove this information.
+There is a nice function called `str_remove()` which takes an object or column and removes any characters.
+The `str_remove()` function is in a package called `stringr` which is part of the `tidyverse`.
+We can put that into the `mutate()` function we we already saw in `dpylr`.
+
+```{r}
+
+# make sure we load the functions
+library( dplyr )
+
+# now remove the unncessary text
+data_long <- data_long |>
+  mutate(
+    year = str_remove(year, "arrests_")
+  )
+
+```
+
+Now, we can create a table using the tools from `dplyr`!
+
+Perhaps average arrests by year:
+
+```{r}
+
+data_long |> 
+  group_by( year ) |> 
+  summarize( avg_arrests = mean( arrests ) )
+
+```
+
+Or average arrests by precinct:
+
+```{r}
+
+data_long |> 
+  group_by( precinct ) |> 
+  summarize( avg_arrests = mean( arrests ) )
+  
+```
+
+HERE HERE HERE HERE
+
+Working through the next step after pivot_longer
+
+HERE HERE HERE HERE
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
+
+<br>
 
 <br>
 

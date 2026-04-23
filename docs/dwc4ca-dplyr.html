@@ -62,6 +62,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./dwc4ca-tidy.html" rel="next">
 <link href="./dwc4ca-r-rmarkdown.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -168,6 +169,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-dplyr.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Data Wrangling with <code>dplyr</code></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-tidy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data and Data Transformation</span></a>
   </div>
 </li>
     </ul>
@@ -285,14 +292,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To facilitate that, let’s look at some data on <em>use of force</em> incidents.</p>
 </section></section><section id="use-of-force-in-phoenix" class="level1"><h1>Use of Force in Phoenix</h1>
 <p>Imagine you are a crime analyst working for a non-profit in Phoenix, Arizona. Your supervisor asks: “We’ve been getting questions from local constituents about use of force. Can you tell me what’s going on?” At first glance, this sounds straightforward: just open the data and look (since these are publicly available, it is easy to do so).</p>
-<p>The <code>DWVpack</code> package contains a data set for use of force incidents from 2018-2024 in Phoenix. (As a reminder, if you have not not installed the <code>DWVpack</code> package, please review the <a href="">Getting Started with R</a> chapter where this is covered.) To look at the data, we need to first load the <code>DWVpack</code> package and then examine the data, called <code>phx_uof_2018_2024</code> in the package, using the <code><a href="https://rdrr.io/r/utils/View.html">View()</a></code> function. This function takes an object and creates a separate viewing pane where we can “view” the data.</p>
+<p>The <code>DWVpack</code> package contains a data set for use of force incidents from 2018-2024 in Phoenix. (As a reminder, if you have not not installed the <code>DWVpack</code> package, please review the <a href="">Getting Started with R</a> chapter where this is covered.) To look at the data, we need to first load the <code>DWVpack</code> package and then examine the data, called <code>phx_uof</code> in the package, using the <code><a href="https://rdrr.io/r/utils/View.html">View()</a></code> function. This function takes an object and creates a separate viewing pane where we can “view” the data.</p>
 <p>Here are the commands:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load the package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va">DWVpack</span> <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># look at the data </span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span><span class="op">(</span> <span class="va">phx_uof_2018_2024</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span><span class="op">(</span> <span class="va">phx_uof</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Take a look through the data file and think about what we have. In the <em>rows</em>, we have each incident from 2018-2024. If you scroll to the bottom of the file, you will see that there are 12324 total incidents. In the <em>columns</em> we have the variables.</p>
 <p>Let’s take a look at the first column, which is the variable <code>INC_IA_NO</code>. According to the <a href="https://www.phoenixopendata.com/dataset/ouof/resource/c79b2135-e936-439e-a8a3-79e61d4518d2">data dictionary</a> for these data, the first variable <code>INC_IA_NO</code> is a record number to use as a unique identifier for each officer Use of Force report (aka officer use of force report). A Use of Force report is completed for each involved individual within an incident. This field is available beginning in 2021 when Phoenix Police Department implemented a new application for tracking UOF interactions to allow for additional information to be collected about each UOF interaction.</p>
@@ -320,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Because each verb does one thing well, solving complex problems will usually require combining multiple verbs, and we’ll do so with the pipe, <code>|&gt;</code>. We’ll discuss the pipe more, but in brief, the pipe allows us to string together multiple verbs. The easiest way to pronounce the pipe is “then”. That makes it possible to get a sense of the following code even though you haven’t yet learned the details:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">==</span> <span class="st">"Male"</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">summarize</span><span class="op">(</span></span>
@@ -329,8 +336,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>dplyr</code>’s verbs are organized into four groups based on what they operate on: rows, columns, groups, or tables. In the following sections, you’ll learn the most important verbs for rows, columns, and groups. Let’s dive in!</p>
 <p>To use these functions, we need to install <code>dyplr</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span> <span class="st">"dplyr"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span> <span class="st">"dplyr"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>After installing (or if you already have the package installed), we need to use the <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> function to load it:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -340,13 +348,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="filter" class="level3"><h3 class="anchored" data-anchor-id="filter"><code>filter()</code></h3>
 <p><code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> allows you to keep rows based on the values of the columns. The first argument is the data frame. The second and subsequent arguments are the conditions that must be true to keep the row. For example, we could find all use of force incidents that involve “Male” suspects:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">==</span> <span class="st">"Male"</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>What does this say? It first says to get the <code>phx_uof_2018_2024</code> object, “then” (this is the <code>|&gt;</code> operator) filter the rows that meet the condition. In this case we are filtering the only to only keep rows where the <code>CIT_GENDER</code> column is equal to “Male”.</p>
+<p>What does this say? It first says to get the <code>phx_uof</code> object, “then” (this is the <code>|&gt;</code> operator) filter the rows that meet the condition. In this case we are filtering the only to only keep rows where the <code>CIT_GENDER</code> column is equal to “Male”.</p>
 <p>We can use various operators for the condition. Above we used <code>==</code> equal to, but we could say <code>!=</code> which would give is all the values <em>except</em> “Male”. Let’s think about this. Here are all the unique values for the <code>CIT_GENDER</code> variable:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span> <span class="va">phx_uof_2018_2024</span><span class="op">$</span><span class="va">CIT_GENDER</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span> <span class="va">phx_uof</span><span class="op">$</span><span class="va">CIT_GENDER</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
        Female          Male Not Available       Unknown 
@@ -355,60 +363,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Look at the values and think about what the following code will return:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">!=</span> <span class="st">"Male"</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For numeric variables, we can also use <code>&gt;</code> (greater than), <code>&gt;=</code> (greater than or equal to), <code>&lt;</code> (less than), and <code>&lt;=</code> (less than or equal to).</p>
 <p>For example, if we wanted all years after 2018:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">&gt;</span> <span class="fl">2018</span> <span class="op">)</span> </span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can also combine conditions with <code>&amp;</code> to indicate “and” (check for both conditions) or with <code>|</code> to indicate “or” (check for either condition):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="co"># take years 2018 and Males using the &amp; "and" operationr:</span></span>
 <span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">==</span> <span class="st">"Male"</span> <span class="op">&amp;</span> <span class="va">INC_YEAR</span> <span class="op">==</span> <span class="fl">2018</span> <span class="op">)</span></span>
 <span></span>
 <span></span>
 <span><span class="co"># take years 2018 and 2025 using the | "or" operationr:</span></span>
 <span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">==</span> <span class="fl">2018</span> <span class="op">|</span> <span class="va">INC_YEAR</span> <span class="op">==</span> <span class="fl">2025</span> <span class="op">)</span> </span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>When you run <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> <code>dplyr</code> executes the filtering operation, creating a new data frame, and then prints it. It doesn’t modify the existing dataset because <code>dplyr</code> functions never modify their inputs. To save the result, you need to use the assignment operator, <code>&lt;-</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">uof_2018_and_2025</span> <span class="op">&lt;-</span> <span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">uof_2018_and_2025</span> <span class="op">&lt;-</span> <span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">==</span> <span class="fl">2018</span> <span class="op">|</span> <span class="va">INC_YEAR</span> <span class="op">==</span> <span class="fl">2025</span> <span class="op">)</span> </span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section><section id="arrange" class="level3"><h3 class="anchored" data-anchor-id="arrange"><code>arrange()</code></h3>
 <p><code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> changes the order of the rows based on the value of the columns. It takes a data frame and a set of column names. If you provide more than one column name, each additional column will be used to break ties in the values of the preceding columns. For example, the following code sorts by <code>INC_YEAR</code> then by <code>CIT_GENDER</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_GENDER</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We get the earliest year first, then female, then male, then then next year, and so on. Note that we have not altered the values of the data, we have just arranged the data differently.</p>
 </section><section id="distinct" class="level3"><h3 class="anchored" data-anchor-id="distinct"><code>distinct()</code></h3>
 <p><code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code> finds all the unique values of a column in a dataset.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can also use <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code> to get combinations of values for several columns:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_GENDER</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Above, I used the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function to essentially do the same thing, except that function returns counts. We can use the <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> function in <code>dplyr</code> to achieve this:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_GENDER</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>So why not just use the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function? A strength of <code>dyplr</code> is that we can supply multiple commands to a recipe using our pipe, <code>|&gt;</code>.</p>
 <p>For example, let’s use <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> to take incidents involving Males and then look at the frequency over the years:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">==</span> <span class="st">"Male"</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -420,19 +428,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Select columns by name</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_GENDER</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Select all columns between <code>INC_YEAR</code> and <code>CIT_GENDER</code>
 </li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">:</span> <span class="va">CIT_GENDER</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Select all columns except <code>INC_YEAR</code> and <code>CIT_GENDER</code>
 </li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="op">!</span><span class="va">INC_YEAR</span> <span class="op">:</span> <span class="va">CIT_GENDER</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Historically this operation was done with <code>-</code> instead of <code>!</code>, so you’re likely to see that in the wild. These two operators serve the same purpose but with subtle differences in behavior. I recommend using <code>!</code> because it reads as “not” and combines well with <code>&amp;</code> and <code>|</code>.</p>
 <p>There are also a number of helper functions you can use within <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code>:</p>
@@ -447,13 +455,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code>num_range("x", 1:3)</code>: matches x1, x2 and x3.</li>
 </ul>
 <p>You can rename variables as you <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> them by using <code>=</code>. The new name appears on the left-hand side of the <code>=</code>, and the old variable appears on the right-hand side:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> year <span class="op">=</span> <span class="va">INC_YEAR</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is a nice feature when you are building a data set and the variables names are long, confusing, etc.</p>
 </section><section id="mutate" class="level3"><h3 class="anchored" data-anchor-id="mutate"><code>mutate()</code></h3>
 <p>The job of <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> is to add new columns that are calculated from the existing columns. For example, let’s transform the <code>CIT_RACE</code> variable into a variable that defines the cases as “white” and “non-white”. First, let’s look at the values of the <code>CIT_RACE</code> variable:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span> <span class="va">CIT_RACE</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           CIT_RACE
@@ -471,7 +479,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Now, having seen there are 10 distinct values for the <code>CIT_RACE</code> variable, we can reclassify them:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> race <span class="op">=</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> white <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span> <span class="va">race</span> <span class="op">==</span> <span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"Non-White"</span> <span class="op">)</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -481,7 +489,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="summarize" class="level3"><h3 class="anchored" data-anchor-id="summarize"><code>summarize()</code></h3>
 <p>The most important grouped operation is a summary, which, if being used to calculate a single summary statistic, reduces the data frame to have a single row for each group. In <code>dplyr</code>, this operation is performed by <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>. For example, let’s compute the average age of citizens using the <code>CIT_AGE</code> column:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    avg_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span> <span class="op">)</span> </span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -492,7 +500,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Huh? This doesn’t look right. Notice that in the code above, we are trying to calculate a mean on a variable that has missing values (i.e.&nbsp;<code>NA</code>). For the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> function to work, we need to tell it what to do with the <code>NA</code> values. Specifically, we need to use the <code>na.rm =</code> argument by setting it to <code>TRUE</code> such that it removes missing values.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    avg_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
 <span>    <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -504,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Ah, that looks better.</p>
 <p>Note that we can include other info in the output, such as the number of cases. This is done using <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code> and, as we will see below, is really useful when we have multiple means.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
 <span>    avg_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">CIT_AGE</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span>,</span>
 <span>    n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -516,14 +524,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="group_by" class="level3"><h3 class="anchored" data-anchor-id="group_by"><code>group_by()</code></h3>
 <p>Many times we want to divide a dataset into groups and then perform calculations for each of those groups (e.g.&nbsp;mean, standard deviation, n, and so on). We can use <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> to divide your dataset into groups in this way:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Take a look at the output. You may notice that it looks a bit different. It returns output that is class <code>tibble</code> instead of <code>data.frame</code>. This is a small difference and does not augment our data, just the way it looks. Note that it also tells us how the data are grouped (look at where it says “Groups”).</p>
 <p>Now, you may be saying, “isn’t this what <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> does? Not exactly. <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> sorts the rows such that the resulting data object is just re-arranged based on the variables we gave it. <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> is used when we want to perform a calculation, like <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> or <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> and we first want to group the data based on a variable.</p>
 <p>For example, now that our data are grouped, we can use the <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> function to give us group specific info. Let’s start by seeing how many cases occur each year:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
@@ -544,7 +552,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>What if we wanted to how many cases are in each race/ethnic group each year? Well, we could include the <code>CIT_RACE</code> variable in our selection <strong>AND</strong> in the <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> statement:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
@@ -570,7 +578,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We can include multiple cases here if we want additional information:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span>, <span class="va">CIT_AGE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
@@ -597,7 +605,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Note that some cases have <code>NA</code> for the mean. This is because we didn’t tell the <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> function what to do with missing values. We can fix that using the <code>na.rm=</code> argument in the function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span>, <span class="va">CIT_AGE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> </span>
@@ -635,7 +643,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="are-incidents-increasing-or-decreasing-over-time" class="level2"><h2 class="anchored" data-anchor-id="are-incidents-increasing-or-decreasing-over-time">Are incidents increasing or decreasing over time?</h2>
 <p>We can answer this question by creating a simple count by year of incidents:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -661,7 +669,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Compute proportion using the total</li>
 </ol>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">INC_YEAR</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -681,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="how-many-incidents-involve-male-vs.-female-individuals" class="level2"><h2 class="anchored" data-anchor-id="how-many-incidents-involve-male-vs.-female-individuals">How many incidents involve Male (vs.&nbsp;Female) individuals?</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -697,7 +705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="what-proportion-of-incidents-involve-the-suspect-having-a-gun" class="level2"><h2 class="anchored" data-anchor-id="what-proportion-of-incidents-involve-the-suspect-having-a-gun">What proportion of incidents involve the suspect having a gun?</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">SUBJ_ARMED_GUN</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">SUBJ_ARMED_GUN</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -712,7 +720,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" class="level2"><h2 class="anchored" data-anchor-id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects">Are non-white suspects more prevalent in the data than White suspects?</h2>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> total <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -735,7 +743,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This gives us all the categories, so we would want to create a variable that gets at White vs.&nbsp;Non-White. Remember that we did this above using <code>mutate( white = ifelse( race == "White", "White", "Non-White" ) )</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof_2018_2024</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> race <span class="op">=</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> white <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span> <span class="va">race</span> <span class="op">==</span> <span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"Non-White"</span> <span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">white</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -1158,6 +1166,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./dwc4ca-tidy.html" class="pagination-link" aria-label="Tidy Data and Data Transformation">
+        <span class="nav-page-text">Tidy Data and Data Transformation</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

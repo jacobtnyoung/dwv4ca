@@ -60,7 +60,7 @@ Can you tell me what’s going on?”
 At first glance, this sounds straightforward: just open the data and look (since these are publicly available, it is easy to do so).
 
 The `DWVpack` package contains a data set for use of force incidents from 2018-2024 in Phoenix.
-(As a reminder, if you have not not installed the `DWVpack` package, please review the [Getting Started with R]() chapter where this is covered.) To look at the data, we need to first load the `DWVpack` package and then examine the data, called `phx_uof_2018_2024` in the package, using the `View()` function.
+(As a reminder, if you have not not installed the `DWVpack` package, please review the [Getting Started with R]() chapter where this is covered.) To look at the data, we need to first load the `DWVpack` package and then examine the data, called `phx_uof` in the package, using the `View()` function.
 This function takes an object and creates a separate viewing pane where we can "view" the data.
 
 Here are the commands:
@@ -71,13 +71,13 @@ Here are the commands:
 library( DWVpack )
 
 # look at the data 
-View( phx_uof_2018_2024 )
+View( phx_uof )
 
 ```
 
 Take a look through the data file and think about what we have.
 In the *rows*, we have each incident from 2018-2024.
-If you scroll to the bottom of the file, you will see that there are `r dim(phx_uof_2018_2024)[1]` total incidents.
+If you scroll to the bottom of the file, you will see that there are `r dim(phx_uof)[1]` total incidents.
 In the *columns* we have the variables.
 
 Let's take a look at the first column, which is the variable `INC_IA_NO`.
@@ -129,7 +129,7 @@ That makes it possible to get a sense of the following code even though you have
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   filter( CIT_GENDER == "Male" ) |> 
   group_by( INC_YEAR ) |> 
   summarize(
@@ -144,8 +144,7 @@ Let’s dive in!
 
 To use these functions, we need to install `dyplr`:
 
-``` r
-
+```{r}
 install.packages( "dplyr" )
 ```
 
@@ -173,13 +172,13 @@ For example, we could find all use of force incidents that involve "Male" suspec
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   filter( CIT_GENDER == "Male" )
   
 ```
 
 What does this say?
-It first says to get the `phx_uof_2018_2024` object, "then" (this is the `|>` operator) filter the rows that meet the condition.
+It first says to get the `phx_uof` object, "then" (this is the `|>` operator) filter the rows that meet the condition.
 In this case we are filtering the only to only keep rows where the `CIT_GENDER` column is equal to "Male".
 
 We can use various operators for the condition.
@@ -189,7 +188,7 @@ Here are all the unique values for the `CIT_GENDER` variable:
 
 ```{r, eval=TRUE}
 
-table( phx_uof_2018_2024$CIT_GENDER )
+table( phx_uof$CIT_GENDER )
 
 ```
 
@@ -197,7 +196,7 @@ Look at the values and think about what the following code will return:
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   filter( CIT_GENDER != "Male" )
   
 ```
@@ -208,7 +207,7 @@ For example, if we wanted all years after 2018:
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   filter( INC_YEAR > 2018 ) 
   
 ```
@@ -219,13 +218,13 @@ We can also combine conditions with `&` to indicate “and” (check for both co
 
 # take years 2018 and Males using the & "and" operationr:
 
-phx_uof_2018_2024 |>
+phx_uof |>
   filter( CIT_GENDER == "Male" & INC_YEAR == 2018 )
 
 
 # take years 2018 and 2025 using the | "or" operationr:
 
-phx_uof_2018_2024 |>
+phx_uof |>
   filter( INC_YEAR == 2018 | INC_YEAR == 2025 ) 
   
 ```
@@ -236,7 +235,7 @@ To save the result, you need to use the assignment operator, `<-`:
 
 ``` r
 
-uof_2018_and_2025 <- phx_uof_2018_2024 |>
+uof_2018_and_2025 <- phx_uof |>
   filter( INC_YEAR == 2018 | INC_YEAR == 2025 ) 
   
 ```
@@ -250,7 +249,7 @@ For example, the following code sorts by `INC_YEAR` then by `CIT_GENDER`.
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   arrange( INC_YEAR, CIT_GENDER )
   
 ```
@@ -264,7 +263,7 @@ Note that we have not altered the values of the data, we have just arranged the 
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   distinct( INC_YEAR )
   
 ```
@@ -273,7 +272,7 @@ We can also use `distinct()` to get combinations of values for several columns:
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   distinct( INC_YEAR, CIT_GENDER )
   
 ```
@@ -283,7 +282,7 @@ We can use the `count()` function in `dplyr` to achieve this:
 
 ``` r
 
-phx_uof_2018_2024 |>
+phx_uof |>
   count( INC_YEAR, CIT_GENDER )
   
 ```
@@ -295,7 +294,7 @@ For example, let's use `filter()` to take incidents involving Males and then loo
 
 ``` r
 
-phx_uof_2018_2024 |> 
+phx_uof |> 
   filter( CIT_GENDER == "Male" ) |> 
   count( INC_YEAR )
   
@@ -317,21 +316,21 @@ In this situation, the first challenge is often just focusing on the variables y
 -   Select columns by name
 
 ``` r
-phx_uof_2018_2024 |> 
+phx_uof |> 
   select( INC_YEAR, CIT_GENDER )
 ```
 
 -   Select all columns between `INC_YEAR` and `CIT_GENDER`
 
 ``` r
-phx_uof_2018_2024 |> 
+phx_uof |> 
   select( INC_YEAR : CIT_GENDER )
 ```
 
 -   Select all columns except `INC_YEAR` and `CIT_GENDER`
 
 ``` r
-phx_uof_2018_2024 |> 
+phx_uof |> 
   select( !INC_YEAR : CIT_GENDER )
 ```
 
@@ -350,7 +349,7 @@ You can rename variables as you `select()` them by using `=`.
 The new name appears on the left-hand side of the `=`, and the old variable appears on the right-hand side:
 
 ``` r
-phx_uof_2018_2024 |> 
+phx_uof |> 
   select( year = INC_YEAR )
 ```
 
@@ -364,16 +363,16 @@ First, let's look at the values of the `CIT_RACE` variable:
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |> 
+phx_uof |> 
   distinct( CIT_RACE )
 
 ```
 
-Now, having seen there are `r dim( table( phx_uof_2018_2024$CIT_RACE ) )` distinct values for the `CIT_RACE` variable, we can reclassify them:
+Now, having seen there are `r dim( table( phx_uof$CIT_RACE ) )` distinct values for the `CIT_RACE` variable, we can reclassify them:
 
 ``` r
 
-phx_uof_2018_2024 |> 
+phx_uof |> 
   select( race = CIT_RACE ) |> 
   mutate( white = ifelse( race == "White", "White", "Non-White" ) )
   
@@ -398,7 +397,7 @@ For example, let's compute the average age of citizens using the `CIT_AGE` colum
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |> 
+phx_uof |> 
   summarize( 
     avg_age = mean( CIT_AGE ) 
     )
@@ -413,7 +412,7 @@ Specifically, we need to use the `na.rm =` argument by setting it to `TRUE` such
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |> 
+phx_uof |> 
   summarize( 
     avg_age = mean( CIT_AGE, na.rm = TRUE )
     )
@@ -427,7 +426,7 @@ This is done using `n()` and, as we will see below, is really useful when we hav
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |> 
+phx_uof |> 
   summarize( 
     avg_age = mean( CIT_AGE, na.rm = TRUE ),
     n = n()
@@ -441,7 +440,7 @@ Many times we want to divide a dataset into groups and then perform calculations
 We can use `group_by()` to divide your dataset into groups in this way:
 
 ``` r
-phx_uof_2018_2024 |>
+phx_uof |>
   select( INC_YEAR ) |> 
   group_by( INC_YEAR )
 ```
@@ -459,7 +458,7 @@ Let's start by seeing how many cases occur each year:
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( INC_YEAR ) |> 
   group_by( INC_YEAR ) |> 
   summarize( 
@@ -473,7 +472,7 @@ Well, we could include the `CIT_RACE` variable in our selection **AND** in the `
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( INC_YEAR, CIT_RACE ) |> 
   group_by( INC_YEAR, CIT_RACE ) |> 
   summarize( 
@@ -486,7 +485,7 @@ We can include multiple cases here if we want additional information:
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( INC_YEAR, CIT_RACE, CIT_AGE ) |> 
   group_by( INC_YEAR, CIT_RACE ) |> 
   summarize( 
@@ -502,7 +501,7 @@ We can fix that using the `na.rm=` argument in the function:
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( INC_YEAR, CIT_RACE, CIT_AGE ) |> 
   group_by( INC_YEAR, CIT_RACE ) |> 
   summarize( 
@@ -531,7 +530,7 @@ We can answer this question by creating a simple count by year of incidents:
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( INC_YEAR ) |> 
   group_by( INC_YEAR ) |> 
   summarize( total = n() )
@@ -553,7 +552,7 @@ So our data recipe should be:
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( INC_YEAR ) |> 
   group_by( INC_YEAR ) |> 
   summarize( total = n() ) |> 
@@ -565,7 +564,7 @@ phx_uof_2018_2024 |>
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( CIT_GENDER ) |> 
   group_by( CIT_GENDER ) |> 
   summarize( total = n() ) 
@@ -576,7 +575,7 @@ phx_uof_2018_2024 |>
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( SUBJ_ARMED_GUN ) |> 
   group_by( SUBJ_ARMED_GUN ) |> 
   summarize( total = n() ) |> 
@@ -588,7 +587,7 @@ phx_uof_2018_2024 |>
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( CIT_RACE ) |> 
   group_by( CIT_RACE ) |> 
   summarize( total = n() ) |> 
@@ -601,7 +600,7 @@ Remember that we did this above using `mutate( white = ifelse( race == "White", 
 
 ```{r, eval=TRUE}
 
-phx_uof_2018_2024 |>
+phx_uof |>
   select( race = CIT_RACE ) |> 
   mutate( white = ifelse( race == "White", "White", "Non-White" ) ) |> 
   group_by( white ) |> 
