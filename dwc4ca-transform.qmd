@@ -1,0 +1,20 @@
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = TRUE,
+  message=FALSE, 
+  warning=FALSE, 
+  fig.width = 10,
+  fig.align = "center"
+  )
+
+library( DWVpack )
+library( tidyverse )
+library( dplyr )
+
+```
+
+# Data Transformation {.unnumbered}
+
+## Test Your Knowledge Exercises

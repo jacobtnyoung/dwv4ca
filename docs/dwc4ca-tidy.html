@@ -197,8 +197,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="#reshaping-data" id="toc-reshaping-data" class="nav-link" data-scroll-target="#reshaping-data">Reshaping Data</a>
   <ul class="collapse">
 <li><a href="#wide-vs-long-data" id="toc-wide-vs-long-data" class="nav-link" data-scroll-target="#wide-vs-long-data">Wide vs Long Data</a></li>
+  <li><a href="#pivot_wide" id="toc-pivot_wide" class="nav-link" data-scroll-target="#pivot_wide"><code>pivot_wide</code></a></li>
   </ul>
 </li>
+  <li><a href="#merging-datasets-joins" id="toc-merging-datasets-joins" class="nav-link" data-scroll-target="#merging-datasets-joins">Merging Datasets (Joins)</a></li>
+  <li><a href="#cleaning-strings" id="toc-cleaning-strings" class="nav-link" data-scroll-target="#cleaning-strings">Cleaning Strings</a></li>
+  <li><a href="#working-with-dates" id="toc-working-with-dates" class="nav-link" data-scroll-target="#working-with-dates">Working with Dates</a></li>
   <li><a href="#test-your-knowledge-exercises" id="toc-test-your-knowledge-exercises" class="nav-link" data-scroll-target="#test-your-knowledge-exercises">Test Your Knowledge Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-tidy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -398,42 +402,207 @@ A["WIDE DATA&lt;br/&gt;(columns contain values)&lt;br/&gt;&lt;pre&gt;
 └───────────┴───────────────┴───────────────┘
 &lt;/pre&gt;"]
 
-B["pivot_longer()
-
-cols = arrests, bp2
-names_to = 'year'
+B["pivot_longer()&lt;br/&gt;
+cols = starts_with('arrests')&lt;br/&gt;
+names_to = 'year'&lt;br/&gt;
 values_to = 'arrests'"]
 
 C["LONG DATA&lt;br/&gt;(values stacked into rows)&lt;br/&gt;&lt;pre&gt;
-┌───────────┬──────┬─────────┐
-│ precinct  │ year │ arrests │
-├───────────┼──────┼─────────┤
-│ A         │ arrests_2022 │ 50      │
-│ A         │ arrests_2023 │ 60      │
-│ B         │ arrests_2022 │ 30      │
-│ B         │ arrests_2023 │ 45      │
-└───────────┴──────┴─────────┘
+┌───────────┬────────────────┬─────────┐
+│ precinct  │ year           │ arrests │
+├───────────┼────────────────┼─────────┤
+│ A         │ arrests_2022   │ 50      │
+│ A         │ arrests_2023   │ 60      │
+│ B         │ arrests_2022   │ 30      │
+│ B         │ arrests_2023   │ 45      │
+└───────────┴────────────────┴─────────┘
 &lt;/pre&gt;"]
 
 A --&gt; B --&gt; C
-
 </pre>
 </div>
 <p></p>
 </div>
 </div>
 </div>
-<p>Now, we can create a table using the tools from <code>dplyr</code>:</p>
+<p>We are almost to a tidy dataset. What is missing? Take a look at the values for the <code>year</code> variable. It contains the string “arrests_” which was carried over from our transformation. What we need to is remove this information. There is a nice function called <code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove()</a></code> which takes an object or column and removes any characters. The <code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove()</a></code> function is in a package called <code>stringr</code> which is part of the <code>tidyverse</code>. We can put that into the <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> function we we already saw in <code>dpylr</code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>( dplyr )</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>data_long <span class="sc">|&gt;</span> </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>( precint ) <span class="sc">|&gt;</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># make sure we load the functions</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># now remove the unncessary text</span></span>
+<span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    year <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">year</span>, <span class="st">"arrests_"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Now, we can create a table using the tools from <code>dplyr</code>!</p>
+<p>Perhaps average arrests by year:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> avg_arrests <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">arrests</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  year  avg_arrests
+  &lt;chr&gt;       &lt;dbl&gt;
+1 2022         40  
+2 2023         52.5</code></pre>
+</div>
+</div>
+<p>Or average arrests by precinct:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">precinct</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> avg_arrests <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">arrests</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  precinct avg_arrests
+  &lt;chr&gt;          &lt;dbl&gt;
+1 A               55  
+2 B               37.5</code></pre>
+</div>
+</div>
+</section></section><section id="pivot_wide" class="level3"><h3 class="anchored" data-anchor-id="pivot_wide"><code>pivot_wide</code></h3>
+<p>So far, we’ve taken messy wide data and made it tidy. But sometimes we actually want to go the other direction. This usually happens when we’re preparing results for reports or summaries. There is where the <code>pivot_wide</code> function comes in. First, let’s create a simple <strong>long</strong> data object. Suppose we had some data like this for crimes in two neighborhoods:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  neighborhood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span> <span class="op">)</span>,</span>
+<span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>,<span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span> <span class="op">)</span>,</span>
+<span>  crimes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">30</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">40</span> <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_long</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  neighborhood year  crimes
+  &lt;chr&gt;        &lt;chr&gt;  &lt;dbl&gt;
+1 A            2020      50
+2 A            2021      60
+3 A            2022      30
+4 B            2020      45
+5 B            2021      90
+6 B            2022      40</code></pre>
+</div>
+</div>
+<p>If we want this in a format that’s easier to read in a report we could have one row per precinct and separate columns for each year. We can do that by creating a data object that is in <strong>wide</strong> format using the <code>pivot_wide()</code> function:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_wide</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>    names_from <span class="op">=</span> <span class="va">year</span>,</span>
+<span>    values_from <span class="op">=</span> <span class="va">crimes</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_wide</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  neighborhood `2020` `2021` `2022`
+  &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1 A                50     60     30
+2 B                45     90     40</code></pre>
+</div>
+</div>
+<p>Ok, let’s see what we did:</p>
+<ul>
+<li><p><code>names_from = "year"</code> tells <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> to use values in the year column as new column names.</p></li>
+<li><p><code>values_from = "crimes"</code> tells the function to fill the values with counts of crimes.</p></li>
+</ul>
+<p>Note the difference from <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> in terms of the arguments which uses <code>...._to =</code> whereas <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> uses <code>..._from =</code>.</p>
+<p>If you are a visual learner, think of it this way:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"></figure><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+
+A["LONG DATA&lt;br/&gt;(values stacked into rows)&lt;br/&gt;&lt;pre&gt;
+┌───────────────┬──────┬─────────┐
+│ neighborhood  │ year │ crimes  │
+├───────────────┼──────┼─────────┤
+│ A             │ 2020 │ 50      │
+│ A             │ 2021 │ 60      │
+│ A             │ 2022 │ 30      │
+│ B             │ 2020 │ 45      │
+│ B             │ 2021 │ 90      │
+│ B             │ 2022 │ 40      │
+└───────────────┴──────┴─────────┘
+&lt;/pre&gt;"]
+
+B["pivot_wider()&lt;br/&gt;
+names_from = year&lt;br/&gt;
+values_from = crimes"]
+
+C["WIDE DATA&lt;br/&gt;(columns contain values)&lt;br/&gt;&lt;pre&gt;
+┌───────────────┬───────────────┬───────────────┬───────────────┐
+│ neighborhood  │ crimes_2020   │ crimes_2021   │ crimes_2022   │
+├───────────────┼───────────────┼───────────────┼───────────────┤
+│ A             │ 50            │ 60            │ 30            │
+│ B             │ 45            │ 90            │ 40            │
+└───────────────┴───────────────┴───────────────┴───────────────┘
+&lt;/pre&gt;"]
+
+A --&gt; B --&gt; C
+</pre>
+</div>
+<p></p>
+</div>
+</div>
+</div>
+<p>Note that this works if we are using multiple variables as well. For example, say we were looking at arrests and calls for service in a neighborhood and our <strong>long</strong> data looked like this:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  neighborhood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span> <span class="op">)</span>,</span>
+<span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>,<span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span> <span class="op">)</span>,</span>
+<span>  arrests <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">30</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">40</span> <span class="op">)</span>,</span>
+<span>  calls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">100</span>, <span class="fl">125</span>, <span class="fl">90</span>, <span class="fl">265</span>, <span class="fl">75</span>, <span class="fl">182</span> <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_long</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  neighborhood year  arrests calls
+  &lt;chr&gt;        &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+1 A            2020       50   100
+2 A            2021       60   125
+3 A            2022       30    90
+4 B            2020       45   265
+5 B            2021       90    75
+6 B            2022       40   182</code></pre>
+</div>
+</div>
+<p>Then, we can create columns by year for arrests and calls like this:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_wide</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>    names_from <span class="op">=</span> <span class="va">year</span>,</span>
+<span>    values_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="va">arrests</span>, <span class="va">calls</span> <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">data_wide</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 7
+  neighborhood arrests_2020 arrests_2021 arrests_2022 calls_2020 calls_2021
+  &lt;chr&gt;               &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+1 A                      50           60           30        100        125
+2 B                      45           90           40        265         75
+# ℹ 1 more variable: calls_2022 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>In general, use <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> when you’re making a table for a report, you want side-by-side comparisons, you’re exporting data (Excel, dashboards), and so on. In comparing the two functions, think of it like this: <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> helps us prepare data for analysis, whereas <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> helps us present results.</p>
+<p>Now that we can reshape a dataset, the next challenge is even more common, where we have multiple data sets and we want to combine them.</p>
+<p>HERE HERE HERE HERE</p>
+</section></section><section id="merging-datasets-joins" class="level2"><h2 class="anchored" data-anchor-id="merging-datasets-joins">Merging Datasets (Joins)</h2>
+</section><section id="cleaning-strings" class="level2"><h2 class="anchored" data-anchor-id="cleaning-strings">Cleaning Strings</h2>
+</section><section id="working-with-dates" class="level2"><h2 class="anchored" data-anchor-id="working-with-dates">Working with Dates</h2>
 <p><br></p>
 <p><br></p>
 <p><br></p>
-</section></section></section><section id="test-your-knowledge-exercises" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge-exercises">Test Your Knowledge Exercises</h2>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+<p><br></p>
+</section><section id="test-your-knowledge-exercises" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge-exercises">Test Your Knowledge Exercises</h2>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

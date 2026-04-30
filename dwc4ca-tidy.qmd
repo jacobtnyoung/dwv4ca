@@ -2,7 +2,7 @@
 
 knitr::opts_chunk$set(
   echo = TRUE,
-  eval = FALSE,
+  eval = TRUE,
   message=FALSE, 
   warning=FALSE, 
   fig.width = 10,
@@ -11,10 +11,11 @@ knitr::opts_chunk$set(
 
 library( DWVpack )
 library( tidyverse )
+library( dplyr )
 
 ```
 
-# Tidy Data and Data Transformation {.unnumbered}
+# Tidy Data {.unnumbered}
 
 Have you ever opened a dataset and immediately thought, “This is a mess”?
 Columns don’t make sense.
@@ -51,7 +52,7 @@ Let's see some examples.
 
 ### Untidy Data: Example 1
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE}
 
 bad_data_1 <- tibble(
   incident_id = 1:4,
@@ -69,7 +70,7 @@ How might we solve this problem?
 
 Well, we just need to create two variables:
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE}
 
 good_data_1 <- bad_data_1 |>
   separate(demographics, into = c("gender", "age_group"), sep = "_")
@@ -82,7 +83,7 @@ good_data_1
 
 Try this one:
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE}
 
 bad_data_2 <- tibble(
   precinct = c("A", "B"),
@@ -98,7 +99,7 @@ If you said “year” is hidden in column names, then you win a prize!
 Data organized in this way make it hard to analyze trends by year.
 Rather, we would prefer data like this:
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE}
 
 good_data_2 <- bad_data_2 |>
   pivot_longer(
@@ -119,7 +120,7 @@ We know have a variable for "year".
 
 Last one (you got this!):
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE}
 
 bad_data_3 <- tibble(
   incident_id = 1:2,
@@ -134,7 +135,7 @@ These data are untidy because two people are stored in one row.
 It would be difficult to count or analyze individuals properly.
 We can fix this by making a variable for "subjects" and listing each one:
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE}
 
 good_data_3 <- bad_data_3 |>
   separate_rows(subjects, sep = ";")
@@ -154,13 +155,13 @@ There are two main advantages:
 
 Since we will be working with functions that tidy data, we need to install `tidyverse`:
 
-```{r}
+```{r, eval=FALSE}
 install.packages( "tidyverse" )
 ```
 
 After installing (or if you already have the package installed), we need to use the `library()` function to load it:
 
-```{r}
+```{r, eval=FALSE}
 library( tidyverse )
 ```
 
@@ -173,7 +174,7 @@ One of the most common problems you’ll run into is that your data is in the wr
 
 Take a look at this example:
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=FALSE}
 
 data_wide <- tibble(
   precinct = c("A", "B"),
@@ -205,7 +206,7 @@ There is where the `pivot_longer` function comes in.
 
 First, let's create our simple **wide** data object:
 
-```{r, eval=TRUE}
+```{r}
 
 data_wide <- data.frame(
   precinct = c( "A", "B" ),
@@ -220,7 +221,7 @@ data_wide
 Now, let's create the **long** data object.
 Let me show you what it does first and we will go through each line:
 
-```{r, eval=TRUE}
+```{r}
 
 data_long <- data_wide |>
   pivot_longer(
@@ -322,24 +323,115 @@ data_long |>
   
 ```
 
-HERE HERE HERE HERE
+### `pivot_wide`
 
-Working through the next step after pivot_longer
+So far, we’ve taken messy wide data and made it tidy.
+But sometimes we actually want to go the other direction.
+This usually happens when we’re preparing results for reports or summaries.
+There is where the `pivot_wide` function comes in.
+First, let's create a simple **long** data object.
+Suppose we had some data like this for crimes in two neighborhoods:
 
-HERE HERE HERE HERE
+```{r}
 
-<br>
+data_long <- tibble(
+  neighborhood = c("A", "A", "A", "B", "B", "B" ),
+  year = c( "2020", "2021", "2022","2020", "2021", "2022" ),
+  crimes = c(50, 60, 30, 45, 90, 40 )
+)
 
-<br>
+data_long
 
-<br>
+```
 
-<br>
+If we want this in a format that’s easier to read in a report we could have one row per precinct and separate columns for each year.
+We can do that by creating a data object that is in **wide** format using the `pivot_wide()` function:
 
-<br>
+```{r}
 
-<br>
+data_wide <- data_long |>
+  pivot_wider(
+    names_from = year,
+    values_from = crimes
+  )
 
-<br>
+data_wide
+
+```
+
+Ok, let's see what we did:
+
+-   `names_from = "year"` tells `pivot_wider()` to use values in the year column as new column names.
+
+-   `values_from = "crimes"` tells the function to fill the values with counts of crimes.
+
+Note the difference from `pivot_longer()` in terms of the arguments which uses `...._to =` whereas `pivot_wider()` uses `..._from =`.
+
+If you are a visual learner, think of it this way:
+
+```{mermaid}
+flowchart LR
+
+A["LONG DATA<br/>(values stacked into rows)<br/><pre>
+┌───────────────┬──────┬─────────┐
+│ neighborhood  │ year │ crimes  │
+├───────────────┼──────┼─────────┤
+│ A             │ 2020 │ 50      │
+│ A             │ 2021 │ 60      │
+│ A             │ 2022 │ 30      │
+│ B             │ 2020 │ 45      │
+│ B             │ 2021 │ 90      │
+│ B             │ 2022 │ 40      │
+└───────────────┴──────┴─────────┘
+</pre>"]
+
+B["pivot_wider()<br/>
+names_from = year<br/>
+values_from = crimes"]
+
+C["WIDE DATA<br/>(columns contain values)<br/><pre>
+┌───────────────┬───────────────┬───────────────┬───────────────┐
+│ neighborhood  │ crimes_2020   │ crimes_2021   │ crimes_2022   │
+├───────────────┼───────────────┼───────────────┼───────────────┤
+│ A             │ 50            │ 60            │ 30            │
+│ B             │ 45            │ 90            │ 40            │
+└───────────────┴───────────────┴───────────────┴───────────────┘
+</pre>"]
+
+A --> B --> C
+```
+
+Note that this works if we are using multiple variables as well.
+For example, say we were looking at arrests and calls for service in a neighborhood and our **long** data looked like this:
+
+```{r}
+
+data_long <- tibble(
+  neighborhood = c("A", "A", "A", "B", "B", "B" ),
+  year = c( "2020", "2021", "2022","2020", "2021", "2022" ),
+  arrests = c(50, 60, 30, 45, 90, 40 ),
+  calls = c( 100, 125, 90, 265, 75, 182 )
+)
+
+data_long
+
+```
+
+Then, we can create columns by year for arrests and calls like this:
+
+```{r}
+
+data_wide <- data_long |>
+  pivot_wider(
+    names_from = year,
+    values_from = c( arrests, calls )
+  )
+
+data_wide
+
+```
+
+In general, use `pivot_wider()` when you’re making a table for a report, you want side-by-side comparisons, you’re exporting data (Excel, dashboards), and so on.
+In comparing the two functions, think of it like this: `pivot_longer()` helps us prepare data for analysis, whereas `pivot_wider()` helps us present results.
 
 ## Test Your Knowledge Exercises

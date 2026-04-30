@@ -24,6 +24,7 @@ book:
     - dwc4ca-r-rmarkdown.qmd
     - dwc4ca-dplyr.qmd
     - dwc4ca-tidy.qmd
+    - dwc4ca-transform.qmd
 
 format:
   html:
