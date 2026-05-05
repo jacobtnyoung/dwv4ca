@@ -12,9 +12,231 @@ knitr::opts_chunk$set(
 library( DWVpack )
 library( tidyverse )
 library( dplyr )
+library( stringr )
+library( lubridate )
 
 ```
 
 # Data Transformation {.unnumbered}
 
-## Test Your Knowledge Exercises
+When we first start working with data, it’s easy to assume that once we load a dataset into R, we’re ready to analyze it.
+In reality, that’s almost never the case.
+Most open data is messy, inconsistent, and not immediately useful for answering questions.
+It is *wild*.
+
+In the previous chapter we discussed how to get data **tidy**, but even with a tidy dataset we are not yet ready for visualization and analysis.
+We still have to get the objects of analysis and visualization prepared.
+
+That’s where **data transformation** comes in.
+Data transformation is the process of taking raw data and turning it into something we can actually use for analysis.
+We reshape variables, create new ones, and standardize messy information so that patterns can be identified and decisions can be made.
+
+For example, a dataset might give us:
+
+-   A date like “2023-07-14”
+-   A time stored as a number like “23”
+-   A text field with inconsistent labels like “phx”, “Phoenix”, and “PHOENIX”
+
+On their own, these aren’t very helpful.
+But through transformation, we can turn them into: - Day of the week (Was this a weekend incident?)\
+- Time category (Did this occur during a night shift?)\
+- Cleaned location data (So everything is consistently labeled)
+
+In this chapter, we’re going to focus on three major types of transformations:
+
+-   First, *logical* transformations. These allow us to ask yes/no questions of our data and create new variables based on conditions. For example: Was the incident on a weekend? Did it occur at night? These kinds of variables are essential for analysis.
+-   Second, *string* transformations. Many important variables, such as location descriptions or offense types, are stored as text. We’ll learn how to clean, standardize, and search text data so that it becomes usable.
+-   Third, date and time transformations. Time is one of the most important dimensions in crime data. We’ll learn how to convert raw date values into meaningful components like month, day of week, and time of day.
+
+All of these transformations have one ultimate goal: to prepare our data for analysis and visualization.
+
+Why is this important?
+When we move into visualization using `ggplot2` and start building visual displays, we won’t just be plotting data we pulled from an open source location.
+We’ll be plotting variables that we created, like shifts, weekends, trends over time, and categorized outcomes.
+
+## Logical Vectors & Conditional Operations
+
+At its core, a **logical vector** is just a series of `TRUE` and `FALSE` values.
+These come from asking questions of your data.
+
+For example:\
+- Is the hour greater than 20?\
+- Is the day Saturday or Sunday?\
+- Does this record match a certain condition?
+
+In R, every time you ask a question like that, you get back `TRUE` or `FALSE`.
+
+To illustrate, let's start by creating a toy data set of crime incidents to work with:
+
+```{r}
+
+dat <- data.frame(
+  id = 1:10,
+  INC_HOUR = c(2, 9, 14, 21, 23, 7, 12, 18, 3, 16),
+  INC_DAY_WEEK = c(
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+    "Saturday", "Sunday", "Monday", "Friday", "Sunday"
+  ),
+  OFFENSE = c(
+    "Theft", "Assault", "Burglary", "Theft", "Robbery",
+    "Assault", "Theft", "Burglary", "Robbery", "Assault"
+  )
+)
+
+dat
+
+```
+
+Let's think of a few questions we can ask with the data:
+
+-   Which incidents occur after 7?
+-   Which incidents occur on Friday?
+
+The way we ask questions with logical vectors is to use comparison operators:
+
+-   `==` equal to (note: `=` is used to assign objects in R so we use `==` for an equality statement)
+-   `!=` not equal to
+-   `>` greater than
+-   `<` less than
+-   `>=` greater than or equal to
+-   `<=` less than or equal to
+
+#### Which incidents occur after 7?
+
+To answer this we can use the `>` operator like so:
+
+```{r, eval = FALSE}
+
+dat$INC_HOUR > 7
+
+```
+
+Let's take a closer look at our code: we identify the object `dat`, we use the `$` sign to indicate the specific column we are interested in, here it is `INC_HOUR`, and then we state the logical statement `> 7`.
+Before you run this line, look at the data and think about which cases are going to be `TRUE` and which are going to be `FALSE`.
+
+When you run it, you get this:
+
+```{r, echo=FALSE}
+
+dat$INC_HOUR > 7
+
+```
+
+It is a vector of logical values telling us for which case the condition is `TRUE` or `FALSE`.
+For example, the first case has a value of `r dat$INC_HOUR[1]` for the `INC_HOUR` variable so the value for the logical vector is `r dat$INC_HOUR[1] > 7` because it is not greater than 7.
+
+#### Which incidents occur on Friday?
+
+```{r, eval = FALSE}
+
+dat$INC_DAY_WEEK == "Friday"
+
+```
+
+Here, we are saying which cases are equal to `"Friday"`.
+This is an important point to pause and remind you that the R programming language is case sensitive.
+Also, that `"Friday"` is a `character` (as opposed to say, `numeric`).
+Try these and see if it gives you the same results:
+
+```{r, eval = FALSE}
+
+dat$INC_DAY_WEEK == "friday"
+
+dat$INC_DAY_WEEK == "FRIDAY"
+
+dat$INC_DAY_WEEK == "Friday "
+
+```
+
+These (should) come back as all `FALSE`.
+*Why?*
+
+These are all `FALSE` because the condition we stated, that `dat$INC_DAY_WEEK` is equal to `"friday"` or `"FRIDAY"` or `"Friday "`, is not met by any case.
+This is because our day of the week variable is a `character` so it wants the EXACT string of letters.
+Can you see how these three instances are different?
+
+We will discuss strings more below and how to edit them (particularly when there are inconsistencies).
+
+Operators can be used together to satisfy multiple logical conditions using the `|` ("or") or the `&` ("and") operators:
+
+```{r, eval=FALSE}
+
+# or
+dat$INC_HOUR >= 7 | dat$INC_DAY_WEEK != "Friday"
+
+# and
+dat$INC_HOUR >= 7 & dat$INC_DAY_WEEK != "Friday"
+
+```
+
+Think about what the first statement above says: "incident hour is greater than or equal to 7 **or** incident day is not equal to Friday".
+Think about what the second statement above says: "incident hour is greater than or equal to 7 **and** incident day is not equal to Friday".
+
+A final operator that is really useful is the `%in%` operator.
+This allows us to specify a set of values or strings and then extract the cases that meet that condition.
+For example we could write:
+
+```{r, eval=FALSE}
+
+dat$INC_DAY_WEEK == "Saturday" | dat$INC_DAY_WEEK ==  "Sunday"
+
+```
+
+Or, we could write it like this:
+
+```{r, eval=FALSE}
+
+dat$INC_DAY_WEEK %in% c( "Saturday", "Sunday" )
+
+```
+
+These statements give the same logical vector, but one is cleaner.
+For example, what if we have several days:
+
+```{r, eval=FALSE}
+
+# messy
+dat$INC_DAY_WEEK == "Friday" | dat$INC_DAY_WEEK == "Saturday" | dat$INC_DAY_WEEK == "Sunday"
+
+# clean
+dat$INC_DAY_WEEK %in% c("Friday", "Saturday", "Sunday")
+
+```
+
+As we move on with the material, the use of logical vectors will make a lot more sense because you will see that they are a convenient way to filter data.
+For example, in the prior chapters we saw how the `filter()` function in the `dplyr` package could be used to select specific columns.
+But, we can plug a logical vector into the `filter()` function to get a subset of data:
+
+```{r}
+
+dat |> 
+  dplyr::filter( INC_DAY_WEEK == "Saturday" )
+
+```
+
+Here, we took just those cases meeting the condition of the logical vector (note: I used `dplyr::filter` to call the `dplyr` package rather than loading the library with `library( dplyr )`, to save space).
+
+Suppose we want cases that are after noon and on the weekend:
+
+```{r}
+
+dat |> 
+  dplyr::filter( dat$INC_HOUR >= 12 & INC_DAY_WEEK %in% c( "Saturday", "Sunday" ) )
+
+```
+
+## Working with Strings (Text Data)
+
+Now we shift from logical thinking to text data, which are everywhere in open-source datasets.
+
+Think about variables like: - Offense descriptions\
+- Location fields - City names\
+- Narrative reports
+
+Unlike numbers, text data are often inconsistent ("Phoenix", "PHOENIX", "phx") and messy (extra spaces, abbreviations) making them hard to analyze directly.
+
+<br>
+
+NEED EXERCISES FOR TEST YOUR KNOWLEDGE
+
+<br>
