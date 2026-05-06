@@ -235,8 +235,413 @@ Think about variables like: - Offense descriptions\
 
 Unlike numbers, text data are often inconsistent ("Phoenix", "PHOENIX", "phx") and messy (extra spaces, abbreviations) making them hard to analyze directly.
 
+Let's create a separate toy dataset to work with for strings.
+
+```{r}
+
+dat <- data.frame(
+  id = 1:12,
+  city = c(
+    "Phoenix", "PHOENIX ", "phx", "Tempe", "tempe", " Glendale",
+    "GLENDALE", "Mesa", "mesa ", "Scottsdale", "SCOTTSDALE", "scottsdale"
+  ),
+  offense = c(
+    "Assault", "ASSAULT", "assault ", "Burglary", "BURGLARY", "burglary",
+    "Domestic Violence", "domestic violence", "Domestic   Violence",
+    "Theft", "THEFT", " theft "
+  ),
+  location = c(
+    "123 MAIN ST", "123 Main St", "123 Main Street",
+    "45 E 2ND AVE", "45 E 2nd Ave", "45 e 2ND AVE",
+    "700 W RIO SALADO PKWY", "700 W Rio Salado Pkwy", "700 W RIO SALADO PARKWAY",
+    "100 N CENTER RD", "100 N Center Rd", "100 N CENTER RD"
+  )
+)
+
+dat
+
+```
+
+Take a look through the data.
+Look for the following issues we commonly find with string variables: - inconsistent capitalization - extra spaces\
+- abbreviations - punctuation differences - multi-word labels - alternate spellings for the same thing
+
+This is fairly standard for what you will see with open-source data.
+Let's take a look at fixing some of these issues.
+
+### Standardize Case
+
+A very common first step is to make everything the same case.
+Why do this?
+There are several reasons: It makes values easier to compare, it reduces duplicates caused only by case differences, it makes later cleaning more consistent.
+
+For example, using the `unique()` function, we can list all the unique values of a variable.
+Since these are strings, we are looking at the unique strings:
+
+```{r}
+
+unique( dat$city )
+
+```
+
+We can see that there are several different cases for each name.
+We can fix this by using some functions from the `stringr` package in conjunction with functions from `dplyr`.
+You can install the package using `install.packages( "stringr" )`.
+
+```{r, eval=FALSE}
+
+install.packages( "stringr" )
+library( stringr )
+
+library( dplyr )
+
+```
+
+Now that the functions are loaded, let's adjust the cases to be consistent:
+
+```{r}
+
+dat <- dat |>
+  mutate(
+    city = str_to_title( city ),
+    offense = str_to_title( offense ),
+    location = str_to_upper( location )
+  )
+
+```
+
+We used a few functions, here is what they are doing: -`str_to_title()` converts to title case, where only the first letter of each word is capitalized.
+If you look, you can see that the first letter of "city" and "offense" are now capitalized.
+- `str_to_upper()` converts to upper case.
+For "location" we made all the letters upper case.
+
+There is also: - `str_to_lower()` which converts to lower case.
+- `str_to_sentence()` which convert to sentence case, where only the first letter of sentence is capitalized (nice for long strings like quotes or descriptions).
+
+### Remove White Space
+
+Extra spaces are one of the most common hidden problems.
+Take a look through the `dat` object and see if you can spot instances where there is extra space (i.e. white space) that should not be there.
+
+For the variable "city" you can see that the second and ninth cases have an extra space:
+
+```{r}
+
+dat$city
+
+```
+
+To fix this, we can use the `str_squish()` function which removes leading spaces (space in front of a word), removes trailing spaces (space after a word), and collapses multiple spaces into one:
+
+```{r}
+
+dat <- dat |>
+  mutate(
+    city = str_squish( city ),
+    offense = str_squish( offense ),
+    location = str_squish( location )
+  )
+
+```
+
+This looks much better, we can see the difference by examining the unique strings for each variable again:
+
+```{r}
+
+unique( dat$city )
+
+unique( dat$offense )
+
+unique( dat$location )
+
+```
+
+### Group Similar Values
+
+As you can see above, we still have the issue that different naming and abbreviations are used for the same city.
+We can fix this by building on what we saw above with the `%in%` operator and the `case_when()` function.
+Essentially what we want to do is find all the unique ways that a city is named, and replaced those with a single consistent name.
+
+To do this, we will create a new variable called `city_clean` which is the cleaned version of the names.
+We will create a new variable because we don't want to write over the old names (in case we want them for reference).
+
+```{r}
+
+dat <- dat |>
+  mutate(
+    city_clean = case_when(
+      city %in% c( "Phx", "Phoenix" ) ~ "Phoenix",
+      city %in% c( "Tempe" ) ~ "Tempe",
+      city %in% c( "Glendale" ) ~ "Glendale",
+      city %in% c( "Mesa" ) ~ "Mesa",
+      city %in% c( "Scottsdale" ) ~ "Scottsdale",
+      TRUE ~ city
+    )
+  )
+
+```
+
+Ok, that was a lot so let's unpack it: - we are using `mutate` to create a new variable.
+- we are using `case_when()` to check conditions we specify from the first to the last value of the variable "city".
+What the function is doing is taking each case and if the condition is TRUE, it assigns the value on the right side.
+- the statement `city %in% c("Phx", "Phoenix") ~ "Phoenix"` says "take the variable city and if the string is "Phx" or "Phoenix" make the string in city_clean be "Phoenix". - we repeated this for Temple, Glendale, Mesa, and Scottsdale. - the last line `TRUE ~ city` tells the function what to do if the conditions above are not met. For example, what should it do if not of the conditions are above are met? Well, we want it to return the value for "city" (otherwise it will return NA; try it!)
+
+### Replace Text
+
+Sometimes you do not want a new label, you just want to fix the text.
+We can use the `str_replace_all()` function to accomplish this task.
+
+For example, take a look at the "location" variable and you will see that there are a few different usages of *street*.
+If we want these to be consistent, then we can replace the text:
+
+```{r}
+
+dat <- dat |>
+  mutate(
+    location = str_replace_all( location, "STREET", "ST" ),
+    location = str_replace_all( location, "PARKWAY", "PKWY" ),
+    location = str_replace_all( location, "ROAD", "RD" )
+  )
+
+```
+
+### Putting It All Together
+
+We have discussed these separately, but once we know what we want to clean up we can put it all together in a single workflow.
+
+Since we have been writing over our `dat` object, we need to recreate it from the original:
+
+```{r}
+
+dat <- data.frame(
+  id = 1:12,
+  city = c(
+    "Phoenix", "PHOENIX ", "phx", "Tempe", "tempe", " Glendale",
+    "GLENDALE", "Mesa", "mesa ", "Scottsdale", "SCOTTSDALE", "scottsdale"
+  ),
+  offense = c(
+    "Assault", "ASSAULT", "assault ", "Burglary", "BURGLARY", "burglary",
+    "Domestic Violence", "domestic violence", "Domestic   Violence",
+    "Theft", "THEFT", " theft "
+  ),
+  location = c(
+    "123 MAIN ST", "123 Main St", "123 Main Street",
+    "45 E 2ND AVE", "45 E 2nd Ave", "45 e 2ND AVE",
+    "700 W RIO SALADO PKWY", "700 W Rio Salado Pkwy", "700 W RIO SALADO PARKWAY",
+    "100 N CENTER RD", "100 N Center Rd", "100 N CENTER RD"
+  )
+)
+
+dat
+
+```
+
+Now, let's build out the full workflow:
+
+```{r}
+
+dat_clean <- dat |>
+  
+  # fix the case
+  mutate(
+    city = str_to_title( city ),
+    offense = str_to_title( offense ),
+    location = str_to_upper( location )
+  ) |> 
+  
+  # clean the white space
+  mutate(
+    city = str_squish( city ),
+    offense = str_squish( offense ),
+    location = str_squish( location ) 
+    ) |> 
+  
+  # make names consistent
+  mutate(
+    city_clean = case_when(
+      city %in% c( "Phx", "Phoenix" ) ~ "Phoenix",
+      city %in% c( "Tempe" ) ~ "Tempe",
+      city %in% c( "Glendale" ) ~ "Glendale",
+      city %in% c( "Mesa" ) ~ "Mesa",
+      city %in% c( "Scottsdale" ) ~ "Scottsdale",
+      TRUE ~ city )
+    ) |> 
+  
+  # replace text for consistency
+  mutate(
+    location = str_replace_all( location, "STREET", "ST" ),
+    location = str_replace_all( location, "PARKWAY", "PKWY" ),
+    location = str_replace_all( location, "ROAD", "RD" )
+  )
+
+```
+
+## Dates
+
+Dates are notoriously messy and frustrating to handle.
+For example, take a look at this fictitious (though representative!) data:
+
+```{r, echo=FALSE}
+
+dat_dates <- data.frame(
+  id = 1:10,
+  
+  incident_date = c(
+    "2022-01-15",
+    "01/22/2021",
+    "March 3, 2024",
+    "2023/04/10",
+    "5-12-2024",
+    "2020-06-18",
+    "07/04/2024",
+    "August 9 2021",
+    "2024.09.14",
+    "10/31/2022"
+  )
+)
+
+dat_dates
+
+```
+
+Do you see the problem?
+Everything is in a different format and is inconsistent.
+*Wild* data!
+
+Fortunately, there is an excellent package for working with dates and times: `lubridate`.
+
+```{r, eval=FALSE}
+
+install.packages( "lubridate" )
+
+library( lubridate )
+
+```
+
+To see the functionality, let's create our toy data set to work with:
+
+```{r, eval=FALSE}
+
+dat_dates <- data.frame(
+  id = 1:10,
+  
+  incident_date = c(
+    "2022-01-15",
+    "01/22/2021",
+    "March 3, 2024",
+    "2023/04/10",
+    "5-12-2024",
+    "2020-06-18",
+    "07/04/2024",
+    "August 9 2021",
+    "2024.09.14",
+    "10/31/2022"
+  )
+)
+
+dat_dates
+
+```
+
+### Dates
+
+Essentially what we want is the dates to be the same format.
+In `lubridate` there is a function, `parse_date_time()`, that does exactly this: it takes the input and parses it into a consistent format.
+
+I will give you the code chunk first, then we will work through it:
+
+```{r}
+
+dat_dates |>
+  mutate(
+    date_clean = parse_date_time(
+      incident_date,
+      orders = c( "ymd", "mdy", "B d Y" )
+    )
+  )
+
+```
+
+This prints out the messy data as well as a new column "date_clean" that has been parsed.
+Ok, let's take a look at what the function is doing:\
+- using `mutate()`, we are creating a new variable called "date_clean" with the `parse_date_time()` function.
+- the `parse_date_time()` function takes the messy data, "incident_date", and then uses some additional info to parse it.
+- the `orders =` argument takes several pieces: `ymd` is year-month-day, `mdy` is month-day-year, and `B d Y` is full month name, day, year.
+
+The `orders =` argument might be a bit confusing.
+Essentially we are telling the function the different ways that the date is presented in the "incident_date" variable.
+For example, in the `dat_dates` object, look at the first case and you will see that the date looks like `r dat_dates[1,2]`.
+This is year, month, day format which the `orders =` argument recognizes with the `ymd` value.
+How about `mdy`?
+Take a look at the second case: `r dat_dates[2,2]`.
+And so on.
+You can see these different format codes by examining the help page for the `parse_date_time()` function with: `?parse_date_time`.
+
+Working with dates is often a trial and error process of getting a sense of what formats are being used and how to parse them correctly.
+For example, let's say we didn't see that some of the dates are in `ymd` format and exclude this from `orders =`:
+
+```{r}
+
+dat_dates |>
+  mutate(
+    date_clean = parse_date_time(
+      incident_date,
+      orders = c( "mdy", "B d Y" )
+    )
+  )
+
+```
+
+We get an error that says it failed to parse several cases.
+These cases have a value of `<NA>` in the output object.
+If we take a look, then we can see that these are cases with the year-month-day format.
+We just need to add that to our `orders =` statement.
+
+Date parsing is one of the messiest parts of open-source data wrangling.
+Just keep in mind that the goal is not to memorize formats, but to learn how to recognize patterns and standardize them.
+
+#### Transformation
+
+Let's create an object with the cleaned dates:
+
+```{r}
+
+dat_dates_clean <- dat_dates |>
+  mutate(
+    date_clean = parse_date_time(
+      incident_date,
+      orders = c( "ymd", "mdy", "B d Y" )
+    )
+  )
+
+```
+
+Now that our date variable is clean, we can actually use it to make some other useful variables:
+
+```{r}
+
+dat_dates_clean <- dat_dates_clean |>
+  mutate(
+    year = year( date_clean ),
+    month = month( date_clean, label = TRUE),
+    day = day( date_clean )
+  )
+
+```
+
+In the statement above we use `mutate()` to create several variables: "year", "month", and "day".
+When creating "month" we see the argument `label =` to `TRUE` to keep the labels for the months (otherwise it defaults to a numeric value such as "1" for "Jan").
+
+Now that are data are cleaned, we can use `dplyr` to answer questions like: Which month has the most incidents?
+
+```{r}
+
+dat_dates_clean |>
+  group_by( month ) |>  
+  summarize( n() )
+
+```
+
 <br>
 
 NEED EXERCISES FOR TEST YOUR KNOWLEDGE
-
-<br>
