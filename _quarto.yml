@@ -25,6 +25,7 @@ book:
     - dwc4ca-dplyr.qmd
     - dwc4ca-tidy.qmd
     - dwc4ca-transform.qmd
+    - dwc4ca-ggplot2.qmd
 
 format:
   html:

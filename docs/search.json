@@ -398,5 +398,35 @@
     "crumbs": [
       "Data Transformation"
     ]
+  },
+  {
+    "objectID": "dwc4ca-ggplot2.html",
+    "href": "dwc4ca-ggplot2.html",
+    "title": "Data Visualization with ggplot2\n",
+    "section": "",
+    "text": "Principles of Effective Visualization\nIn the prior chapters we have worked on obtaining an open-source data object, tidying it, and constructing variables. Now, we want to use those data to visualize the information. Data visualization transforms raw numbers into meaningful visual patterns that humans can interpret quickly.\nVisualization helps analysts:\nWithout visualization, important insights can remain hidden inside tables of data. Furthermore, the visual display of information reaches a broader audience than tabular display.\nFor example, consider the following table:\nThe table provides information (property crime each month), but a visualization makes patterns much easier to recognize immediately.\nFor example, a line graph would quickly reveal: - overall growth throughout the year - periods of rapid increase - slight slowdowns or dips - seasonal patterns - long-term trends\nYou can see these if you look through the table, but the visualization of the data makes them easier to see:\nVisualization improves comprehension by allowing analysts to identify relationships and patterns that may not be obvious in raw numerical tables alone.\nBefore we get started with creating visual displays, we should think about what properties are desirable. Good visualizations are: clear, accurate, simple, and focused on insight. The reader (viewer?) should be able to look at the visualization and make sense of it without being led astray by too many colors, misleading axes, cluttered labels, unnecessary 3D effects, or overcomplicated graphics.",
+    "crumbs": [
+      "Data Visualization with `ggplot2`"
+    ]
+  },
+  {
+    "objectID": "dwc4ca-ggplot2.html#principles-of-effective-visualization",
+    "href": "dwc4ca-ggplot2.html#principles-of-effective-visualization",
+    "title": "Data Visualization with ggplot2\n",
+    "section": "",
+    "text": "Design Principles\nHere are several design principles to keep in mind when creating visualizations:\n\nSimplicity - Remove unnecessary elements\nReadability - Labels and titles should be easy to understand\nAppropriate Chart Selection - Use the correct chart for the question being asked\nColor with Purpose - Colors should highlight meaning, not distract\n\nFor an excellent review of visualization (with some really great examples), check out Kieran Healy’s Look at Data chapter of his Data Visualization: A Practical Introduction book.",
+    "crumbs": [
+      "Data Visualization with `ggplot2`"
+    ]
+  },
+  {
+    "objectID": "dwc4ca-ggplot2.html#what-is-ggplot2",
+    "href": "dwc4ca-ggplot2.html#what-is-ggplot2",
+    "title": "Data Visualization with ggplot2\n",
+    "section": "What is ggplot2?",
+    "text": "What is ggplot2?\nggplot2 is a data visualization package in R based on the “Grammar of Graphics”, a framework for building data visualizations by combining independent visual components together in layers. Rather than treating each chart type as a completely separate object, the Grammar of Graphics views all graphics as combinations of:\n- data - mappings - geometric shapes - scales - coordinate systems - visual themes\nThis framework was originally developed by statistician Leland Wilkinson and later implemented in R through the ggplot2 package by Hadley Wickham.\nThe name ggplot2 literally means: - gg = Grammar of Graphics - plot2 = second version of the plotting system\nTraditional graphing systems often require users to memorize separate commands for each chart type. In contrast, ggplot2 uses a consistent structure for nearly every visualization. This means that once you learn the grammar, you can build many different types of graphics while only changing specific layers.\nThe utility might not be immediately obvious, but as we start building visualizations, it will become more clear (hang with me on this one!) This layered structure makes visualization more logical, flexible, easier to customize, and easier to interpret.\nKey Components\nEvery ggplot2 plot has three key components: - data - A set of aesthetic mappings between variables in the data and visual properties - At least one layer which describes how to render each observation, created with a geom function.\nHere’s a simple example:\n\n# define the data\ncrime_dat &lt;- data.frame(\n  month = c(\"January\", \"February\", \"March\", \"April\",\n            \"May\", \"June\", \"July\", \"August\",\n            \"September\", \"October\", \"November\", \"December\"),\n  crimes = c(120, 150, 170, 220,\n            245, 260, 290, 310,\n            295, 340, 360, 410)\n)\n\n# plot it\nggplot( crime_dat, \n        aes( x = crimes, y = month ) ) + \n  geom_point()\n\n\n\n\n\n\n\nThis produces a scatterplot defined by:\n\nData: crime_dat\n\nAesthetic mapping: number of crimes, crimes, mapped to the x position, and time, month, mapped to the y position\nLayer: points\n\nThe dataset contains the variables that will be visualized, the aesthetic mapping determines how variables are connected to visual properties, and layer is how the information is displayed.\nRun this code and think about what is happening:\n\nggplot( crime_dat, \n        aes( x = crimes, y = month ) )\n\n\n\n\n\n\n\nWhy are there no dots? Let’s think about what we did. We have the data and we have the aesthetic mapping, but we do not have the layer. We add the layer with the + geom_point() line (hence the inclusion of the + operator)\nThis is the basic setup that allows us to develop very sophisticated visual displays of information.\n\nNEED EXERCISES FOR TEST YOUR KNOWLEDGE",
+    "crumbs": [
+      "Data Visualization with `ggplot2`"
+    ]
   }
 ]

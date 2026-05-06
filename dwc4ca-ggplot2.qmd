@@ -1,0 +1,203 @@
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = TRUE,
+  message=FALSE, 
+  warning=FALSE, 
+  fig.width = 10,
+  fig.align = "center"
+  )
+
+library( DWVpack )
+library( tidyverse )
+library( dplyr )
+library( ggplot2 )
+library( scales )
+
+```
+
+# Data Visualization with `ggplot2` {.unnumbered}
+
+In the prior chapters we have worked on obtaining an open-source data object, tidying it, and constructing variables.
+Now, we want to use those data to visualize the information.
+Data visualization transforms raw numbers into meaningful visual patterns that humans can interpret quickly.
+
+Visualization helps analysts:
+
+-   Detect trends over time
+-   Compare categories
+-   Examine distributions
+-   Explore relationships between variables
+-   Identify outliers and anomalies
+-   Communicate findings effectively
+
+Without visualization, important insights can remain hidden inside tables of data.
+Furthermore, the visual display of information reaches a broader audience than tabular display.
+
+For example, consider the following table:
+
+| Month     | Property Crimes |
+|:----------|----------------:|
+| January   |             120 |
+| February  |             150 |
+| March     |             170 |
+| April     |             220 |
+| May       |             245 |
+| June      |             260 |
+| July      |             290 |
+| August    |             310 |
+| September |             295 |
+| October   |             340 |
+| November  |             360 |
+| December  |             410 |
+
+The table provides information (property crime each month), but a visualization makes patterns much easier to recognize immediately.
+
+For example, a line graph would quickly reveal: - overall growth throughout the year - periods of rapid increase - slight slowdowns or dips - seasonal patterns - long-term trends
+
+You *can* see these if you look through the table, but the visualization of the data makes them **easier** to see:
+
+```{r, echo=FALSE}
+
+crimes <- data.frame(
+  month = c("January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December"),
+  crimes = c(120, 150, 170, 220,
+            245, 260, 290, 310,
+            295, 340, 360, 410)
+)
+
+ggplot(crimes, aes(x = month, y = crimes, group = 1)) +
+  geom_line(color = "firebrick", linewidth = 1) +
+  geom_point(size = 3, color = "black") +
+  labs(
+    title = "Monthly Property Crimes Throughout the Year",
+    x = "Month",
+    y = "Crimes"
+  ) +
+  theme_minimal()
+
+```
+
+Visualization improves comprehension by allowing analysts to identify relationships and patterns that may not be obvious in raw numerical tables alone.
+
+## Principles of Effective Visualization
+
+Before we get started with creating visual displays, we should think about what properties are desirable.
+Good visualizations are: clear, accurate, simple, and focused on insight.
+The reader (viewer?) should be able to look at the visualization and make sense of it without being led astray by too many colors, misleading axes, cluttered labels, unnecessary 3D effects, or overcomplicated graphics.
+
+### Design Principles
+
+Here are several design principles to keep in mind when creating visualizations:
+
+-   Simplicity - Remove unnecessary elements
+-   Readability - Labels and titles should be easy to understand
+-   Appropriate Chart Selection - Use the correct chart for the question being asked
+-   Color with Purpose - Colors should highlight meaning, not distract
+
+For an excellent review of visualization (with some really great examples), check out Kieran Healy's [Look at Data](https://socviz.co/01-look-at-data.html#what-makes-bad-figures-bad) chapter of his [Data Visualization: A Practical Introduction](https://socviz.co/) book.
+
+## What is ggplot2?
+
+`ggplot2` is a data visualization package in R based on the ["Grammar of Graphics"](https://link.springer.com/book/10.1007/0-387-28695-0), a framework for building data visualizations by combining independent visual components together in layers.
+Rather than treating each chart type as a completely separate object, the Grammar of Graphics views all graphics as combinations of:\
+- data - mappings - geometric shapes - scales - coordinate systems - visual themes
+
+This framework was originally developed by statistician [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson) and later implemented in R through the `ggplot2` package by [Hadley Wickham](https://hadley.nz/).
+
+The name `ggplot2` literally means: - gg = Grammar of Graphics - plot2 = second version of the plotting system
+
+Traditional graphing systems often require users to memorize separate commands for each chart type.
+In contrast, `ggplot2` uses a consistent structure for nearly every visualization.
+This means that once you learn the grammar, you can build many different types of graphics while only changing specific layers.
+
+The utility might not be immediately obvious, but as we start building visualizations, it will become more clear (hang with me on this one!) This layered structure makes visualization more logical, flexible, easier to customize, and easier to interpret.
+
+### Key Components
+
+Every `ggplot2` plot has three key components:
+
+-   **data**
+-   A set of **aesthetic mappings** between variables in the data and visual properties
+-   At least one layer which describes how to render each observation, created with a **geom** function
+
+Here’s a simple example:
+
+```{r}
+
+# define the data
+crime_dat <- data.frame(
+  month = c("January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December"),
+  crimes = c(120, 150, 170, 220,
+            245, 260, 290, 310,
+            295, 340, 360, 410)
+)
+
+# plot it
+ggplot( crime_dat, 
+        aes( x = crimes, y = month ) ) + 
+  geom_point()
+
+```
+
+This produces a scatterplot defined by:
+
+-   Data: `crime_dat`
+-   Aesthetic mapping: number of crimes, `crimes`, mapped to the x position, and time, `month`, mapped to the y position
+-   Layer: points
+
+The dataset contains the variables that will be visualized, the aesthetic mapping determines how variables are connected to visual properties, and layer is how the information is displayed.
+
+Run this code and think about what is happening:
+
+```{r}
+
+ggplot( crime_dat, 
+        aes( x = crimes, y = month ) )
+
+```
+
+Why are there no dots?
+Let's think about what we did.
+We have the data and we have the aesthetic mapping, but we do not have the **layer**.
+We add the layer with the `+ geom_point()` line (hence the inclusion of the `+` operator)
+
+This basic point is key to understating the power of the `ggplot2` for visualization.
+Instead of creating an entire chart with one complicated command, we start by stipulating our data and mapping the variables to their positions, then we add layers, then we customize the appearance.
+This is the basic setup that allows us to develop very sophisticated visual displays of information.
+
+HERE: I want to get the phoenix data phx_crime to make a plot and then we will build it up using various tools.
+
+```{r, echo=FALSE}
+
+date_vec <- strptime( phx_crime$time_date, format="%m/%d/%Y %H:%M" )
+phx_crime$year   <- format( date_vec, format="%Y" )
+
+crimes_by_year <- 
+  phx_crime %>% 
+  select( year ) %>%
+  filter( !is.na( year ) ) %>% 
+  group_by( year ) %>% 
+  summarize( counts = n() ) %>% 
+  ungroup()
+
+crimes_by_year %>%
+  ggplot( aes( year, counts, group = 1 ) ) +
+  geom_line( color = "grey40", linewidth = 1.2 ) +
+  geom_point( color = "firebrick", size = 4 ) +
+  labs( x = "", y = "Count of Crime per Year" ) + 
+  ggtitle( "Plot of Crime Count by Year in Phoenix, AZ" , 
+           subtitle = "Observed yearly count across years" ) +
+  scale_y_continuous( label = comma ) +
+  theme_minimal() 
+
+```
+
+<br>
+
+NEED EXERCISES FOR TEST YOUR KNOWLEDGE
