@@ -543,7 +543,7 @@ dat_dates
 
 ```
 
-### Dates
+### The `parse_date_time()` Function
 
 Essentially what we want is the dates to be the same format.
 In `lubridate` there is a function, `parse_date_time()`, that does exactly this: it takes the input and parses it into a consistent format.
@@ -641,6 +641,102 @@ dat_dates_clean |>
   summarize( n() )
 
 ```
+
+## Example
+
+Let's pull this together by working with an example.
+As we have seen in prior chapters, the `DWVpack` package contains a data file on crimes in Phoenix, AZ called `phx_crime`.
+Take a look at the `time_date` variable for that object:
+
+```{r}
+
+# load the library
+library( DWVpack )
+
+# print out the first few cases using the head() function
+head( phx_crime$time_date )
+
+```
+
+We can see that the `time_date` variable contains the **date** of the incident as well as the **time** and looks like this: `r head( phx_crime$time_date )[1]`.
+There is a lot of information here.
+What we want to do is pull it apart and get several variables:\
+- Year - Month - Day - Time
+
+We can use `dplyr` and `lubridate` to help us create these variables.
+Let's start by getting the date and time separated.
+If you take a look, `r head( phx_crime$time_date )[1]`, you will see that the format is: "month/day/year hour:minute".
+There is a function in `lubridate` called `mdy_hm()` that is build specifically for this format and converts a character string into a true date-time object that R can recognize and work with.
+For example, `mdy_hm( "11/1/2015 14:30" )` becomes something like `"2015-11-01 14:30:00 UTC"` where `2015-11-01` is the date stored in standardized YYYY-MM-DD format, `14:30:00` is the time in 24-hour format, and `UTC` is the time zone (“Coordinated Universal Time”).
+
+Take a look using the Phoenix data:
+
+```{r}
+
+# create the object
+datetime <- mdy_hm( phx_crime$time_date )
+
+# take a look at what it creates
+tail( datetime )
+
+```
+
+Next we want to get the date and time as separate objects.
+We do this using the `as_date()` and `format()` functions.
+
+```{r}
+
+# create the objects
+date <- as_date( datetime )
+time <- format( datetime, "%H:%M" )
+
+# inspect the first few cases
+
+tail( date )
+tail( time )
+
+```
+
+The formatting codes in `format()` indicate that we want time in 24-hour (`%H`) and minutes (`%M`).
+
+As a final step, we want to pull out calendar components (i.e. year, month, day) as we did above:
+
+```{r}
+
+year  <- year( datetime )
+
+# here, we want to keep the label and don't want it abbreviated
+month <- month( datetime, label = TRUE, abbr = FALSE)
+
+day   <- day( datetime )
+
+```
+
+I have presented this in separate steps, but we can put this all together as a "data recipe" using the `mutate()` function:
+
+```{r, eval=FALSE}
+
+phx_crime_clean_date_time <- phx_crime |>
+  mutate(
+    
+    # Parse datetime
+    datetime = mdy_hm( time_date ),
+
+    # Separate date and time
+    date = as_date( datetime ),
+    time = format( datetime, "%H:%M" ),
+
+    # Create components
+    year  = year( datetime ),
+    month = month( datetime, label = TRUE, abbr = FALSE ),
+    day   = day( datetime )
+
+  )
+
+```
+
+We will work with these data in subsequent chapters.
+To avoid having to create a tidy data set with the cleaned date variables, `DWVpack` includes a data object called `tidy_phx_crime` which has already cleaned up the date and time variables.
 
 <br>
 
