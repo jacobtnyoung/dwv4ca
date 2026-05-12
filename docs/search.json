@@ -448,5 +448,35 @@
     "crumbs": [
       "Data Visualization with `ggplot2`"
     ]
+  },
+  {
+    "objectID": "dwc4ca-ggplot2-advanced.html",
+    "href": "dwc4ca-ggplot2-advanced.html",
+    "title": "Advanced ggplot2 and Storytelling",
+    "section": "",
+    "text": "Customizing Themes and Scales\nIn the previous chapter, we learned the foundations of ggplot2 and how to create clear, effective graphics using layers, aesthetics, and geometries. We focused on building individual visualizations that accurately represent data.\nThis chapter moves beyond creating single plots and focuses on presenting multiple visualizations as part of a larger narrative. In practice, analysts rarely stop after producing one figure. Instead, they refine visual design choices, compare multiple visualizations together, and organize graphics into a coherent story that communicates insight to an audience.\nThe goal of this chapter is to transform basic plots into polished, report-ready visualizations that guide interpretation and support analytical storytelling. By the end of this chapter, you will be able to:\nRather than treating visualization as simply generating graphs, this chapter approaches visualization as communication. Design choice has a large influence on how readers interpret information, so knowing what tools are available is crucial for building your toolkit.\nThe first step in making a visualization feel polished is usually not adding more data. It is improving the way the existing data is presented. At this stage, the goal is to move beyond the default ggplot2 appearance and begin shaping the plot so that it is more visually consistent with the story we want to tell. We do this by adjusting the theme and the scales.\nThemes control the non-data parts of the plot, such as: the background, gridlines, axis text, axis titles, legends, plot titles and margins, and so on. Scales control how data values are translated into visual values, such as axis limits, tick mark breaks, labels, color palettes, point sizes, and line types. Together, themes and scales let us turn a basic plot into something that looks intentional and professional. By changing themes and scales, we can guide attention toward the important parts of the figure and reduce distractions.",
+    "crumbs": [
+      "Advanced `ggplot2` and Storytelling"
+    ]
+  },
+  {
+    "objectID": "dwc4ca-ggplot2-advanced.html#customizing-themes-and-scales",
+    "href": "dwc4ca-ggplot2-advanced.html#customizing-themes-and-scales",
+    "title": "Advanced ggplot2 and Storytelling",
+    "section": "",
+    "text": "Theme functions\nggplot2 includes several built-in themes that change the overall look of a plot. Common examples include:\n\n\ntheme_gray() the default theme\n\ntheme_minimal() a clean, light theme with reduced clutter\n\ntheme_bw() a black-and-white theme with stronger structure\n\ntheme_classic() a simple theme with minimal gridlines\n\ntheme_dark() a dark theme\n\ntheme_void() removes most plot elements, useful for maps or special layouts\n\nTo illustrate, let’s take the plot for crimes in Phoenix we built in the last chapter and show the various themes:\n\n\n\n\n\n\n\n\nThese themes are often a good starting point because they instantly change the visual tone of the figure. From there, we can refine individual elements using theme(). The theme() function lets us customize specific parts of the plot, including the title size and position, the axis text size, the legend placement, the gridline style, the plot background, and so on.\nLet’s use the theme_minimal() function and make some adjustments to our plot. First, we need to define the data object. We can grab the code from the prior chapter:\n\n# data\ncrime_monthly &lt;- tidy_phx_crime  |&gt; \n  select( year, month ) |&gt; \n  arrange( year, month ) |&gt; \n  group_by( year, month  ) |&gt; \n  summarize( crimes = n() , .groups = \"drop\" )\n\n# code for the plot\nggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +\n  geom_point() +\n  geom_line() + \n  labs(\n    title = \"Crime in Phoenix\",\n    subtitle = \"Monthly counts of crime by year\",\n    x = \"Month\",\n    y = \"Counts of Crime\",\n    color = \"Year\"\n  ) \n\nFirst, add the theme_minimal() argument to the plot:\n\nggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +\n  geom_point() +\n  geom_line() + \n  labs(\n    title = \"Crime in Phoenix\",\n    subtitle = \"Monthly counts of crime by year\",\n    x = \"Month\",\n    y = \"Counts of Crime\",\n    color = \"Year\"\n  ) + # we add a plus sign here to tell it we have more info for it to use\n  \n  theme_minimal()\n\n\n\n\n\n\n\nNow, using the theme() function we can edit the theme. Let’s run it first and then look through it:\n\nggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +\n  geom_point() +\n  geom_line() + \n  labs(\n    title = \"Crime in Phoenix\",\n    subtitle = \"Monthly counts of crime by year\",\n    x = \"Month\",\n    y = \"Counts of Crime\",\n    color = \"Year\"\n  ) + \n  \n  theme_minimal() + \n  theme(\n    plot.title = element_text( face = \"bold\" ),\n    plot.subtitle = element_text( color = \"gray40\" ),\n    legend.position = \"bottom\",\n    panel.grid.minor = element_blank()\n  )\n\n\n\n\n\n\n\nThis version does several things:\n\n\nplot.title = element_text(face = \"bold\") makes the title stand out\n\nplot.subtitle = element_text(color = \"gray40\") softens the subtitle\n\nlegend.position = \"bottom\" moves the legend to a more readable location\n\npanel.grid.minor = element_blank() removes minor gridlines to reduce clutter\nScale functions\nScale functions control how the values in the data are displayed on the plot.\nSome common scale functions are:\n- scale_x_continuous() and scale_y_continuous() for numeric axes\n- scale_x_discrete() and scale_y_discrete() for categorical axes\n- scale_color_manual() and scale_fill_manual() for custom colors\n- scale_color_brewer() and scale_fill_brewer() for palette-based color choices\n- scale_x_log10() or scale_y_log10() for logarithmic scales\nScale functions are useful because they let us improve clarity without changing the underlying data. They help answer questions like: How many tick marks should appear? What labels should be shown? Should values be rounded? Which colors should represent each group?\n\nNEED EXERCISES FOR TEST YOUR KNOWLEDGE",
+    "crumbs": [
+      "Advanced `ggplot2` and Storytelling"
+    ]
+  },
+  {
+    "objectID": "dwc4ca-ggplot2-maps.html",
+    "href": "dwc4ca-ggplot2-maps.html",
+    "title": "Using Maps and ggplot2\n",
+    "section": "",
+    "text": "NEED EXERCISES FOR TEST YOUR KNOWLEDGE",
+    "crumbs": [
+      "Using Maps and `ggplot2`"
+    ]
   }
 ]

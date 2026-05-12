@@ -1,0 +1,289 @@
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = TRUE,
+  message=FALSE, 
+  warning=FALSE, 
+  fig.width = 10,
+  fig.align = "center"
+  )
+
+library( DWVpack )
+library( tidyverse )
+library( dplyr )
+library( ggplot2 )
+library( scales )
+library( patchwork )
+
+```
+
+# Advanced `ggplot2` and Storytelling {.unnumbered}
+
+In the previous chapter, we learned the foundations of `ggplot2` and how to create clear, effective graphics using layers, aesthetics, and geometries.
+We focused on building individual visualizations that accurately represent data.
+
+This chapter moves beyond creating single plots and focuses on presenting multiple visualizations as part of a larger narrative.
+In practice, analysts rarely stop after producing one figure.
+Instead, they refine visual design choices, compare multiple visualizations together, and organize graphics into a coherent story that communicates insight to an audience.
+
+The goal of this chapter is to transform basic plots into polished, report-ready visualizations that guide interpretation and support analytical storytelling.
+By the end of this chapter, you will be able to:
+
+-   Customize plot appearance using themes, colors, fonts, and scales
+-   Improve readability through labels, annotations, and formatting
+-   Create faceted visualizations for grouped comparisons
+-   Combine multiple graphics into figure panels\
+-   Add interactive elements to visualizations\
+-   Design visualizations that support narrative and communication goals
+
+Rather than treating visualization as simply generating graphs, this chapter approaches visualization as communication.
+Design choice has a large influence on how readers interpret information, so knowing what tools are available is crucial for building your toolkit.
+
+## Customizing Themes and Scales
+
+The first step in making a visualization feel polished is usually not adding more data.
+It is improving the way the existing data is presented.
+At this stage, the goal is to move beyond the default `ggplot2` appearance and begin shaping the plot so that it is more visually consistent with the story we want to tell.
+We do this by adjusting the theme and the scales.
+
+*Themes* control the non-data parts of the plot, such as: the background, gridlines, axis text, axis titles, legends, plot titles and margins, and so on.
+*Scales* control how data values are translated into visual values, such as axis limits, tick mark breaks, labels, color palettes, point sizes, and line types.
+Together, themes and scales let us turn a basic plot into something that looks intentional and professional.
+By changing themes and scales, we can guide attention toward the important parts of the figure and reduce distractions.
+
+### Theme functions
+
+`ggplot2` includes several built-in themes that change the overall look of a plot.
+Common examples include:
+
+-   `theme_gray()` the default theme
+-   `theme_minimal()` a clean, light theme with reduced clutter
+-   `theme_bw()` a black-and-white theme with stronger structure
+-   `theme_classic()` a simple theme with minimal gridlines
+-   `theme_dark()` a dark theme
+-   `theme_void()` removes most plot elements, useful for maps or special layouts
+
+To illustrate, let's take the plot for crimes in Phoenix we built in the last chapter and show the various themes:
+
+```{r, echo=FALSE}
+
+# data
+crime_monthly <- tidy_phx_crime  |> 
+  select( year, month ) |> 
+  arrange( year, month ) |> 
+  group_by( year, month  ) |> 
+  summarize( crimes = n() , .groups = "drop" )
+
+# base plot
+base_plot <- ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
+  geom_point() +
+  geom_line() + 
+  labs(
+    title = "Crime in Phoenix",
+    subtitle = "Monthly counts of crime by year",
+    x = "Month",
+    y = "Counts of Crime",
+    color = "Year"
+  ) +
+  theme( legend.position = "none" )
+
+# Apply different themes
+p1 <- base_plot +
+  theme_gray() +
+  ggtitle("theme_gray()")
+
+p2 <- base_plot +
+  theme_minimal() +
+  ggtitle("theme_minimal()")
+
+p3 <- base_plot +
+  theme_bw() +
+  ggtitle("theme_bw()")
+
+p4 <- base_plot +
+  theme_classic() +
+  ggtitle("theme_classic()")
+
+p5 <- base_plot +
+  theme_dark() +
+  ggtitle("theme_dark()")
+
+p6 <- base_plot +
+  theme_void() +
+  ggtitle("theme_void()")
+
+# Combine plots
+(p1 | p2) /
+(p3 | p4) /
+(p5 | p6) 
+
+```
+
+These themes are often a good starting point because they instantly change the visual tone of the figure.
+From there, we can refine individual elements using `theme()`.
+The `theme()` function lets us customize specific parts of the plot, including the title size and position, the axis text size, the legend placement, the gridline style, the plot background, and so on.
+
+Let's use the `theme_minimal()` function and make some adjustments to our plot.
+First, we need to define the data object.
+We can grab the code from the prior chapter:
+
+```{r, eval=FALSE}
+
+# data
+crime_monthly <- tidy_phx_crime  |> 
+  select( year, month ) |> 
+  arrange( year, month ) |> 
+  group_by( year, month  ) |> 
+  summarize( crimes = n() , .groups = "drop" )
+
+# code for the plot
+ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
+  geom_point() +
+  geom_line() + 
+  labs(
+    title = "Crime in Phoenix",
+    subtitle = "Monthly counts of crime by year",
+    x = "Month",
+    y = "Counts of Crime",
+    color = "Year"
+  ) 
+
+```
+
+First, add the `theme_minimal()` argument to the plot:
+
+```{r}
+
+ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
+  geom_point() +
+  geom_line() + 
+  labs(
+    title = "Crime in Phoenix",
+    subtitle = "Monthly counts of crime by year",
+    x = "Month",
+    y = "Counts of Crime",
+    color = "Year"
+  ) + # we add a plus sign here to tell it we have more info for it to use
+  
+  theme_minimal()
+
+```
+
+Now, using the `theme()` function we can edit the theme.
+Let's run it first and then look through it:
+
+```{r}
+
+ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
+  geom_point() +
+  geom_line() + 
+  labs(
+    title = "Crime in Phoenix",
+    subtitle = "Monthly counts of crime by year",
+    x = "Month",
+    y = "Counts of Crime",
+    color = "Year"
+  ) + 
+  
+  theme_minimal() + 
+  theme(
+    plot.title = element_text( face = "bold" ),
+    plot.subtitle = element_text( color = "gray40" ),
+    legend.position = "bottom",
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+This version does several things:
+
+-   `plot.title = element_text(face = "bold")` makes the title stand out
+-   `plot.subtitle = element_text(color = "gray40"`) softens the subtitle
+-   `legend.position = "bottom"` moves the legend to a more readable location
+-   `panel.grid.minor = element_blank()` removes minor gridlines to reduce clutter
+
+### Scale functions
+
+Scale functions control how the values in the data are displayed on the plot.
+
+Some common scale functions are:\
+- `scale_x_continuous()` and `scale_y_continuous()` for numeric axes\
+- `scale_x_discrete()` and `scale_y_discrete()` for categorical axes\
+- `scale_color_manual()` and `scale_fill_manual()` for custom colors\
+- `scale_color_brewer()` and `scale_fill_brewer()` for palette-based color choices\
+- `scale_x_log10()` or `scale_y_log10()` for logarithmic scales
+
+Scale functions are useful because they let us improve clarity without changing the underlying data.
+They help answer questions like: How many tick marks should appear?
+What labels should be shown?
+Should values be rounded?
+Which colors should represent each group?
+
+### How these functions work together
+
+It helps to think about the plot in layers:
+
+-   `geom_...` functions define what is drawn
+-   `labs()` defines what the plot says
+-   `theme()` defines how the plot looks
+-   `scale_...()` defines how values are displayed
+
+This division of labor is one of the strengths of `ggplot2`.
+Each function has a specific role, and together they make the plot easier to build, read, and revise.
+
+## Faceting for Comparisons
+
+One of the most common challenges in visualization is comparing groups.
+Suppose we want to compare crime types over time.
+A single plot that includes every category of crime can quickly become cluttered and difficult to interpret.
+Too many colors, overlapping lines, crowded points, different scales, etc. may make the visualization harder to read rather than easier.
+
+*Faceting* provides a solution to this problem.
+Faceting splits a dataset into subsets and displays each subset in its own panel while keeping the same plotting structure.
+This allows us to compare groups side-by-side using a consistent visual framework.
+Instead of asking the audience to mentally separate groups within one crowded figure, faceting creates separate but coordinated views.
+
+`ggplot2` provides two primary faceting functions `facet_wrap()` and `facet_grid()`.
+Both functions create multiple panels, but they organize the panels differently.
+`facet_wrap()` creates a series of panels that “wrap” across rows or columns and is useful when there is one grouping variable and there are many categories.
+The basic structure is `facet_wrap( ~ variable )` where the tilde (`~`) indicates the variable used to create the facets.
+
+To illustrate, let's again use the Phoenix crime data and show monthly crime trends by year for each type of crime.
+Think about the data we want to plot and how to design the recipe to give us that data.
+Essentially, we want crimes by year and month, but now we also want that for each crime type.
+So, we just need to include the crime type variable in our recipe.
+If you look through the `tidy_phx_crime` object, you will see that there is a column called "crime_type_clean".
+We just add that to our recipe:
+
+```{r}
+
+crime_type_monthly <- tidy_phx_crime  |> 
+  select( year, month, crime_type_clean ) |> 
+  arrange( year, month, crime_type_clean ) |> 
+  group_by( year, month, crime_type_clean  ) |> 
+  summarize( crimes = n() , .groups = "drop" )
+
+```
+
+Now, using `View( crime_type_monthly )` we can see how the data are structured.
+
+We can use `facet_wrap()` to create a separate plot (or **facet**) for each type of crime.
+All we do is add the function with the faceting variable to the plot:
+
+```{r}
+
+ggplot( crime_type_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
+  geom_point() +
+  geom_line() +
+  facet_wrap( ~ crime_type_clean )
+
+```
+
+Does this look wonky to you?
+
+HERE: NEED TO WORK THROUGH THE SCALE STUFF
+
+<br>
+
+NEED EXERCISES FOR TEST YOUR KNOWLEDGE
