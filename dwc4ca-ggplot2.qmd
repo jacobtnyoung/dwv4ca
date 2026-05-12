@@ -173,7 +173,7 @@ This is the basic setup that allows us to develop very sophisticated visual disp
 
 ## Crimes in Phoenix
 
-Recall from the prior chapters that we spent some time tidying the `phx_crime` object in `DWVpack`.
+Recall from the prior chapters that we spent some time tidying the `phx_crime` object in `DWVpack` and that data object is called `tidy_phx_crime`.
 We can now use those tidied data (tidier data?) to create a visualization.
 Specifically, we want to recreate this plot:
 
@@ -185,9 +185,9 @@ crime_monthly <- tidy_phx_crime  |>
   group_by( year, month  ) |> 
   summarize( crimes = n() , .groups = "drop" )
 
-ggplot(crime_monthly, aes(x = month_num, y = crimes, group = year, color = factor(year))) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2) +
+ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
+  geom_line() +
+  geom_point() +
   scale_x_continuous(
     breaks = 1:12,
     labels = month.abb
