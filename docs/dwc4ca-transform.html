@@ -62,6 +62,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./dwc4ca-ggplot2.html" rel="next">
 <link href="./dwc4ca-tidy.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -182,6 +183,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Data Transformation</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization with <code>ggplot2</code></span></a>
+  </div>
+</li>
     </ul>
 </div>
 </nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
@@ -204,9 +211,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#dates" id="toc-dates" class="nav-link" data-scroll-target="#dates">Dates</a>
   <ul class="collapse">
-<li><a href="#dates-1" id="toc-dates-1" class="nav-link" data-scroll-target="#dates-1">Dates</a></li>
+<li><a href="#the-parse_date_time-function" id="toc-the-parse_date_time-function" class="nav-link" data-scroll-target="#the-parse_date_time-function">The <code>parse_date_time()</code> Function</a></li>
   </ul>
 </li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-transform.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -639,7 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">dat_dates</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="dates-1" class="level3"><h3 class="anchored" data-anchor-id="dates-1">Dates</h3>
+<section id="the-parse_date_time-function" class="level3"><h3 class="anchored" data-anchor-id="the-parse_date_time-function">The <code>parse_date_time()</code> Function</h3>
 <p>Essentially what we want is the dates to be the same format. In <code>lubridate</code> there is a function, <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time()</a></code>, that does exactly this: it takes the input and parses it into a consistent format.</p>
 <p>I will give you the code chunk first, then we will work through it:</p>
 <div class="cell" data-layout-align="center">
@@ -733,11 +741,88 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 9 Oct       1</code></pre>
 </div>
 </div>
+</section></section></section><section id="example" class="level2"><h2 class="anchored" data-anchor-id="example">Example</h2>
+<p>Let’s pull this together by working with an example. As we have seen in prior chapters, the <code>DWVpack</code> package contains a data file on crimes in Phoenix, AZ called <code>phx_crime</code>. Take a look at the <code>time_date</code> variable for that object:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load the library</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va">DWVpack</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># print out the first few cases using the head() function</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span> <span class="va">phx_crime</span><span class="op">$</span><span class="va">time_date</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "11/01/2015  00:00" "11/01/2015  00:00" "11/01/2015  00:00"
+[4] "11/01/2015  00:00" "11/01/2015  00:00" "11/01/2015  00:00"</code></pre>
+</div>
+</div>
+<p>We can see that the <code>time_date</code> variable contains the <strong>date</strong> of the incident as well as the <strong>time</strong> and looks like this: 11/01/2015 00:00. There is a lot of information here. What we want to do is pull it apart and get several variables:<br>
+- Year - Month - Day - Time</p>
+<p>We can use <code>dplyr</code> and <code>lubridate</code> to help us create these variables. Let’s start by getting the date and time separated. If you take a look, 11/01/2015 00:00, you will see that the format is: “month/day/year hour:minute”. There is a function in <code>lubridate</code> called <code><a href="https://lubridate.tidyverse.org/reference/ymd_hms.html">mdy_hm()</a></code> that is build specifically for this format and converts a character string into a true date-time object that R can recognize and work with. For example, <code>mdy_hm( "11/1/2015 14:30" )</code> becomes something like <code>"2015-11-01 14:30:00 UTC"</code> where <code>2015-11-01</code> is the date stored in standardized YYYY-MM-DD format, <code>14:30:00</code> is the time in 24-hour format, and <code>UTC</code> is the time zone (“Coordinated Universal Time”).</p>
+<p>Take a look using the Phoenix data:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create the object</span></span>
+<span><span class="va">datetime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd_hms.html">mdy_hm</a></span><span class="op">(</span> <span class="va">phx_crime</span><span class="op">$</span><span class="va">time_date</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># take a look at what it creates</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span> <span class="va">datetime</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2025-09-02 23:00:00 UTC" "2025-09-02 23:29:00 UTC"
+[3] "2025-09-02 23:38:00 UTC" "2025-09-02 23:42:00 UTC"
+[5] "2025-09-02 23:49:00 UTC" "2025-09-02 23:55:00 UTC"</code></pre>
+</div>
+</div>
+<p>Next we want to get the date and time as separate objects. We do this using the <code><a href="https://lubridate.tidyverse.org/reference/as_date.html">as_date()</a></code> and <code><a href="https://rdrr.io/r/base/format.html">format()</a></code> functions.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create the objects</span></span>
+<span><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html">as_date</a></span><span class="op">(</span> <span class="va">datetime</span> <span class="op">)</span></span>
+<span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span> <span class="va">datetime</span>, <span class="st">"%H:%M"</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># inspect the first few cases</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span> <span class="va">date</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2025-09-02" "2025-09-02" "2025-09-02" "2025-09-02" "2025-09-02"
+[6] "2025-09-02"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span> <span class="va">time</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "23:00" "23:29" "23:38" "23:42" "23:49" "23:55"</code></pre>
+</div>
+</div>
+<p>The formatting codes in <code><a href="https://rdrr.io/r/base/format.html">format()</a></code> indicate that we want time in 24-hour (<code>%H</code>) and minutes (<code>%M</code>).</p>
+<p>As a final step, we want to pull out calendar components (i.e.&nbsp;year, month, day) as we did above:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">year</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html">year</a></span><span class="op">(</span> <span class="va">datetime</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># here, we want to keep the label and don't want it abbreviated</span></span>
+<span><span class="va">month</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span> <span class="va">datetime</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, abbr <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">day</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/day.html">day</a></span><span class="op">(</span> <span class="va">datetime</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>I have presented this in separate steps, but we can put this all together as a “data recipe” using the <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> function:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_crime_clean_date_time</span> <span class="op">&lt;-</span> <span class="va">phx_crime</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    </span>
+<span>    <span class="co"># Parse datetime</span></span>
+<span>    datetime <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd_hms.html">mdy_hm</a></span><span class="op">(</span> <span class="va">time_date</span> <span class="op">)</span>,</span>
+<span></span>
+<span>    <span class="co"># Separate date and time</span></span>
+<span>    date <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/as_date.html">as_date</a></span><span class="op">(</span> <span class="va">datetime</span> <span class="op">)</span>,</span>
+<span>    time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span> <span class="va">datetime</span>, <span class="st">"%H:%M"</span> <span class="op">)</span>,</span>
+<span></span>
+<span>    <span class="co"># Create components</span></span>
+<span>    year  <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html">year</a></span><span class="op">(</span> <span class="va">datetime</span> <span class="op">)</span>,</span>
+<span>    month <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/month.html">month</a></span><span class="op">(</span> <span class="va">datetime</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, abbr <span class="op">=</span> <span class="cn">FALSE</span> <span class="op">)</span>,</span>
+<span>    day   <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/day.html">day</a></span><span class="op">(</span> <span class="va">datetime</span> <span class="op">)</span></span>
+<span></span>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>We will work with these data in subsequent chapters. To avoid having to create a tidy data set with the cleaned date variables, <code>DWVpack</code> includes a data object called <code>tidy_phx_crime</code> which has already cleaned up the date and time variables.</p>
 <p><br></p>
 <p>NEED EXERCISES FOR TEST YOUR KNOWLEDGE</p>
 
 
-</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1142,6 +1227,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./dwc4ca-ggplot2.html" class="pagination-link" aria-label="Data Visualization with `ggplot2`">
+        <span class="nav-page-text">Data Visualization with <code>ggplot2</code></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

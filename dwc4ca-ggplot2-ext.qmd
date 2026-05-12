@@ -14,7 +14,6 @@ library( tidyverse )
 library( dplyr )
 library( ggplot2 )
 library( scales )
-library( patchwork ) # for multiple panels
 
 ```
 
@@ -158,8 +157,8 @@ Run this code and think about what is happening:
 
 ```{r}
 
-ggplot( data = crime_dat, 
-        mapping = aes( x = crimes, y = month ) )
+ggplot( crime_dat, 
+        aes( x = crimes, y = month ) )
 
 ```
 
@@ -181,108 +180,34 @@ Specifically, we want to recreate this plot:
 ```{r, echo=FALSE}
 
 crime_monthly <- tidy_phx_crime  |> 
-  select( month ) |> 
-  arrange( month ) |> 
-  group_by( month  ) |> 
+  select( year, month ) |> 
+  arrange( year, month ) |> 
+  group_by( year, month  ) |> 
   summarize( crimes = n() , .groups = "drop" )
 
-ggplot( crime_monthly, aes( x = month, y = crimes, group = 1 ) ) +
+ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
   geom_line() +
-  geom_point() 
+  geom_point() +
+  scale_x_continuous(
+    breaks = 1:12,
+    labels = month.abb
+  ) +
+  labs(
+    title = "Crimes by Month",
+    x = "Month",
+    y = "Number of Crimes",
+    color = "Year"
+  ) +
+  theme_minimal()
 
 ```
 
 Now, think for a bit about what we need.
-Effectively, we want a data object to plot that has a column for months and number of crimes.
+Effectively, we want a data object to plot that has a column for years, months, and number of crimes.
 We can use `dplyr` to create the data object.
-Let's start with using the `arrange()` and `group_by()` functions to sort the data by "month" and then we will group them to create a summary measure that is the count of crimes:
+Let's start with using the `arrange()` and `group_by()` functions to sort the data by "year" and then "month" and then we will group them to create a summary measure that is the count of crimes:
 
 ```{r, eval=FALSE}
-
-crime_monthly <- tidy_phx_crime  |> 
-  select( month ) |> 
-  arrange( month ) |> 
-  group_by( month  ) |> 
-  summarize( crimes = n() , .groups = "drop" )
-
-```
-
-Now, take a look at the data using `View( crime_monthly )` (it will pop up a separate window pane).
-Let's walk through this to see what we are doing:
-
--   `crime_monthly <- tidy_phx_crime` says to create a new object called `crime_monthly` from the `tidy_phx_crime` object. We create a new object since that will be the data just for this plot.
--   `select( month )` takes just the `month` variable.
--   `arrange( month )` sorts the data by `month`. Again, look at how the data are sorted using the `View( crime_monthly )` command.
--   `group_by( month  )` groups the data by `month`.
--   `summarize( crimes = n() , .groups = "drop" )` creates a new column called `crimes` which is a count for each month (because they data are grouped that way). The `.groups = "drop"` command just tells R to remove the grouping from the object after it is done creating the new column.
-
-Now that we have our data object, we can start building our plot.
-As we stated above, every `ggplot2` plot has three key components: **data** (which we just created), a set of **aesthetic mappings** between variables in the data and visual properties, and at least one layer which describes how to render each observation, created with a **geom** function.
-
-Let's set up our mapping by making the x-axis the month and the y-axis the count of crimes:
-
-```{r}
-
-ggplot( crime_monthly, aes( x = month, y = crimes ) )
-       
-```
-
-Note that the plot is blank because we have not set up the third piece, the layer.
-
-To set up a layer of points, we can use the `geom_point()` function:
-
-```{r}
-
-ggplot( crime_monthly, aes( x = month, y = crimes ) ) +
-  geom_point()
-       
-```
-
-The points are helpful, but adding a line here would help a great deal.
-We can also add a line using the `geom_line()` function.
-Note that we are just adding another layer:
-
-```{r}
-
-ggplot( crime_monthly, aes( x = month, y = crimes ) ) +
-  geom_point() +
-  geom_line()
-       
-```
-
-Ok, that didn't work and we got a warning.
-
-We got the warning because `geom_line()` connects observations together in order.
-That is, we have a line that connects January to February and so on.
-To do that, ggplot must know which observations belong to the same line.
-This is determined by the `group =` aesthetic.
-The problem is `ggplot` is assuming that each month is its own group, which prevents a continuous line from being drawn.
-We need to tell `ggplot` that there is only a single group and that the line should connect the dots.
-This is done using `group = 1`:
-
-```{r}
-
-ggplot( crime_monthly, aes( x = month, y = crimes, group = 1 ) ) +
-  geom_point() +
-  geom_line()
-       
-```
-
-Think about what this plot shows.
-It is the count of crimes per month in Phoenix across all years.
-What are some issues with the plot?
-Well to name a few: there is no title, the axes are not well labeled, we might want to separate crimes by years...
-
-### A Better Plot: Crimes by Year
-
-Ok, let's now build a plot for crimes by year.
-
-Remember the first step: think about how the data should be structured.
-Effectively, we want a data object to plot that has a column for months and number of crimes (like before) but we also want a column for years.
-We can use `dplyr` to create the data object.
-Let's start with using the `arrange()` and `group_by()` functions to sort the data by "year" and then "month" and we will group them to create a summary measure that is the count of crimes:
-
-```{r}
 
 crime_monthly <- tidy_phx_crime  |> 
   select( year, month ) |> 
@@ -293,7 +218,7 @@ crime_monthly <- tidy_phx_crime  |>
 ```
 
 Now, take a look at the data using `View( crime_monthly )` (it will pop up a separate window pane).
-Let's (again) walk through the data recipe to see what we are doing:
+Let's walk through this to see what we are doing:
 
 -   `crime_monthly <- tidy_phx_crime` says to create a new object called `crime_monthly` from the `tidy_phx_crime` object. We create a new object since that will be the data just for this plot.
 -   `select( year, month )` takes just the `year` and `month` variables.
@@ -301,88 +226,60 @@ Let's (again) walk through the data recipe to see what we are doing:
 -   `group_by( year, month  )` groups the data first by `year` and then by `month`.
 -   `summarize( crimes = n() , .groups = "drop" )` creates a new column called `crimes` which is a count for each month of each year (because they data are grouped that way). The `.groups = "drop"` command just tells R to remove the grouping from the object after it is done creating the new column.
 
-We can use the `ggplot` code from above, except that we have to update our `group=` argument.
-Since we want `ggplot` to separate the lines and dots for each year, we add that to the `group=` argument:
+Now that we have our data object, we can start building our plot.
+As we stated above, every `ggplot2` plot has three key components: **data** (which we just created), a set of **aesthetic mappings** between variables in the data and visual properties, and at least one layer which describes how to render each observation, created with a **geom** function.
+
+Let's set up our mapping by making the x-axis the month and the y-axis the count of crimes:
+
+```{r}
+
+ggplot( crime_monthly, aes( x = month, y = crimes, group = year ) )
+       
+```
+
+Note that the plot is blank because we have not set up the third piece, the layer.
+
+To set up a layer of points, we can use the `geom_point()` function:
 
 ```{r}
 
 ggplot( crime_monthly, aes( x = month, y = crimes, group = year ) ) +
-  geom_point() +
-  geom_line()
-
+  geom_point()
+       
 ```
 
-Think about what the aesthetic (i.e. `aes`) function is doing.
-It reads: for each year, draw a dot for the month and then connect the months with a line.
-
-Although we now have separate lines by year, it is hard to see which year is which.
+Ok.
+That is a bit better but we cannot see which year is which.
 To do this, we can add color using the `color =` argument.
-The `color=` aesthetic maps a variable to different colors in the plot:
+The color aesthetic maps a variable to different colors in the plot:
 
 ```{r}
 
 ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
-  geom_point() +
-  geom_line()
+  geom_point()
        
 ```
 
 Here, we included `color = factor( year )` to indicate that we want `year` to be converted from numeric years into categories.
 This is so that `ggplot` treats them as separate groups (rather than a continuous scale of values).
-To see what happens when we don't treat year as a category, but as a continuous variable, just remove the `factor()` function:
 
-```{r}
-
-ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = year ) ) +
-  geom_point() +
-  geom_line()
-       
-```
-
-This might be helpful in some cases, but treating it as a category works better for our case.
-
-Now, we need to update our labels.
-To do so, we can use the `labs` function which adds a new layer of labels.
-Let's do it first and then walk through it:
+The points are helpful, but adding lines here would help a great deal.
+We can also add lines using the `geom_line()` function.
+Note that we are just adding another layer:
 
 ```{r}
 
 ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
   geom_point() +
-  geom_line() + # note that we add a plus here to tell it to add a new layer after
-  labs(
-    title = "Crime in Phoenix",
-    subtitle = "Monthly counts of crime by year",
-    x = "Month",
-    y = "Counts of Crime",
-    color = "Year"
-  )
-
-```
-
-The new chunk simply adds a layer of labels for the title, subtitle, axis names, and name for the legend.
-To better see the change, just remove the code for `labs` and look and how the plot changes when the layers are removed:
-
-```{r, echo=FALSE}
-
-p1 <- ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
-  geom_point() +
-  geom_line() +
-  labs(
-    title = "Crime in Phoenix",
-    subtitle = "Monthly counts of crime by year",
-    x = "Month",
-    y = "Counts of Crime",
-    color = "Year"
-  )
-
-p2 <-ggplot( crime_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
-  geom_point() +
   geom_line()
-
-p1 + plot_spacer() + p2
-
+       
 ```
+
+HERE WITH WORKING THROUGH; lets get this cleaned up
+
+HERE IS THE REST OF WHAT TO GO THROUGH
+
+ggplot(crime_monthly, aes(x = month_num, y = crimes, group = year, color = factor(year))) + geom_line(linewidth = 1) + geom_point(size = 2) + scale_x_continuous( breaks = 1:12, labels = month.abb ) + labs( title = "Crimes by Month", x = "Month", y = "Number of Crimes", color = "Year" ) + theme_minimal()
 
 <br>
 
