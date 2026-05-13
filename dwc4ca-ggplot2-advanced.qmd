@@ -268,8 +268,111 @@ crime_type_monthly <- tidy_phx_crime  |>
 
 Now, using `View( crime_type_monthly )` we can see how the data are structured.
 
-We can use `facet_wrap()` to create a separate plot (or **facet**) for each type of crime.
+To get started, why don't we take a look at the data where we plot crimes by month for each *type* all together.
+To do this, we change the `group =` argument and the `color =` arguments to be the `crime_type_clean` column:
+
+```{r}
+
+ggplot( crime_type_monthly, aes( x = month, y = crimes, group = crime_type_clean, color = factor( crime_type_clean ) ) ) +
+  geom_point()
+
+```
+
+Yikes!
+Not a good visualization is it?
+(I have removed the `geom_line()` here for a reason).
+Think about *why* this visualization is problematic.
+First, it is hard to see what exactly we are visualizing.
+What the plot shows is the count of each type of crime for each year.
+Yeah, that does sound confusing!
+
+Rather than having all of these data on a single plot, we could create a plot (or plots) that have:
+
+-   monthly counts of crime for each type of crime and repeat the plot for each year
+-   monthly counts for each year and then repeat that for every type of crime
+
+Each of these is going to tell us something different so let's take a look at each in turn.
+
+### Year as a Facet
+
+We want to plot monthly counts for each type of crime, then have a separate plot for each year.
+That plot will tell us which crimes are most (least) prevalent across years.
+
+We can use `facet_wrap()` to create a separate plot (or **facet**) for year.
 All we do is add the function with the faceting variable to the plot:
+
+```{r}
+
+ggplot( crime_type_monthly, aes( x = month, y = crimes, group = crime_type_clean, color = factor( crime_type_clean ) ) ) +
+  geom_point() +
+  geom_line() +
+  
+  # here is our faceting function at work!
+  facet_wrap( ~ year  ) 
+  
+```
+
+Examine the plot, think about what story it tells us about crime in Phoenix over the years?
+
+Now, take a look at this plot, which is the same data but we have tweaked the output a bit:
+
+```{r, echo=FALSE}
+
+ggplot(
+  crime_type_monthly,
+  aes(
+    x = month,
+    y = crimes,
+    group = crime_type_clean,
+    color = factor(crime_type_clean)
+  )
+) +
+  geom_point() +
+  geom_line() +
+
+  # Put all facets in one row
+  facet_wrap(~ year, nrow = 1) +
+  
+  # change the labels
+   scale_x_discrete(
+    labels = c(
+      "J", "F", "M", "A", "M", "J",
+      "J", "A", "S", "O", "N", "D"
+    )
+  ) +
+
+  labs(
+    title = "Crime in Phoenix",
+    subtitle = "Monthly counts of crime type by year",
+    x = "Month",
+    y = "Counts of Crime",
+    color = "Crime Type" 
+  ) +
+  
+  # Move legend to bottom
+  theme_minimal() +
+  theme(
+    legend.position = "bottom"
+  )
+
+```
+
+We can see that **Theft** is the most common crime each year *and* that it has had a long term decline.
+**NOTE: These are counts, not rates, so they do not adjust for population**.
+What do you think happened around March 2020?
+
+Take a look at the other crimes.
+One of the issues is that these are get squished together because the y-axis is on the same scale.
+Since theft is much more common than homicide, this makes the monthly differences in homicide (or other relatively infrequent crime types) harder to see.
+We will see below how to address this issue, but now let's look at presenting the same data a bit differently.
+
+### Crime Type as a Facet
+
+What if we were interested in yearly differences for each type of crime.
+We want to plot monthly counts for each year (as we did in the prior chapter), then have a separate plot for each type of crime.
+
+We can use `facet_wrap()` to create a separate plot (or **facet**) for each type of crime.
+All we do is add "crime_type_clean" to the faceting function and make "year" our grouping variable:
 
 ```{r}
 
@@ -280,9 +383,76 @@ ggplot( crime_type_monthly, aes( x = month, y = crimes, group = year, color = fa
 
 ```
 
-Does this look wonky to you?
+Now hold on, does this look wonky to you?
+We saw this problem above, but it is more pronounced now.
+The scales are all the same across the crime types.
+Let's now look at how to solve this problem (then come back to our plots).
 
-HERE: NEED TO WORK THROUGH THE SCALE STUFF
+## Free scales versus fixed scales
+
+As we just saw, the default behavior for faceted plots is to use the same axis scales across all panels.
+This is usually beneficial because it preserves comparability and does not exaggerate differences.
+However, sometimes categories differ so dramatically that fixed scales hide important variation.
+In those cases, we can allow scales to vary using `scales = "free"`.
+
+```{r}
+
+ggplot( crime_type_monthly, aes( x = month, y = crimes, group = year, color = factor( year ) ) ) +
+  geom_point() +
+  geom_line() +
+  facet_wrap( ~ crime_type_clean, scales = "free" )
+
+```
+
+What a difference, right!?!
+
+It is important to note that free scales improve visibility within panels, but they *reduce* direct comparability between panels.
+For example, compare the panel for **Arson** with the panel for **Drugs**.
+The scale for the latter is nearly 10x greater.
+
+This creates an important visualization tradeoff: fixed scales support comparison, but free scales support detail visibility.
+The choice depends on the goal of the visualization, but it is important to keep in mind when you are creating visualizations (AND when you are reviewing visualizations created by others!)
+
+Now, think back to our comparison:
+
+-   monthly counts of crime for each type of crime and repeat the plot for each year
+-   monthly counts for each year and then repeat that for every type of crime
+
+Does it make sense to free the scale for the first one (i.e. monthly counts for each type faceted by year)?
+
+## Combining Multiple Plots
+
+As visualizations become more sophisticated, a single figure is often not enough to communicate the full story in the data, even if it has been faceted.
+As we just saw, there are different ways to present data on monthly counts of crime by type and across years.
+
+In practice, analysts frequently need to present:
+
+-   multiple views of the same dataset,
+-   comparisons across measures,
+-   summary figures alongside detailed figures,
+-   or collections of plots that support a broader narrative.
+
+Rather than displaying separate charts independently, we can combine them into coordinated layouts.
+
+Combining plots allows us to organize information more clearly, guide readers through a sequence of ideas, compare related patterns, and create report-ready figure panels or dashboard layouts (as we will see in later chapters).
+
+*Why combine plots?* A single chart usually answers one question.
+A collection of charts can answer several connected questions simultaneously.
+Combining plots helps readers move through the analysis more naturally.
+
+Several R packages support plot composition, but we will focus exclusively on 1 because it uses simple and intuitive syntax and compatibility with `ggplot2`.
+
+HERE
+
+### The `patchwork` package
+
+The patchwork package allows plots to be combined using operators such as:
+
+| 
+
+places plots side-by-side / stacks plots vertically
+
+This creates a layout system that feels similar to arranging blocks.
 
 <br>
 
