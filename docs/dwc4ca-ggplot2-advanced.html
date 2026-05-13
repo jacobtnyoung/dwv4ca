@@ -101,7 +101,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script><script src="site_libs/plotly-binding-4.12.0/plotly.js"></script><script src="site_libs/typedarray-0.1/typedarray.min.js"></script><script src="site_libs/jquery-3.5.1/jquery.min.js"></script><link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script><link href="site_libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="site_libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 </head>
 <body class="nav-sidebar floating quarto-light">
 
@@ -214,6 +217,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
 <li><a href="#theme-functions" id="toc-theme-functions" class="nav-link" data-scroll-target="#theme-functions">Theme functions</a></li>
   <li><a href="#scale-functions" id="toc-scale-functions" class="nav-link" data-scroll-target="#scale-functions">Scale functions</a></li>
+  <li><a href="#how-these-functions-work-together" id="toc-how-these-functions-work-together" class="nav-link" data-scroll-target="#how-these-functions-work-together">How these functions work together</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#faceting-for-comparisons" id="toc-faceting-for-comparisons" class="nav-link" data-scroll-target="#faceting-for-comparisons">Faceting for Comparisons</a>
+  <ul class="collapse">
+<li><a href="#year-as-a-facet" id="toc-year-as-a-facet" class="nav-link" data-scroll-target="#year-as-a-facet">Year as a Facet</a></li>
+  <li><a href="#crime-type-as-a-facet" id="toc-crime-type-as-a-facet" class="nav-link" data-scroll-target="#crime-type-as-a-facet">Crime Type as a Facet</a></li>
+  </ul>
+</li>
+  <li><a href="#free-scales-versus-fixed-scales" id="toc-free-scales-versus-fixed-scales" class="nav-link" data-scroll-target="#free-scales-versus-fixed-scales">Free scales versus fixed scales</a></li>
+  <li>
+<a href="#combining-multiple-plots" id="toc-combining-multiple-plots" class="nav-link" data-scroll-target="#combining-multiple-plots">Combining Multiple Plots</a>
+  <ul class="collapse">
+<li><a href="#the-patchwork-package" id="toc-the-patchwork-package" class="nav-link" data-scroll-target="#the-patchwork-package">The <code>patchwork</code> package</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#storytelling-through-visualization" id="toc-storytelling-through-visualization" class="nav-link" data-scroll-target="#storytelling-through-visualization">Storytelling Through Visualization</a>
+  <ul class="collapse">
+<li><a href="#interactive-storytelling" id="toc-interactive-storytelling" class="nav-link" data-scroll-target="#interactive-storytelling">Interactive storytelling</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-ggplot2-advanced.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -255,17 +279,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>ggplot2</code> includes several built-in themes that change the overall look of a plot. Common examples include:</p>
 <ul>
 <li>
-<code>theme_gray()</code> the default theme</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code> the default theme</li>
 <li>
-<code>theme_minimal()</code> a clean, light theme with reduced clutter</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code> a clean, light theme with reduced clutter</li>
 <li>
-<code>theme_bw()</code> a black-and-white theme with stronger structure</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code> a black-and-white theme with stronger structure</li>
 <li>
-<code>theme_classic()</code> a simple theme with minimal gridlines</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic()</a></code> a simple theme with minimal gridlines</li>
 <li>
-<code>theme_dark()</code> a dark theme</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_dark()</a></code> a dark theme</li>
 <li>
-<code>theme_void()</code> removes most plot elements, useful for maps or special layouts</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_void()</a></code> removes most plot elements, useful for maps or special layouts</li>
 </ul>
 <p>To illustrate, let’s take the plot for crimes in Phoenix we built in the last chapter and show the various themes:</p>
 <div class="cell" data-layout-align="center">
@@ -276,8 +300,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>These themes are often a good starting point because they instantly change the visual tone of the figure. From there, we can refine individual elements using <code>theme()</code>. The <code>theme()</code> function lets us customize specific parts of the plot, including the title size and position, the axis text size, the legend placement, the gridline style, the plot background, and so on.</p>
-<p>Let’s use the <code>theme_minimal()</code> function and make some adjustments to our plot. First, we need to define the data object. We can grab the code from the prior chapter:</p>
+<p>These themes are often a good starting point because they instantly change the visual tone of the figure. From there, we can refine individual elements using <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code>. The <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> function lets us customize specific parts of the plot, including the title size and position, the axis text size, the legend placement, the gridline style, the plot background, and so on.</p>
+<p>Let’s use the <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code> function and make some adjustments to our plot. First, we need to define the data object. We can grab the code from the prior chapter:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># data</span></span>
 <span><span class="va">crime_monthly</span> <span class="op">&lt;-</span> <span class="va">tidy_phx_crime</span>  <span class="op">|&gt;</span> </span>
@@ -298,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    color <span class="op">=</span> <span class="st">"Year"</span></span>
 <span>  <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>First, add the <code>theme_minimal()</code> argument to the plot:</p>
+<p>First, add the <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code> argument to the plot:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -319,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Now, using the <code>theme()</code> function we can edit the theme. Let’s run it first and then look through it:</p>
+<p>Now, using the <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> function we can edit the theme. Let’s run it first and then look through it:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -359,12 +383,479 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></section><section id="scale-functions" class="level3"><h3 class="anchored" data-anchor-id="scale-functions">Scale functions</h3>
 <p>Scale functions control how the values in the data are displayed on the plot.</p>
 <p>Some common scale functions are:<br>
-- <code>scale_x_continuous()</code> and <code>scale_y_continuous()</code> for numeric axes<br>
-- <code>scale_x_discrete()</code> and <code>scale_y_discrete()</code> for categorical axes<br>
-- <code>scale_color_manual()</code> and <code>scale_fill_manual()</code> for custom colors<br>
-- <code>scale_color_brewer()</code> and <code>scale_fill_brewer()</code> for palette-based color choices<br>
-- <code>scale_x_log10()</code> or <code>scale_y_log10()</code> for logarithmic scales</p>
+- <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous()</a></code> for numeric axes<br>
+- <code><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_y_discrete()</a></code> for categorical axes<br>
+- <code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_color_manual()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual()</a></code> for custom colors<br>
+- <code><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer()</a></code> for palette-based color choices<br>
+- <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10()</a></code> or <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10()</a></code> for logarithmic scales</p>
 <p>Scale functions are useful because they let us improve clarity without changing the underlying data. They help answer questions like: How many tick marks should appear? What labels should be shown? Should values be rounded? Which colors should represent each group?</p>
+</section><section id="how-these-functions-work-together" class="level3"><h3 class="anchored" data-anchor-id="how-these-functions-work-together">How these functions work together</h3>
+<p>It helps to think about the plot in layers:</p>
+<ul>
+<li>
+<code>geom_...</code> functions define what is drawn</li>
+<li>
+<code><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs()</a></code> defines what the plot says</li>
+<li>
+<code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> defines how the plot looks</li>
+<li>
+<code>scale_...()</code> defines how values are displayed</li>
+</ul>
+<p>This division of labor is one of the strengths of <code>ggplot2</code>. Each function has a specific role, and together they make the plot easier to build, read, and revise.</p>
+</section></section><section id="faceting-for-comparisons" class="level2"><h2 class="anchored" data-anchor-id="faceting-for-comparisons">Faceting for Comparisons</h2>
+<p>One of the most common challenges in visualization is comparing groups. Suppose we want to compare crime types over time. A single plot that includes every category of crime can quickly become cluttered and difficult to interpret. Too many colors, overlapping lines, crowded points, different scales, etc. may make the visualization harder to read rather than easier.</p>
+<p><em>Faceting</em> provides a solution to this problem. Faceting splits a dataset into subsets and displays each subset in its own panel while keeping the same plotting structure. This allows us to compare groups side-by-side using a consistent visual framework. Instead of asking the audience to mentally separate groups within one crowded figure, faceting creates separate but coordinated views.</p>
+<p><code>ggplot2</code> provides two primary faceting functions <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid()</a></code>. Both functions create multiple panels, but they organize the panels differently. <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> creates a series of panels that “wrap” across rows or columns and is useful when there is one grouping variable and there are many categories. The basic structure is <code>facet_wrap( ~ variable )</code> where the tilde (<code>~</code>) indicates the variable used to create the facets.</p>
+<p>To illustrate, let’s again use the Phoenix crime data and show monthly crime trends by year for each type of crime. Think about the data we want to plot and how to design the recipe to give us that data. Essentially, we want crimes by year and month, but now we also want that for each crime type. So, we just need to include the crime type variable in our recipe. If you look through the <code>tidy_phx_crime</code> object, you will see that there is a column called “crime_type_clean”. We just add that to our recipe:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_type_monthly</span> <span class="op">&lt;-</span> <span class="va">tidy_phx_crime</span>  <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>, <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">arrange</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>, <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>, <span class="va">crime_type_clean</span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarize</span><span class="op">(</span> crimes <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span> , .groups <span class="op">=</span> <span class="st">"drop"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now, using <code>View( crime_type_monthly )</code> we can see how the data are structured.</p>
+<p>To get started, why don’t we take a look at the data where we plot crimes by month for each <em>type</em> all together. To do this, we change the <code>group =</code> argument and the <code>color =</code> arguments to be the <code>crime_type_clean</code> column:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_type_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Yikes! Not a good visualization is it? (I have removed the <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line()</a></code> here for a reason). Think about <em>why</em> this visualization is problematic. First, it is hard to see what exactly we are visualizing. What the plot shows is the count of each type of crime for each year. Yeah, that does sound confusing!</p>
+<p>Rather than having all of these data on a single plot, we could create a plot (or plots) that have:</p>
+<ul>
+<li>monthly counts of crime for each type of crime and repeat the plot for each year</li>
+<li>monthly counts for each year and then repeat that for every type of crime</li>
+</ul>
+<p>Each of these is going to tell us something different so let’s take a look at each in turn.</p>
+<section id="year-as-a-facet" class="level3"><h3 class="anchored" data-anchor-id="year-as-a-facet">Year as a Facet</h3>
+<p>We want to plot monthly counts for each type of crime, then have a separate plot for each year. That plot will tell us which crimes are most (least) prevalent across years.</p>
+<p>We can use <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> to create a separate plot (or <strong>facet</strong>) for year. All we do is add the function with the faceting variable to the plot:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_type_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># here is our faceting function at work!</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span> <span class="op">~</span> <span class="va">year</span>  <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Examine the plot, think about what story it tells us about crime in Phoenix over the years?</p>
+<p>Now, take a look at this plot, which is the same data but we have tweaked the output a bit:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that <strong>Theft</strong> is the most common crime each year <em>and</em> that it has had a long term decline. <strong>NOTE: These are counts, not rates, so they do not adjust for population</strong>. What do you think happened around March 2020?</p>
+<p>Take a look at the other crimes. One of the issues is that these are get squished together because the y-axis is on the same scale. Since theft is much more common than homicide, this makes the monthly differences in homicide (or other relatively infrequent crime types) harder to see. We will see below how to address this issue, but now let’s look at presenting the same data a bit differently.</p>
+</section><section id="crime-type-as-a-facet" class="level3"><h3 class="anchored" data-anchor-id="crime-type-as-a-facet">Crime Type as a Facet</h3>
+<p>What if we were interested in yearly differences for each type of crime. We want to plot monthly counts for each year (as we did in the prior chapter), then have a separate plot for each type of crime.</p>
+<p>We can use <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> to create a separate plot (or <strong>facet</strong>) for each type of crime. All we do is add “crime_type_clean” to the faceting function and make “year” our grouping variable:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_type_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span> <span class="op">~</span> <span class="va">crime_type_clean</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now hold on, does this look wonky to you? We saw this problem above, but it is more pronounced now. The scales are all the same across the crime types. Let’s now look at how to solve this problem (then come back to our plots).</p>
+</section></section><section id="free-scales-versus-fixed-scales" class="level2"><h2 class="anchored" data-anchor-id="free-scales-versus-fixed-scales">Free scales versus fixed scales</h2>
+<p>As we just saw, the default behavior for faceted plots is to use the same axis scales across all panels. This is usually beneficial because it preserves comparability and does not exaggerate differences. However, sometimes categories differ so dramatically that fixed scales hide important variation. In those cases, we can allow scales to vary using <code>scales = "free"</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_type_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span> <span class="op">~</span> <span class="va">crime_type_clean</span>, scales <span class="op">=</span> <span class="st">"free"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What a difference, right!?!</p>
+<p>It is important to note that free scales improve visibility within panels, but they <em>reduce</em> direct comparability between panels. For example, compare the panel for <strong>Arson</strong> with the panel for <strong>Drugs</strong>. The scale for the latter is nearly 10x greater.</p>
+<p>This creates an important visualization tradeoff: fixed scales support comparison, but free scales support detail visibility. The choice depends on the goal of the visualization, but it is important to keep in mind when you are creating visualizations (AND when you are reviewing visualizations created by others!)</p>
+<p>Now, think back to our comparison:</p>
+<ul>
+<li>monthly counts of crime for each type of crime and repeat the plot for each year</li>
+<li>monthly counts for each year and then repeat that for every type of crime</li>
+</ul>
+<p>Does it make sense to free the scale for the first one (i.e.&nbsp;monthly counts for each type faceted by year)?</p>
+</section><section id="combining-multiple-plots" class="level2"><h2 class="anchored" data-anchor-id="combining-multiple-plots">Combining Multiple Plots</h2>
+<p>As visualizations become more sophisticated, a single figure is often not enough to communicate the full story in the data, even if it has been faceted. As we just saw, there are different ways to present data on monthly counts of crime by type and across years.</p>
+<p>In practice, analysts frequently need to present:</p>
+<ul>
+<li>multiple views of the same dataset,</li>
+<li>comparisons across measures,</li>
+<li>summary figures alongside detailed figures,</li>
+<li>or collections of plots that support a broader narrative.</li>
+</ul>
+<p>Rather than displaying separate charts independently, we can combine them into coordinated layouts.</p>
+<p>Combining plots allows us to organize information more clearly, guide readers through a sequence of ideas, compare related patterns, and create report-ready figure panels or dashboard layouts (as we will see in later chapters).</p>
+<p><em>Why combine plots?</em> A single chart usually answers one question. A collection of charts can answer several connected questions simultaneously. Combining plots helps readers move through the analysis more naturally.</p>
+<p>Several R packages support plot composition, but we will focus exclusively on 1 because it uses simple and intuitive syntax and compatibility with <code>ggplot2</code>.</p>
+<section id="the-patchwork-package" class="level3"><h3 class="anchored" data-anchor-id="the-patchwork-package">The <code>patchwork</code> package</h3>
+<p>The patchwork package allows plots to be combined using operators such as: <code>|</code> which places plots side-by-side and <code>/</code> which stacks plots vertically. This creates a layout system that feels similar to arranging blocks.</p>
+<p>To use the package, first install it then load the library (remember that you only need to install the package once, but each time you open RStudio you need to load the library):</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span> <span class="st">"patchwork"</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="st"><a href="https://patchwork.data-imaginist.com">"patchwork"</a></span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>As we have seen throughout the chapters, the <code>&lt;-</code> operator creates an object. We can do the same thing with <code>ggplot2</code> plots. We can create a base plot and make modifications as needed.</p>
+<p>To illustrate, let’s create a plot of monthly crime rates using the <code>crime_monthly</code> object:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create the plot as an object</span></span>
+<span><span class="va">monthly_crimes_plot</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span> </span>
+<span>  data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>  mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> </span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># render the plot</span></span>
+<span><span class="va">monthly_crimes_plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now that we have the <code>monthly_crimes_plot</code> as an object, we can make modifications as needed.</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># add the the improvements to the object</span></span>
+<span><span class="va">monthly_crimes_plot</span> <span class="op">&lt;-</span> <span class="va">monthly_crimes_plot</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># add some labels</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Crime in Phoenix"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Monthly counts of crime type by year"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Month"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Counts of Crime"</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"Year"</span> </span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Move legend to bottom</span></span>
+<span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="st">"bottom"</span></span>
+<span>  <span class="op">)</span>  </span>
+<span></span>
+<span><span class="co"># render the plot (again)</span></span>
+<span><span class="va">monthly_crimes_plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now, let’s create a separate plot that is the different types over time:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">type_crimes_plot</span> <span class="op">&lt;-</span> </span>
+<span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span></span>
+<span>  <span class="va">crime_type_monthly</span>,</span>
+<span>  <span class="fu">aes</span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">month</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">crimes</span>,</span>
+<span>    group <span class="op">=</span> <span class="va">crime_type_clean</span>,</span>
+<span>    color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">crime_type_clean</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Put all facets in one row</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">year</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># change the labels</span></span>
+<span>   <span class="fu">scale_x_discrete</span><span class="op">(</span></span>
+<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>      <span class="st">"J"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"A"</span>, <span class="st">"M"</span>, <span class="st">"J"</span>,</span>
+<span>      <span class="st">"J"</span>, <span class="st">"A"</span>, <span class="st">"S"</span>, <span class="st">"O"</span>, <span class="st">"N"</span>, <span class="st">"D"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Crime in Phoenix"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Monthly counts of crime type by year"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Month"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Counts of Crime"</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"Crime Type"</span> </span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Move legend to bottom</span></span>
+<span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span></span>
+<span>    legend.position <span class="op">=</span> <span class="st">"bottom"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># render it</span></span>
+<span><span class="va">type_crimes_plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now we can put them together by using the <code>|</code> operator:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">|</span> <span class="va">type_crimes_plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Alternatively, we could stack them by using the <code>/</code> operator:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">/</span> <span class="va">type_crimes_plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The <code>patchwork</code> syntax is very flexible allowing multiple plot placement:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">(</span> <span class="va">monthly_crimes_plot</span> <span class="op">|</span> <span class="va">monthly_crimes_plot</span> <span class="op">)</span> <span class="op">/</span> <span class="va">type_crimes_plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This gets a bit squished, but you get the point.</p>
+<p>The package also allows annotation using the <code><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation()</a></code> function:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">/</span> <span class="va">type_crimes_plot</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html">plot_annotation</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Exploring Crime in Phoenix"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Multiple Visualizations of Crime"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Source: City of Phoenix Open Data Portal"</span></span>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section></section><section id="storytelling-through-visualization" class="level2"><h2 class="anchored" data-anchor-id="storytelling-through-visualization">Storytelling Through Visualization</h2>
+<p>At this point, we know how to create plots, customize their appearance, facet comparisons, and combine multiple graphics into coordinated layouts. The next step is learning how to use these visualizations to tell a story. That is, we want to pull all of this together (and a few extra tools) to emphasize what we want the reader to take away from the visualization. Data visualization is not only about displaying information. It is also about guiding interpretation.</p>
+<p>A strong visualization helps answer questions such as:</p>
+<ul>
+<li>What should the audience notice first?</li>
+<li>Which comparison matters most?</li>
+<li>What is surprising or important?</li>
+<li>What conclusion should the reader take away?</li>
+</ul>
+<p>We have already built some useful visualizations, now we want to add a few more aspects to the plots to “tell the story”.</p>
+<p>One useful tool for doing this is annotation. <code>ggplot2</code> includes several useful annotation functions such as <code><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_label()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment()</a></code>.</p>
+<p>Let’s take a look, again, at the monthly plot of crimes and think about where we might want to annotate for the reader:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What about the downturn around May 2020 that was the result of the COVID-19 pandemic lockdowns. Let’s add an annotation to the plot that emphasizes this:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">+</span> </span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>    <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Jun"</span>,</span>
+<span>    y <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Decline due to Lockdowns"</span></span>
+<span>  <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ok that is a start, but we can do better by adjusting the size and color and inserting a hard return using <code>\n</code> in the label:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">+</span> </span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>    <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Jun"</span>,</span>
+<span>    y <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Note the\ decline due\n to lockdowns"</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"firebrick"</span></span>
+<span>  <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This looks better, so we can add it to our plot object like this:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">&lt;-</span> <span class="va">monthly_crimes_plot</span> <span class="op">+</span> </span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>    <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Jun"</span>,</span>
+<span>    y <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Note the\ decline due\n to lockdowns"</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"firebrick"</span></span>
+<span>  <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Another point to emphasize is the draw attention to the gap that emerges in November after 2021:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">+</span> </span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>    <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>    y <span class="op">=</span> <span class="fl">5100</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Note decline\n post 2021"</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"darkblue"</span></span>
+<span>  <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We could also add a line segment to draw attention to this:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">+</span> </span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>    <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>    y <span class="op">=</span> <span class="fl">5100</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Note decline\n post 2021"</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"darkblue"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>  <span class="st">"segment"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>  xend <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>  y <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  yend <span class="op">=</span> <span class="fl">4700</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"darkblue"</span>,</span>
+<span>  linewidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span> <span class="fl">0.1</span>, <span class="st">"inches"</span> <span class="op">)</span> <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Several might make this more clear:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">monthly_crimes_plot</span> <span class="op">+</span> </span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>    <span class="st">"text"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>    y <span class="op">=</span> <span class="fl">5100</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Note decline\n post 2021"</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"darkblue"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>  <span class="st">"segment"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>  xend <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>  y <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  yend <span class="op">=</span> <span class="fl">4700</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"darkblue"</span>,</span>
+<span>  linewidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span> <span class="fl">0.1</span>, <span class="st">"inches"</span> <span class="op">)</span> <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>  <span class="st">"segment"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>  xend <span class="op">=</span> <span class="st">"Oct"</span>,</span>
+<span>  y <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  yend <span class="op">=</span> <span class="fl">4750</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"darkblue"</span>,</span>
+<span>  linewidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span> <span class="fl">0.1</span>, <span class="st">"inches"</span> <span class="op">)</span> <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span></span>
+<span><span class="fu">annotate</span><span class="op">(</span></span>
+<span>  <span class="st">"segment"</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"Nov"</span>,</span>
+<span>  xend <span class="op">=</span> <span class="st">"Dec"</span>,</span>
+<span>  y <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  yend <span class="op">=</span> <span class="fl">4300</span>,</span>
+<span>  color <span class="op">=</span> <span class="st">"darkblue"</span>,</span>
+<span>  linewidth <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  arrow <span class="op">=</span> <span class="fu">arrow</span><span class="op">(</span>length <span class="op">=</span> <span class="fu">unit</span><span class="op">(</span> <span class="fl">0.1</span>, <span class="st">"inches"</span> <span class="op">)</span> <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-ggplot2-advanced_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="interactive-storytelling" class="level3"><h3 class="anchored" data-anchor-id="interactive-storytelling">Interactive storytelling</h3>
+<p>Interactive visualizations allow users to explore data dynamically. Packages such as <code>plotly</code> can add hover labels, zooming, clickable elements, and interactive filtering. These features can be especially valuable for audience engagement as well as dashboard development.</p>
+<p><code>plotly</code> converts static graphics into interactive visualizations and a standard <code>ggplot2</code> figure can become interactive with a single function: <code><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html">ggplotly()</a></code>.</p>
+<p>To use <code>plotly</code>, first install it then load the library (remember that you only need to install the package once, but each time you open RStudio you need to load the library):</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span> <span class="st">"plotly"</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="st"><a href="https://plotly-r.com">"plotly"</a></span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now, just take a <code>ggplot2</code> object and use the <code><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html">ggplotly()</a></code> function to make it interactive:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html">ggplotly</a></span><span class="op">(</span> <span class="va">monthly_crimes_plot</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-12741a6f687c1a2fa5e1" style="width:100%;height:325px;"></div>
+<script type="application/json" data-for="htmlwidget-12741a6f687c1a2fa5e1">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[5340,4745,5109,5278,5259,5269,5160,5473,5275,5361,5292,5712],"text":["month: Jan<br />crimes: 5340<br />year: 2016<br />factor(year): 2016","month: Feb<br />crimes: 4745<br />year: 2016<br />factor(year): 2016","month: Mar<br />crimes: 5109<br />year: 2016<br />factor(year): 2016","month: Apr<br />crimes: 5278<br />year: 2016<br />factor(year): 2016","month: May<br />crimes: 5259<br />year: 2016<br />factor(year): 2016","month: Jun<br />crimes: 5269<br />year: 2016<br />factor(year): 2016","month: Jul<br />crimes: 5160<br />year: 2016<br />factor(year): 2016","month: Aug<br />crimes: 5473<br />year: 2016<br />factor(year): 2016","month: Sep<br />crimes: 5275<br />year: 2016<br />factor(year): 2016","month: Oct<br />crimes: 5361<br />year: 2016<br />factor(year): 2016","month: Nov<br />crimes: 5292<br />year: 2016<br />factor(year): 2016","month: Dec<br />crimes: 5712<br />year: 2016<br />factor(year): 2016"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"2016","legendgroup":"2016","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[5596,5048,5404,5344,5691,5537,5690,5703,5341,5799,5412,5531],"text":["month: Jan<br />crimes: 5596<br />year: 2017<br />factor(year): 2017","month: Feb<br />crimes: 5048<br />year: 2017<br />factor(year): 2017","month: Mar<br />crimes: 5404<br />year: 2017<br />factor(year): 2017","month: Apr<br />crimes: 5344<br />year: 2017<br />factor(year): 2017","month: May<br />crimes: 5691<br />year: 2017<br />factor(year): 2017","month: Jun<br />crimes: 5537<br />year: 2017<br />factor(year): 2017","month: Jul<br />crimes: 5690<br />year: 2017<br />factor(year): 2017","month: Aug<br />crimes: 5703<br />year: 2017<br />factor(year): 2017","month: Sep<br />crimes: 5341<br />year: 2017<br />factor(year): 2017","month: Oct<br />crimes: 5799<br />year: 2017<br />factor(year): 2017","month: Nov<br />crimes: 5412<br />year: 2017<br />factor(year): 2017","month: Dec<br />crimes: 5531<br />year: 2017<br />factor(year): 2017"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(211,146,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(211,146,0,1)"}},"hoveron":"points","name":"2017","legendgroup":"2017","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(211,146,0,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[5982,4861,5228,5106,5522,5119,5271,5594,5490,5706,5413,5640],"text":["month: Jan<br />crimes: 5982<br />year: 2018<br />factor(year): 2018","month: Feb<br />crimes: 4861<br />year: 2018<br />factor(year): 2018","month: Mar<br />crimes: 5228<br />year: 2018<br />factor(year): 2018","month: Apr<br />crimes: 5106<br />year: 2018<br />factor(year): 2018","month: May<br />crimes: 5522<br />year: 2018<br />factor(year): 2018","month: Jun<br />crimes: 5119<br />year: 2018<br />factor(year): 2018","month: Jul<br />crimes: 5271<br />year: 2018<br />factor(year): 2018","month: Aug<br />crimes: 5594<br />year: 2018<br />factor(year): 2018","month: Sep<br />crimes: 5490<br />year: 2018<br />factor(year): 2018","month: Oct<br />crimes: 5706<br />year: 2018<br />factor(year): 2018","month: Nov<br />crimes: 5413<br />year: 2018<br />factor(year): 2018","month: Dec<br />crimes: 5640<br />year: 2018<br />factor(year): 2018"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(147,170,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(147,170,0,1)"}},"hoveron":"points","name":"2018","legendgroup":"2018","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(147,170,0,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[5662,5183,5691,5784,6179,5802,5690,5783,5609,5979,5569,5907],"text":["month: Jan<br />crimes: 5662<br />year: 2019<br />factor(year): 2019","month: Feb<br />crimes: 5183<br />year: 2019<br />factor(year): 2019","month: Mar<br />crimes: 5691<br />year: 2019<br />factor(year): 2019","month: Apr<br />crimes: 5784<br />year: 2019<br />factor(year): 2019","month: May<br />crimes: 6179<br />year: 2019<br />factor(year): 2019","month: Jun<br />crimes: 5802<br />year: 2019<br />factor(year): 2019","month: Jul<br />crimes: 5690<br />year: 2019<br />factor(year): 2019","month: Aug<br />crimes: 5783<br />year: 2019<br />factor(year): 2019","month: Sep<br />crimes: 5609<br />year: 2019<br />factor(year): 2019","month: Oct<br />crimes: 5979<br />year: 2019<br />factor(year): 2019","month: Nov<br />crimes: 5569<br />year: 2019<br />factor(year): 2019","month: Dec<br />crimes: 5907<br />year: 2019<br />factor(year): 2019"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"2019","legendgroup":"2019","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(0,186,56,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[6024,5582,5850,5509,5433,4551,4635,5127,4977,5706,5497,5956],"text":["month: Jan<br />crimes: 6024<br />year: 2020<br />factor(year): 2020","month: Feb<br />crimes: 5582<br />year: 2020<br />factor(year): 2020","month: Mar<br />crimes: 5850<br />year: 2020<br />factor(year): 2020","month: Apr<br />crimes: 5509<br />year: 2020<br />factor(year): 2020","month: May<br />crimes: 5433<br />year: 2020<br />factor(year): 2020","month: Jun<br />crimes: 4551<br />year: 2020<br />factor(year): 2020","month: Jul<br />crimes: 4635<br />year: 2020<br />factor(year): 2020","month: Aug<br />crimes: 5127<br />year: 2020<br />factor(year): 2020","month: Sep<br />crimes: 4977<br />year: 2020<br />factor(year): 2020","month: Oct<br />crimes: 5706<br />year: 2020<br />factor(year): 2020","month: Nov<br />crimes: 5497<br />year: 2020<br />factor(year): 2020","month: Dec<br />crimes: 5956<br />year: 2020<br />factor(year): 2020"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(0,193,159,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,193,159,1)"}},"hoveron":"points","name":"2020","legendgroup":"2020","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(0,193,159,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[5637,5385,5604,4841,5272,5102,5460,5373,5343,5603,5401,5412],"text":["month: Jan<br />crimes: 5637<br />year: 2021<br />factor(year): 2021","month: Feb<br />crimes: 5385<br />year: 2021<br />factor(year): 2021","month: Mar<br />crimes: 5604<br />year: 2021<br />factor(year): 2021","month: Apr<br />crimes: 4841<br />year: 2021<br />factor(year): 2021","month: May<br />crimes: 5272<br />year: 2021<br />factor(year): 2021","month: Jun<br />crimes: 5102<br />year: 2021<br />factor(year): 2021","month: Jul<br />crimes: 5460<br />year: 2021<br />factor(year): 2021","month: Aug<br />crimes: 5373<br />year: 2021<br />factor(year): 2021","month: Sep<br />crimes: 5343<br />year: 2021<br />factor(year): 2021","month: Oct<br />crimes: 5603<br />year: 2021<br />factor(year): 2021","month: Nov<br />crimes: 5401<br />year: 2021<br />factor(year): 2021","month: Dec<br />crimes: 5412<br />year: 2021<br />factor(year): 2021"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(0,185,227,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,185,227,1)"}},"hoveron":"points","name":"2021","legendgroup":"2021","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(0,185,227,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[5495,5061,5837,5443,5579,5242,5109,5249,4936,5020,4602,4849],"text":["month: Jan<br />crimes: 5495<br />year: 2022<br />factor(year): 2022","month: Feb<br />crimes: 5061<br />year: 2022<br />factor(year): 2022","month: Mar<br />crimes: 5837<br />year: 2022<br />factor(year): 2022","month: Apr<br />crimes: 5443<br />year: 2022<br />factor(year): 2022","month: May<br />crimes: 5579<br />year: 2022<br />factor(year): 2022","month: Jun<br />crimes: 5242<br />year: 2022<br />factor(year): 2022","month: Jul<br />crimes: 5109<br />year: 2022<br />factor(year): 2022","month: Aug<br />crimes: 5249<br />year: 2022<br />factor(year): 2022","month: Sep<br />crimes: 4936<br />year: 2022<br />factor(year): 2022","month: Oct<br />crimes: 5020<br />year: 2022<br />factor(year): 2022","month: Nov<br />crimes: 4602<br />year: 2022<br />factor(year): 2022","month: Dec<br />crimes: 4849<br />year: 2022<br />factor(year): 2022"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"2022","legendgroup":"2022","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(97,156,255,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[4882,4327,4754,4628,4825,4718,4663,4714,4698,4678,4615,4644],"text":["month: Jan<br />crimes: 4882<br />year: 2023<br />factor(year): 2023","month: Feb<br />crimes: 4327<br />year: 2023<br />factor(year): 2023","month: Mar<br />crimes: 4754<br />year: 2023<br />factor(year): 2023","month: Apr<br />crimes: 4628<br />year: 2023<br />factor(year): 2023","month: May<br />crimes: 4825<br />year: 2023<br />factor(year): 2023","month: Jun<br />crimes: 4718<br />year: 2023<br />factor(year): 2023","month: Jul<br />crimes: 4663<br />year: 2023<br />factor(year): 2023","month: Aug<br />crimes: 4714<br />year: 2023<br />factor(year): 2023","month: Sep<br />crimes: 4698<br />year: 2023<br />factor(year): 2023","month: Oct<br />crimes: 4678<br />year: 2023<br />factor(year): 2023","month: Nov<br />crimes: 4615<br />year: 2023<br />factor(year): 2023","month: Dec<br />crimes: 4644<br />year: 2023<br />factor(year): 2023"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(219,114,251,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(219,114,251,1)"}},"hoveron":"points","name":"2023","legendgroup":"2023","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(219,114,251,1)","dash":"solid"},"frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12],"y":[4763,4474,4660,4434,4527,4242,4196,4430,4237,4499,4140,4201],"text":["month: Jan<br />crimes: 4763<br />year: 2024<br />factor(year): 2024","month: Feb<br />crimes: 4474<br />year: 2024<br />factor(year): 2024","month: Mar<br />crimes: 4660<br />year: 2024<br />factor(year): 2024","month: Apr<br />crimes: 4434<br />year: 2024<br />factor(year): 2024","month: May<br />crimes: 4527<br />year: 2024<br />factor(year): 2024","month: Jun<br />crimes: 4242<br />year: 2024<br />factor(year): 2024","month: Jul<br />crimes: 4196<br />year: 2024<br />factor(year): 2024","month: Aug<br />crimes: 4430<br />year: 2024<br />factor(year): 2024","month: Sep<br />crimes: 4237<br />year: 2024<br />factor(year): 2024","month: Oct<br />crimes: 4499<br />year: 2024<br />factor(year): 2024","month: Nov<br />crimes: 4140<br />year: 2024<br />factor(year): 2024","month: Dec<br />crimes: 4201<br />year: 2024<br />factor(year): 2024"],"type":"scatter","mode":"markers+lines","marker":{"autocolorscale":false,"color":"rgba(255,97,195,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,97,195,1)"}},"hoveron":"points","name":"2024","legendgroup":"2024","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","line":{"width":1.8897637795275593,"color":"rgba(255,97,195,1)","dash":"solid"},"frame":null},{"x":[6],"y":[5000],"text":"Note the decline due<br /> to lockdowns","hovertext":"x: Jun<br />y: 5000","textfont":{"size":11.338582677165356,"color":"rgba(178,34,34,1)"},"type":"scatter","mode":"text","hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.840182648401829,"r":7.3059360730593621,"b":37.260273972602747,"l":48.949771689497723},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Crime in Phoenix","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,12.6],"tickmode":"array","ticktext":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"tickvals":[1,2,3,4.0000000000000009,5,6,7.0000000000000009,8,9,10,11,12],"categoryorder":"array","categoryarray":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Month","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[4038.0500000000002,6280.9499999999998],"tickmode":"array","ticktext":["4500","5000","5500","6000"],"tickvals":[4500,5000,5500,6000],"categoryorder":"array","categoryarray":["4500","5000","5500","6000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Counts of Crime","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"orientation":"h","x":0.5,"y":-0.14999999999999999,"xanchor":"center","yanchor":"top","title":{"text":"Year","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"e0231501bb":{"x":{},"y":{},"colour":{},"type":"scatter"},"e02363249c07":{"x":{},"y":{},"colour":{}},"e023787fc26a":{"x":{},"y":{}}},"cur_data":"e0231501bb","visdat":{"e0231501bb":["function (y) ","x"],"e02363249c07":["function (y) ","x"],"e023787fc26a":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
 <p><br></p>
 <p>NEED EXERCISES FOR TEST YOUR KNOWLEDGE</p>
 

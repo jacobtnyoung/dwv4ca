@@ -15,6 +15,7 @@ library( dplyr )
 library( ggplot2 )
 library( scales )
 library( patchwork )
+library( plotly )
 
 ```
 
@@ -442,17 +443,356 @@ Combining plots helps readers move through the analysis more naturally.
 
 Several R packages support plot composition, but we will focus exclusively on 1 because it uses simple and intuitive syntax and compatibility with `ggplot2`.
 
-HERE
-
 ### The `patchwork` package
 
-The patchwork package allows plots to be combined using operators such as:
-
-| 
-
-places plots side-by-side / stacks plots vertically
-
+The patchwork package allows plots to be combined using operators such as: `|` which places plots side-by-side and `/` which stacks plots vertically.
 This creates a layout system that feels similar to arranging blocks.
+
+To use the package, first install it then load the library (remember that you only need to install the package once, but each time you open RStudio you need to load the library):
+
+```{r, eval=FALSE}
+
+install.packages( "patchwork" )
+
+library( "patchwork" )
+
+```
+
+As we have seen throughout the chapters, the `<-` operator creates an object.
+We can do the same thing with `ggplot2` plots.
+We can create a base plot and make modifications as needed.
+
+To illustrate, let's create a plot of monthly crime rates using the `crime_monthly` object:
+
+```{r}
+
+# create the plot as an object
+monthly_crimes_plot <- ggplot( 
+  data = crime_monthly, 
+  mapping = aes( x = month, y = crimes, group = year, color = factor( year ) ) 
+  ) +
+  geom_point() +
+  geom_line()
+
+# render the plot
+monthly_crimes_plot
+
+```
+
+Now that we have the `monthly_crimes_plot` as an object, we can make modifications as needed.
+
+```{r}
+
+# add the the improvements to the object
+monthly_crimes_plot <- monthly_crimes_plot +
+  
+  # add some labels
+  labs(
+    title = "Crime in Phoenix",
+    subtitle = "Monthly counts of crime type by year",
+    x = "Month",
+    y = "Counts of Crime",
+    color = "Year" 
+  ) +
+  
+  # Move legend to bottom
+  theme_minimal() +
+  theme(
+    legend.position = "bottom"
+  )  
+
+# render the plot (again)
+monthly_crimes_plot
+
+
+```
+
+Now, let's create a separate plot that is the different types over time:
+
+```{r}
+
+type_crimes_plot <- 
+
+ggplot(
+  crime_type_monthly,
+  aes(
+    x = month,
+    y = crimes,
+    group = crime_type_clean,
+    color = factor(crime_type_clean)
+  )
+) +
+  geom_point() +
+  geom_line() +
+
+  # Put all facets in one row
+  facet_wrap(~ year, nrow = 1) +
+  
+  # change the labels
+   scale_x_discrete(
+    labels = c(
+      "J", "F", "M", "A", "M", "J",
+      "J", "A", "S", "O", "N", "D"
+    )
+  ) +
+
+  labs(
+    title = "Crime in Phoenix",
+    subtitle = "Monthly counts of crime type by year",
+    x = "Month",
+    y = "Counts of Crime",
+    color = "Crime Type" 
+  ) +
+  
+  # Move legend to bottom
+  theme_minimal() +
+  theme(
+    legend.position = "bottom"
+  )
+
+# render it
+type_crimes_plot
+
+```
+
+Now we can put them together by using the `|` operator:
+
+```{r}
+
+monthly_crimes_plot | type_crimes_plot
+
+```
+
+Alternatively, we could stack them by using the `/` operator:
+
+```{r}
+
+monthly_crimes_plot / type_crimes_plot
+
+```
+
+The `patchwork` syntax is very flexible allowing multiple plot placement:
+
+```{r}
+
+( monthly_crimes_plot | monthly_crimes_plot ) / type_crimes_plot
+
+```
+
+This gets a bit squished, but you get the point.
+
+The package also allows annotation using the `plot_annotation()` function:
+
+```{r}
+
+monthly_crimes_plot / type_crimes_plot +
+  
+  plot_annotation(
+    title = "Exploring Crime in Phoenix",
+    subtitle = "Multiple Visualizations of Crime",
+    caption = "Source: City of Phoenix Open Data Portal"
+  )
+
+```
+
+## Storytelling Through Visualization
+
+At this point, we know how to create plots, customize their appearance, facet comparisons, and combine multiple graphics into coordinated layouts.
+The next step is learning how to use these visualizations to tell a story.
+That is, we want to pull all of this together (and a few extra tools) to emphasize what we want the reader to take away from the visualization.
+Data visualization is not only about displaying information.
+It is also about guiding interpretation.
+
+A strong visualization helps answer questions such as:
+
+-   What should the audience notice first?
+-   Which comparison matters most?
+-   What is surprising or important?
+-   What conclusion should the reader take away?
+
+We have already built some useful visualizations, now we want to add a few more aspects to the plots to "tell the story".
+
+One useful tool for doing this is annotation.
+`ggplot2` includes several useful annotation functions such as `annotate()`, `geom_text()`, `geom_label()`, `geom_vline()`, `geom_hline()`, `geom_segment()`.
+
+Let's take a look, again, at the monthly plot of crimes and think about where we might want to annotate for the reader:
+
+```{r}
+
+monthly_crimes_plot
+
+```
+
+What about the downturn around May 2020 that was the result of the COVID-19 pandemic lockdowns.
+Let's add an annotation to the plot that emphasizes this:
+
+```{r}
+
+monthly_crimes_plot + 
+
+annotate(
+    "text",
+    x = "Jun",
+    y = 5000,
+    label = "Decline due to Lockdowns"
+  ) 
+
+```
+
+Ok that is a start, but we can do better by adjusting the size and color and inserting a hard return using `\n` in the label:
+
+```{r}
+
+monthly_crimes_plot + 
+
+annotate(
+    "text",
+    x = "Jun",
+    y = 5000,
+    label = "Note the\ decline due\n to lockdowns",
+    size = 3,
+    color = "firebrick"
+  ) 
+
+```
+
+This looks better, so we can add it to our plot object like this:
+
+```{r}
+
+monthly_crimes_plot <- monthly_crimes_plot + 
+
+annotate(
+    "text",
+    x = "Jun",
+    y = 5000,
+    label = "Note the\ decline due\n to lockdowns",
+    size = 3,
+    color = "firebrick"
+  ) 
+
+```
+
+Another point to emphasize is the draw attention to the gap that emerges in November after 2021:
+
+```{r}
+
+monthly_crimes_plot + 
+
+annotate(
+    "text",
+    x = "Nov",
+    y = 5100,
+    label = "Note decline\n post 2021",
+    size = 3,
+    color = "darkblue"
+  ) 
+
+```
+
+We could also add a line segment to draw attention to this:
+
+```{r}
+
+monthly_crimes_plot + 
+
+annotate(
+    "text",
+    x = "Nov",
+    y = 5100,
+    label = "Note decline\n post 2021",
+    size = 3,
+    color = "darkblue"
+  ) +
+
+annotate(
+  "segment",
+  x = "Nov",
+  xend = "Nov",
+  y = 5000,
+  yend = 4700,
+  color = "darkblue",
+  linewidth = 1,
+  arrow = arrow(length = unit( 0.1, "inches" ) )
+)
+
+```
+
+Several might make this more clear:
+
+```{r}
+
+monthly_crimes_plot + 
+
+annotate(
+    "text",
+    x = "Nov",
+    y = 5100,
+    label = "Note decline\n post 2021",
+    size = 3,
+    color = "darkblue"
+  ) +
+
+annotate(
+  "segment",
+  x = "Nov",
+  xend = "Nov",
+  y = 5000,
+  yend = 4700,
+  color = "darkblue",
+  linewidth = 1,
+  arrow = arrow(length = unit( 0.1, "inches" ) )
+  ) +
+
+annotate(
+  "segment",
+  x = "Nov",
+  xend = "Oct",
+  y = 5000,
+  yend = 4750,
+  color = "darkblue",
+  linewidth = 1,
+  arrow = arrow(length = unit( 0.1, "inches" ) )
+  ) +
+
+annotate(
+  "segment",
+  x = "Nov",
+  xend = "Dec",
+  y = 5000,
+  yend = 4300,
+  color = "darkblue",
+  linewidth = 1,
+  arrow = arrow(length = unit( 0.1, "inches" ) )
+)
+
+```
+
+### Interactive storytelling
+
+Interactive visualizations allow users to explore data dynamically.
+Packages such as `plotly` can add hover labels, zooming, clickable elements, and interactive filtering.
+These features can be especially valuable for audience engagement as well as dashboard development.
+
+`plotly` converts static graphics into interactive visualizations and a standard `ggplot2` figure can become interactive with a single function: `ggplotly()`.
+
+To use `plotly`, first install it then load the library (remember that you only need to install the package once, but each time you open RStudio you need to load the library):
+
+```{r, eval=FALSE}
+
+install.packages( "plotly" )
+
+library( "plotly" )
+
+```
+
+Now, just take a `ggplot2` object and use the `ggplotly()` function to make it interactive:
+
+```{r}
+
+ggplotly( monthly_crimes_plot )
+
+```
 
 <br>
 
