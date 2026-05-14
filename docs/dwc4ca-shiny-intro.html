@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Jacob T.N. Young">
+<title>Introduction to Shiny – Data Wrangling &amp; Visualization for Crime Analysts</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./dwc4ca-ggplot2-advanced.html" rel="prev">
+<link href="./cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8df9fc159a2c64db71ab329accd4d345.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+</head>
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-shiny-intro.html">Introduction to Shiny</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Data Wrangling &amp; Visualization for Crime Analysts</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/jacobtnyoung/dwv4ca/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Data Wrangling and Visualization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-r-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started with R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-r-rmarkdown.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Creating Data-Driven Documents using RMarkdown</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Wrangling with <code>dplyr</code></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-tidy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Transformation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-ggplot2-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization with <code>ggplot2</code></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-ggplot2-advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Advanced <code>ggplot2</code> and Storytelling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-shiny-intro.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Introduction to Shiny</span></a>
+  </div>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#static-vs.-dynamic-visualization" id="toc-static-vs.-dynamic-visualization" class="nav-link active" data-scroll-target="#static-vs.-dynamic-visualization">Static vs.&nbsp;Dynamic Visualization</a></li>
+  <li><a href="#other-examples" id="toc-other-examples" class="nav-link" data-scroll-target="#other-examples">Other examples…</a></li>
+  <li>
+<a href="#what-is-shiny-and-how-it-works" id="toc-what-is-shiny-and-how-it-works" class="nav-link" data-scroll-target="#what-is-shiny-and-how-it-works">What is Shiny and How it Works</a>
+  <ul class="collapse">
+<li><a href="#core-concepts" id="toc-core-concepts" class="nav-link" data-scroll-target="#core-concepts">Core Concepts</a></li>
+  <li>
+<a href="#an-example" id="toc-an-example" class="nav-link" data-scroll-target="#an-example">An Example</a>
+  <ul class="collapse">
+<li><a href="#static-visualization" id="toc-static-visualization" class="nav-link" data-scroll-target="#static-visualization">Static Visualization</a></li>
+  <li><a href="#dynamic-visualization" id="toc-dynamic-visualization" class="nav-link" data-scroll-target="#dynamic-visualization">Dynamic Visualization</a></li>
+  </ul>
+</li>
+  </ul>
+</li>
+  <li>
+<a href="#a-deeper-dive" id="toc-a-deeper-dive" class="nav-link" data-scroll-target="#a-deeper-dive">A Deeper Dive</a>
+  <ul class="collapse">
+<li>
+<a href="#user-interface" id="toc-user-interface" class="nav-link" data-scroll-target="#user-interface">User Interface</a>
+  <ul class="collapse">
+<li><a href="#titlestext" id="toc-titlestext" class="nav-link" data-scroll-target="#titlestext">Titles/Text</a></li>
+  <li><a href="#inputs" id="toc-inputs" class="nav-link" data-scroll-target="#inputs">Inputs</a></li>
+  <li><a href="#outputs" id="toc-outputs" class="nav-link" data-scroll-target="#outputs">Outputs</a></li>
+  <li><a href="#layoutorganization-tools" id="toc-layoutorganization-tools" class="nav-link" data-scroll-target="#layoutorganization-tools">Layout/organization tools</a></li>
+  </ul>
+</li>
+  <li><a href="#connecting-the-ui-to-the-server" id="toc-connecting-the-ui-to-the-server" class="nav-link" data-scroll-target="#connecting-the-ui-to-the-server">Connecting the UI to the Server</a></li>
+  </ul>
+</li>
+  <li><a href="#a-example" id="toc-a-example" class="nav-link" data-scroll-target="#a-example">A Example</a></li>
+  <li><a href="#further-reading-and-exploration" id="toc-further-reading-and-exploration" class="nav-link" data-scroll-target="#further-reading-and-exploration">Further Reading and Exploration</a></li>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-shiny-intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Introduction to Shiny</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><p>Motivating question: In statistics, you learned that when we sample, we want large sample sizes. <em>Why?</em></p>
+<p>Let’s see this in practice. If we drew <span class="math inline">\(k = 2000\)</span> random samples of size <span class="math inline">\(n = 2\)</span>, <span class="math inline">\(n = 10\)</span>, and <span class="math inline">\(n = 50\)</span>, respectively, we would get three sampling distributions. We could then visualize each sampling distribution with a <code>ggplot2</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-shiny-intro_files/figure-html/gplot-example-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Take a look at each plot. What is the visualization showing you? By displaying this information visually, what do you learn?</p>
+<p>Now, take a look at a different way of using a visualization to convey this point: <a href="https://jacobtnyoung.shinyapps.io/sampling-distributions/" target="_blank" rel="noopener">visualization of sampling distributions</a>.</p>
+<p><br></p>
+<section id="static-vs.-dynamic-visualization" class="level2"><h2 class="anchored" data-anchor-id="static-vs.-dynamic-visualization">Static vs.&nbsp;Dynamic Visualization</h2>
+<p>The visualizations above are examples of static and dynamic visualizations, respectively. What makes the latter visualization <em>dynamic</em> is that the user can alter the inputs to change what the visualization shows. It is not simply fixed by the author/developer/etc, it is interactive: the <strong>user</strong> is able to alter what is <em>rendered</em>.</p>
+</section><section id="other-examples" class="level2"><h2 class="anchored" data-anchor-id="other-examples">Other examples…</h2>
+<p>What if you were interested in:</p>
+<ul>
+<li>identifying an optimal strategy for network disruption (check out this <a href="https://jacobtnyoung.shinyapps.io/network-disruption/" target="_blank" rel="noopener">network disruption app</a>)</li>
+<li>the spatial distribution of crime in Phoenix (check out this <a href="https://jacobtnyoung.shinyapps.io/crime-in-phx/" target="_blank" rel="noopener">Phoenix Crime Dashboard</a>)</li>
+</ul>
+<p>These are all built using <a href="https://shiny.posit.co/" target="_blank" rel="noopener">Shiny</a>!</p>
+<p><br></p>
+</section><section id="what-is-shiny-and-how-it-works" class="level1"><h1>What is Shiny and How it Works</h1>
+<p>Shiny is an R framework for building interactive web applications directly from R code. It allows you to take static analyses and visualizations, like a <code>ggplot2</code>, and turn them into user-driven applications that run in a web browser.</p>
+<p>With Shiny, users can:</p>
+<ul>
+<li>Adjust inputs (sliders, dropdowns, buttons)</li>
+<li>Filter data</li>
+<li>Change model parameters</li>
+<li>Instantly see updated visualizations and results</li>
+</ul>
+<section id="core-concepts" class="level2"><h2 class="anchored" data-anchor-id="core-concepts">Core Concepts</h2>
+<p>Shiny apps are built around three simple ideas:</p>
+<ul>
+<li><p>The UI (User Interface), which is what the user sees. It includes the layout of the page, input controls (sliders, dropdowns, checkboxes), and output placeholders (where plots, tables, or text will appear). The UI defines the structure of the app.</p></li>
+<li><p>The Server, this is what happens behind the scenes. It is where we put the instructions for what is produced in the UI, where data is processed, and where calculations happen. The server connects user inputs to outputs.</p></li>
+<li><p>Reactivity is what makes Shiny dynamic (and powerful). Reactivity means that code reruns automatically when inputs change. Think of it like Excel cell recalculation: If one cell changes, any dependent cells update automatically. Shiny works the same way in that changes to the inputs trigger update which refresh the output.</p></li>
+</ul>
+<p>Let’s go back to the <a href="https://jacobtnyoung.shinyapps.io/sampling-distributions/" target="_blank" rel="noopener">visualization of sampling distributions</a> app and take a closer look. Now, take a closer look “under the hood” to see what it looks like <a href="https://github.com/jacobtnyoung/dynamic-viz/blob/main/apps/sampling/app.R" target="_blank" rel="noopener">here</a>.</p>
+</section><section id="an-example" class="level2"><h2 class="anchored" data-anchor-id="an-example">An Example</h2>
+<section id="static-visualization" class="level3"><h3 class="anchored" data-anchor-id="static-visualization">Static Visualization</h3>
+<p>Suppose we created a plot using this code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span> <span class="va">n</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, fill <span class="op">=</span> <span class="st">"steelblue"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Histogram of"</span>, <span class="va">n</span>, <span class="st">"random normals"</span><span class="op">)</span>,</span>
+<span>           x <span class="op">=</span> <span class="st">"value"</span>, y <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We have a very simple plot of random draws from a standard normal distribution. What if we wanted to increase the number we took? Decrease it?</p>
+</section><section id="dynamic-visualization" class="level3"><h3 class="anchored" data-anchor-id="dynamic-visualization">Dynamic Visualization</h3>
+<p>Let’s create a very simple Shiny app. As we do this, ask yourself: What is part of the UI? What is part of the server? Where is reactivity happening?</p>
+<p>To get started, install <code>shiny</code> using <code>install.packages( "shiny" )</code>. Then, create a new R script file and add this code to it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://shiny.posit.co/">shiny</a></span> <span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html">titlePanel</a></span><span class="op">(</span><span class="st">"Interactive Histogram"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"Sample size (n):"</span>, min <span class="op">=</span> <span class="fl">10</span>, max <span class="op">=</span> <span class="fl">1000</span>, value <span class="op">=</span> <span class="fl">100</span>, step <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"hist"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">hist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, fill <span class="op">=</span> <span class="st">"steelblue"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Histogram of"</span>, <span class="va">input</span><span class="op">$</span><span class="va">n</span>, <span class="st">"random normals"</span><span class="op">)</span>,</span>
+<span>           x <span class="op">=</span> <span class="st">"value"</span>, y <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, look to the top right corner of the screen and you will see a button called “Run App” that looks like this:</p>
+<div data-align="center">
+<p><img src="images/shiny-run-app.png" class="img-fluid" data-fig-width="4in"></p>
+</div>
+<p>Click that button and watch the magic happen!</p>
+<p>Ok, you just created your first Shiny app! I knew you had it in you. Let’s walk through what we did.</p>
+<p>The first part loads the libraries to get the functions needed to build the app and the plot:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://shiny.posit.co/">shiny</a></span> <span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next, we have our two key pieces, the <code>ui</code> and the <code>server</code>. Let’s look at the code for defining the user interface:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html">titlePanel</a></span><span class="op">(</span><span class="st">"Interactive Histogram"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput</a></span><span class="op">(</span><span class="st">"n"</span>, <span class="st">"Sample size (n):"</span>, min <span class="op">=</span> <span class="fl">10</span>, max <span class="op">=</span> <span class="fl">1000</span>, value <span class="op">=</span> <span class="fl">100</span>, step <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"hist"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We are first defining an object called <code>ui</code> which will define the user interface. Look at your app and see what the user side features are. Can you find them in the code?</p>
+<p>We start the user interface with the <code><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage()</a></code> function. Inside this function we have <code><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html">titlePanel()</a></code> which gives the title.</p>
+<p>We then we have <code><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout()</a></code> which prepares the sidebar. Inside the sidebar layout we have <code><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel()</a></code> that has <code><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput()</a></code> inside it. <em>What does this line do?</em> Look at the app and think about what is happening.</p>
+<p>Finally, we have the <code><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel()</a></code> function with the <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code> function designating an object <code>"hist"</code> to be plotted.</p>
+<p>Now, let’s examine the server side:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">hist</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, fill <span class="op">=</span> <span class="st">"steelblue"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Histogram of"</span>, <span class="va">input</span><span class="op">$</span><span class="va">n</span>, <span class="st">"random normals"</span><span class="op">)</span>,</span>
+<span>           x <span class="op">=</span> <span class="st">"value"</span>, y <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We define a <strong>function</strong> called <code>server</code> which is going to be our workhorse. It is going to take an <code>input</code> that the user can alter in the UI. Anytime a change is made by the user, this is going to pass through our server object and change what is rendered in <code>output</code>.</p>
+<p>Remember that we defined an object called <code>"hist"</code> in UI using <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code>. Here we are defining what that will be. Specifically, we use the <code><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot()</a></code> function.</p>
+<p>This is getting a bit more complicated, so let’s take each line:</p>
+<ul>
+<li>
+<code>x &lt;- rnorm(input$n)</code> creates an object <code>x</code>, which is a random draw from a normal distribution, <code>rnorm</code>, where the size is defined by the user with <code>input$n</code>. Look back to the UI, where do you see <code>"n"</code>? <strong>Look at what we just did</strong>: we built into our plot function the changes that are being made by the user in the UI. This is called a <strong>reactive value</strong>.</li>
+<li>
+<code>ggplot(data.frame(x = x), aes(x = x)) +</code>… defines a plot object, using <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code>, that is based on the <code>x</code> object.</li>
+</ul>
+<p>And that is really it. Much of the code is tweaking the <code>ggplot</code> object.</p>
+<p>Now for our last piece:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here, we are just running the <code><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp()</a></code> function and defining the arguments that function needs to operate: the UI and the server.</p>
+</section></section></section><section id="a-deeper-dive" class="level1"><h1>A Deeper Dive</h1>
+<p>Ok, that was a lot. What we want to do now is go back through the key parts of how shiny works in greater detail. We covered everything quickly above because I wanted you to have a sense of the scope of what we are doing. Now, we can go in more depth and think about what is occurring at each component.</p>
+<section id="user-interface" class="level2"><h2 class="anchored" data-anchor-id="user-interface">User Interface</h2>
+<p>As a reminder, the User Interface (UI) controls what the user sees, where things appear, what users can click/type/select, etc. The UI does not perform calculations, rather it displays content, collects user input, organizes layout, and so on.</p>
+<p>Most Shiny apps start with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>In this setup, <code><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage()</a></code> creates the webpage and everything inside it appears on the screen. The simplest possible UI would be something like this (try it!):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="st">":)"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">input</span>, <span class="va">output</span> <span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span> <span class="va">ui</span>, <span class="va">server</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Everything inside <code><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage()</a></code> gets rendered onto the webpage. These elements generally fall into four categories:</p>
+<ul>
+<li>Titles/Text</li>
+<li>Input widgets</li>
+<li>Output placeholders</li>
+<li>Layout/organization tools</li>
+</ul>
+<section id="titlestext" class="level3"><h3 class="anchored" data-anchor-id="titlestext">Titles/Text</h3>
+<p>These include UI layout/display components such as <code><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html">titlePanel()</a></code> (which creates a large page title); <code><a href="https://rstudio.github.io/htmltools/reference/builder.html">h1()</a></code>, <code><a href="https://rstudio.github.io/htmltools/reference/builder.html">h2()</a></code>, <code><a href="https://rstudio.github.io/htmltools/reference/builder.html">h3()</a></code> (heading text of different sizes); and <code><a href="https://rstudio.github.io/htmltools/reference/builder.html">p()</a></code> (which creates a paragraph of text).</p>
+<p>For example, try this one:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html">titlePanel</a></span><span class="op">(</span><span class="st">"Smiley Face Dashboard"</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">h2</a></span><span class="op">(</span><span class="st">":) :) :) :) "</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html">p</a></span><span class="op">(</span><span class="st">"This dashboard shows smiley faces"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">input</span>, <span class="va">output</span> <span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span> <span class="va">ui</span>, <span class="va">server</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section><section id="inputs" class="level3"><h3 class="anchored" data-anchor-id="inputs">Inputs</h3>
+<p>These allow users to interact with the app and have various functions:</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Function</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput()</a></code></td>
+<td>Select numeric values with a slider</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/numericInput.html">numericInput()</a></code></td>
+<td>Enter numbers manually</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/textInput.html">textInput()</a></code></td>
+<td>Enter text</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/textAreaInput.html">textAreaInput()</a></code></td>
+<td>Enter longer text</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput()</a></code></td>
+<td>Dropdown menu</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/radioButtons.html">radioButtons()</a></code></td>
+<td>Choose one option from buttons</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/checkboxInput.html">checkboxInput()</a></code></td>
+<td>Single TRUE/FALSE checkbox</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/checkboxGroupInput.html">checkboxGroupInput()</a></code></td>
+<td>Multiple checkbox selections</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/dateInput.html">dateInput()</a></code></td>
+<td>Select a date</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/dateRangeInput.html">dateRangeInput()</a></code></td>
+<td>Select a date range</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/fileInput.html">fileInput()</a></code></td>
+<td>Upload files</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton()</a></code></td>
+<td>Clickable button</td>
+</tr>
+</tbody>
+</table>
+<p>All input functions have the same first argument: <code>inputId</code>. This is the identifier used to connect the front end with the back end: if your UI has an input with ID <code>"name"</code>, the server function will access it with <code>input$name</code>.<br>
+To illustrate, let’s take a look at a few of these functions.</p>
+<p>The <code><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput()</a></code> function, which creates an interactive slider that allows users to select a numeric value (or range of values) by dragging a handle left or right. The basic structure is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput</a></span><span class="op">(</span><span class="va">inputId</span>,</span>
+<span>            <span class="va">label</span>,</span>
+<span>            <span class="va">min</span>,</span>
+<span>            <span class="va">max</span>,</span>
+<span>            <span class="va">value</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput()</a></code> function creates a dropdown menu that allows users to choose one option from a list and is structured like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span><span class="op">(</span><span class="va">inputId</span>,</span>
+<span>            <span class="va">label</span>,</span>
+<span>            <span class="va">choices</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Finally, <code><a href="https://rdrr.io/pkg/shiny/man/checkboxInput.html">checkboxInput()</a></code> creates a single checkbox that can be either checked or unchecked and is structured as:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/checkboxInput.html">checkboxInput</a></span><span class="op">(</span><span class="va">inputId</span>,</span>
+<span>              <span class="va">label</span>,</span>
+<span>              <span class="va">value</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, let’s take this a build a simple app with them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://shiny.posit.co/">shiny</a></span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html">titlePanel</a></span><span class="op">(</span> <span class="st">"Here are some example input widgets"</span> <span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput</a></span><span class="op">(</span> </span>
+<span>    inputId <span class="op">=</span> <span class="st">"bins"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Number of bins:"</span>,</span>
+<span>    min <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    max <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>    value <span class="op">=</span> <span class="fl">30</span> <span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span><span class="op">(</span> </span>
+<span>    inputId <span class="op">=</span> <span class="st">"crime"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Choose Crime Type:"</span>,</span>
+<span>    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"Burglary"</span>,</span>
+<span>                 <span class="st">"Robbery"</span>,</span>
+<span>                 <span class="st">"Assault"</span> <span class="op">)</span> </span>
+<span>              <span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/checkboxInput.html">checkboxInput</a></span><span class="op">(</span></span>
+<span>    inputId <span class="op">=</span> <span class="st">"show_mean"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Show Mean Line"</span>,</span>
+<span>    value <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">input</span>, <span class="va">output</span> <span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span> <span class="va">ui</span>, <span class="va">server</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ok, take a look and see what it does:</p>
+<ul>
+<li>We have a slider (from <code>sliderInput</code>) that lets us move a slider labeled “Number of bins:” (see the <code>label</code> argument) from 1 to 50 and the starting value is 30 (see the <code>min</code>, <code>max</code>, and <code>value</code> arguments)</li>
+<li>We have a drop-down selector (from <code>selectInput</code>) labeled “Choose Crime Type:” (see the <code>label</code> argument) that lets us select the type of crime as given in the <code>choices</code> argument</li>
+<li>We have a checkbox (from <code>checkboxInput</code>) that lets us check whether we want to show the line for the mean (i.e.&nbsp;<code>value = TRUE</code>) or not.</li>
+</ul>
+<p>Recall above that the UI just handles what the user sees, it does not do any of the calculations. You can see this by interacting with the widgets on the app. If you move the slider, select from the drop-down, and/or check the box, nothing happens. This is because we have not connected the ID (e.g.&nbsp;<code>input$bins</code> or <code>input$crime</code> or <code>input$show_mean</code>) to some output on the server side (yet).</p>
+</section><section id="outputs" class="level3"><h3 class="anchored" data-anchor-id="outputs">Outputs</h3>
+<p>Outputs in the UI create placeholders that are later filled by the server function. Like inputs, outputs take a unique ID as their first argument: if your UI specification creates an output with ID <code>"plot"</code>, you’ll access it in the server function with <code>output$plot</code>. Each output function on the front end is coupled with a render function in the back end.</p>
+<p>For example, <code>sliderInput</code> above controls a slider for a histogram. As we will see below, we will want to create a place for where that histogram goes (in which case we would use <code>plotOutput</code>).</p>
+<p>There are three main types of output:</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Function</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code></td>
+<td>Display plots</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/renderTable.html">tableOutput()</a></code></td>
+<td>Display tables</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput()</a></code></td>
+<td>Display text</td>
+</tr>
+</tbody>
+</table>
+<p>For each function there is an associated rendering function:</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Function</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot()</a></code></td>
+<td>creates plots</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/renderTable.html">renderTable()</a></code></td>
+<td>creates tables</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText()</a></code></td>
+<td>creates text</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s illustrate using the <code>plotOutput</code> function to act as a placeholder and the <code>renderPlot</code> function to actually create the plot:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://shiny.posit.co/">shiny</a></span> <span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span> </span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span> <span class="st">"plot"</span> <span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">input</span>, <span class="va">output</span> <span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span> <span class="op">)</span> <span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span> <span class="va">ui</span>, <span class="va">server</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, it is not very fancy (all it shows is a simple plot). It is actually a <em>static</em> plot because we have not added reactivity to it. We will come to this in the next section, but I just wanted to illustrate here what we have done. We created something to be plotted called <code>"plot"</code> using the <code>plotOutput</code> function (in the UI), and then on the server side we linked it to <code>output$plot</code> and defined the output using the <code>renderPlot</code> function.</p>
+</section><section id="layoutorganization-tools" class="level3"><h3 class="anchored" data-anchor-id="layoutorganization-tools">Layout/organization tools</h3>
+<p>These functions organize content on the page.</p>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Function</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout()</a></code></td>
+<td>Creates sidebar + main panel layout</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel()</a></code></td>
+<td>Holds inputs/controls</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel()</a></code></td>
+<td>Holds outputs</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidRow()</a></code></td>
+<td>Creates a horizontal row</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/column.html">column()</a></code></td>
+<td>Creates columns within rows</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel()</a></code></td>
+<td>Creates tabs</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/tabPanel.html">tabPanel()</a></code></td>
+<td>Individual tab inside tabset</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/wellPanel.html">wellPanel()</a></code></td>
+<td>Adds a bordered content box</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/splitLayout.html">splitLayout()</a></code></td>
+<td>Side-by-side layout</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/shiny/man/navbarPage.html">navbarPage()</a></code></td>
+<td>Multi-page navigation bar app</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, there are a number of functions that we use to build the the UI of the app. You can browse the functions that are build in <code>shiny</code> by typing <code><a href="https://rdrr.io/pkg/shiny/man">help( package = "shiny" )</a></code>. There are also many extensions that have been written:</p>
+<ul>
+<li><a href="https://shiny.posit.co/r/gallery/widgets/widget-gallery/" target="_blank" rel="noopener">shiny widget gallery</a></li>
+<li><a href="https://dreamrs.github.io/shinyWidgets/" target="_blank" rel="noopener">shinyWidgets</a></li>
+<li><a href="https://github.com/nanxstats/awesome-shiny-extensions" target="_blank" rel="noopener">awesome-shiny-extensions</a></li>
+</ul></section></section><section id="connecting-the-ui-to-the-server" class="level2"><h2 class="anchored" data-anchor-id="connecting-the-ui-to-the-server">Connecting the UI to the Server</h2>
+<p>The <strong>server</strong> is where calculations happen, plots are created, tables are generated, text is modified, and reactive behavior occurs. As we have seen it has this basic structure:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>( input, output )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>where <code>input</code> stores values coming from UI widgets and <code>output</code> stores things displayed in the UI.</p>
+<p>Let’s show how this works by first creating a toy data set with a single variable and then we will create a histogram of that variable where we can change the number of bins that are used to display the data.</p>
+<p>First, create some data on speeding that we can use:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># we set a random number seed so we can reproduce the results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">541</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># now create the toy data</span></span>
+<span><span class="va">traffic_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>  speed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span> <span class="fl">500</span>, mean <span class="op">=</span> <span class="fl">65</span>, sd <span class="op">=</span> <span class="fl">15</span> <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># look at the first 20 cases</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span> <span class="va">traffic_data</span>, n <span class="op">=</span> <span class="fl">20</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      speed
+1  79.59425
+2  74.42556
+3  39.83565
+4  38.94404
+5  47.95729
+6  88.62811
+7  50.20625
+8  91.70656
+9  49.58738
+10 62.84433
+11 80.03521
+12 53.97350
+13 48.96955
+14 63.14942
+15 64.25820
+16 67.50775
+17 67.58506
+18 55.42501
+19 56.27351
+20 57.03002</code></pre>
+</div>
+</div>
+<p>Now let’s build the app. I will produce the full code here so you can run it and see what it gives us and we will walk through each chunk.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://shiny.posit.co/">shiny</a></span> <span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/titlePanel.html">titlePanel</a></span><span class="op">(</span><span class="st">"Traffic Speed Histogram"</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput</a></span><span class="op">(</span><span class="st">"bins"</span>,</span>
+<span>              <span class="st">"Number of bins:"</span>,</span>
+<span>              min <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>              max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>              value <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"speedPlot"</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">speedPlot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    </span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">traffic_data</span><span class="op">$</span><span class="va">speed</span>,</span>
+<span>         breaks <span class="op">=</span> <span class="va">input</span><span class="op">$</span><span class="va">bins</span>,</span>
+<span>         col <span class="op">=</span> <span class="st">"steelblue"</span>,</span>
+<span>         border <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>         main <span class="op">=</span> <span class="st">"Distribution of Traffic Speeds"</span>,</span>
+<span>         xlab <span class="op">=</span> <span class="st">"Speed (mph)"</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Run this and play with the slider a bit. Now let’s look at what we did.</p>
+<p>First, we created a slider using:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput</a></span><span class="op">(</span><span class="st">"bins"</span>,</span>
+<span>              <span class="st">"Number of bins:"</span>,</span>
+<span>              min <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>              max <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>              value <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then, we added <code>plotOutput("speedPlot")</code> to tell it that it will output an object called <code>"speedPlot"</code>. This is our UI setup, so now we need to go to the <strong>server</strong> and define the output object.</p>
+<p>The first step is to define the <code>server</code> as a function of an <code>input</code> and an <code>output</code> using: <code>server &lt;- function(input, output)</code>.</p>
+<p>Now, we need to do two steps: define the output object, <code>output$speedPlot</code> using <code>renderPlot</code> and then to define what exactly the plot is, in this case a histogram using the <code>hist</code> function.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>speedPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">hist</span>(traffic_data<span class="sc">$</span>speed,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">breaks =</span> input<span class="sc">$</span>bins,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">col =</span> <span class="st">"steelblue"</span>,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">"Distribution of Traffic Speeds"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Speed (mph)"</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And there we have it! Those are our pieces.</p>
+</section></section><section id="a-example" class="level1"><h1>A Example</h1>
+<p>Ok, let’s work through this one more time drawing on a plot we created in the <a href="">Advanced <code>ggplot2</code> and Storytelling</a> chapter. If you recall, we created an object with monthly counts of each type of crime by year and we used <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> to panel by year:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># build the data</span></span>
+<span></span>
+<span><span class="va">crime_type_monthly</span> <span class="op">&lt;-</span> <span class="va">tidy_phx_crime</span>  <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>, <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">arrange</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>, <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>, <span class="va">crime_type_clean</span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarize</span><span class="op">(</span> crimes <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span> , .groups <span class="op">=</span> <span class="st">"drop"</span> <span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># render the plot</span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span> <span class="va">crime_type_monthly</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># here is our faceting function at work!</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">year</span>  <span class="op">)</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="dwc4ca-shiny-intro_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What if we wanted to allow users to select the year rather than having all of these separate panels? There are a few ways to approach this, but one might be to use a drop-down for years. In this case, we would use the <code>selectInput</code> function and list the years we have. It would look like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span><span class="op">(</span> </span>
+<span>    inputId <span class="op">=</span> <span class="st">"year_of_crime"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Choose Year:"</span>,</span>
+<span>    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"2016"</span>, <span class="st">"2017"</span>, <span class="st">"2018"</span>, <span class="st">"2019"</span>, <span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>, <span class="st">"2023"</span>, <span class="st">"2024"</span> <span class="op">)</span>,</span>
+<span>    selected <span class="op">=</span> <span class="st">"2024"</span></span>
+<span>              <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We also need to set an output plot, something like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span> <span class="st">"crimePlot"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We have defined the <code>inputId</code> as <code>year_of_crime</code> and that ID will be used on the server side for our function.</p>
+<p>Let’s think about what that will look like. We need to make year dynamic in our data. Essentially, we want to take our object <code>crime_type_monthly</code>, filter it by the year selected by the user, and then plot that. Think about it like this: we are taking a subset of the <code>crime_type_monthly</code> object based on some condition we specify. This is <code>dplyr</code> territory!</p>
+<p>If we want to filter the data based on year we could just use the <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> function from <code>dplyr</code>, like this:</p>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">user_selected_year</span> <span class="op">&lt;-</span> <span class="fl">2022</span></span>
+<span></span>
+<span><span class="va">filtered_data</span> <span class="op">&lt;-</span> <span class="va">crime_type_monthly</span> <span class="op">%&gt;%</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">==</span> <span class="va">user_selected_year</span> <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span> <span class="va">filtered_data</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+   year month crime_type_clean crimes
+  &lt;dbl&gt; &lt;ord&gt; &lt;chr&gt;             &lt;int&gt;
+1  2022 Jan   Arson                79
+2  2022 Jan   Assault             449
+3  2022 Jan   Burglary            497
+4  2022 Jan   Drugs               427
+5  2022 Jan   Homicide             12
+6  2022 Jan   MV Theft            701</code></pre>
+</div>
+</div>
+<p>In shiny, rather than defining the year, like <code>user_selected_year &lt;- 2022</code> and plugging in <code>user_selected_year</code> as the filter condition, we allow the user’s input to do the filtering. So, we just need to replace the appropriate ID, like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="va">filtered_data</span> <span class="op">&lt;-</span> <span class="va">crime_type_monthly</span> <span class="op">%&gt;%</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">==</span> <span class="va">input</span><span class="op">$</span><span class="va">year_of_crime</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>We replace <code>user_selected_year</code> with <code>input$year_of_crime</code> because that is the name of the input ID we defined in the <code>selectInput</code> function in the UI.</p>
+<p>That is our reactive element because every time the user changes the input using the drop-down, the <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> function is going to rerun based on the new condition.</p>
+<p>Our final piece is just going to be updating our <code>ggplot</code> code to reflect that we want to use <code>filtered_data</code> instead of <code>crime_type_monthly</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span> <span class="va">filtered_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, let’s take all of those pieces and put them together. Here is the full code for the app:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span><span class="op">(</span> </span>
+<span>    inputId <span class="op">=</span> <span class="st">"year_of_crime"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Choose Year:"</span>,</span>
+<span>    choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"2016"</span>, <span class="st">"2017"</span>, <span class="st">"2018"</span>, <span class="st">"2019"</span>, <span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>, <span class="st">"2023"</span>, <span class="st">"2024"</span> <span class="op">)</span>,</span>
+<span>    selected <span class="op">=</span> <span class="st">"2024"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"crimePlot"</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">crimePlot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    </span>
+<span>    <span class="va">filtered_data</span> <span class="op">&lt;-</span> <span class="va">crime_type_monthly</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="va">input</span><span class="op">$</span><span class="va">year_of_crime</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span></span>
+<span>      <span class="va">filtered_data</span>,</span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span></span>
+<span>        x <span class="op">=</span> <span class="va">month</span>,</span>
+<span>        y <span class="op">=</span> <span class="va">crimes</span>,</span>
+<span>        group <span class="op">=</span> <span class="va">crime_type_clean</span>,</span>
+<span>        color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">crime_type_clean</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section><section id="further-reading-and-exploration" class="level1"><h1>Further Reading and Exploration</h1>
+<p>This is only scratching the surface. You can build very elaborate apps. For example, check out this app designed to teach about <a href="https://shiny.posit.co/r/gallery/education/didacting-modeling/" target="_blank" rel="noopener">linear regression</a>.</p>
+<p>If you are interested in reading up on it, here are some really good FREE books:</p>
+<ul>
+<li>
+<a href="https://mastering-shiny.org/index.html" target="_blank" rel="noopener">Mastering Shiny</a> is the first stop for moving forward with learning how to use Shiny.</li>
+<li>
+<a href="https://unleash-shiny.rinterface.com/" target="_blank" rel="noopener">Unleash Shiny</a> and <a href="https://engineering-shiny.org/index.html" target="_blank" rel="noopener">Engineering Shiny</a> are great next steps for creating awesome apps.</li>
+</ul>
+<p>There is also an annual conference, <a href="https://www.shinyconf.com/" target="_blank" rel="noopener">ShinyConf</a>, where developers discuss their work. There are also awards for best apps. Here is a gallery of the <a href="https://posit.co/blog/winners-of-the-2024-shiny-contest/" target="_blank" rel="noopener">2024 winners</a>.</p>
+<p><br></p>
+<p>NEED EXERCISES FOR TEST YOUR KNOWLEDGE</p>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/jacobtnyoung\.github\.io\/dwv4ca\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./dwc4ca-ggplot2-advanced.html" class="pagination-link" aria-label="Advanced `ggplot2` and Storytelling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Advanced <code>ggplot2</code> and Storytelling</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Data Wrangling &amp; Visualization for Crime Analysts was written by Jacob T.N. Young.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-shiny-intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+</body></html>

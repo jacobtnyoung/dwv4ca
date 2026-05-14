@@ -20,14 +20,14 @@ book:
   chapters:
     - index.qmd
     - dwc4ca-intro.qmd
-    - dwc4ca-intro-to-r.qmd
+    - dwc4ca-r-intro.qmd
     - dwc4ca-r-rmarkdown.qmd
     - dwc4ca-dplyr.qmd
     - dwc4ca-tidy.qmd
     - dwc4ca-transform.qmd
-    - dwc4ca-ggplot2.qmd
+    - dwc4ca-ggplot2-intro.qmd
     - dwc4ca-ggplot2-advanced.qmd
-    - dwc4ca-ggplot2-maps.qmd
+    - dwc4ca-shiny-intro.qmd
 format:
   html:
     theme:
