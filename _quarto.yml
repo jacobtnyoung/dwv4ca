@@ -27,6 +27,7 @@ book:
     - dwc4ca-transform.qmd
     - dwc4ca-ggplot2-intro.qmd
     - dwc4ca-ggplot2-advanced.qmd
+    - dwc4ca-ggplot2-maps.qmd
     - dwc4ca-shiny-intro.qmd
 format:
   html:
