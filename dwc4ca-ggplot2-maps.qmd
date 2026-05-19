@@ -421,7 +421,7 @@ These data do not have lat/lon coordinates, but have x and y coordinates, stored
 
 ```{r}
 
-head( cbind( tidy_tucson_bike$x_coord, tidy_tucson_bike$y_coord ), 20 )
+head( cbind( tidy_tucson_bike$x_cord, tidy_tucson_bike$y_cord ), 20 )
 
 ```
 
@@ -441,20 +441,16 @@ tucson_boundary <- az_places |>
 
 ```
 
-Now, we use the `st_crs()` function to help us figure out what the correct CRS is for Tucson.
+For Tucson-area public safety data, one likely projection is 2223, which corresponds to: NAD83 / Arizona Central (ftUS).
+This CRS is commonly used in Arizona municipal and county GIS systems.
+
+The `tigris` package returns information using latitude and longitude as the coordiate system, so we need to transform our `tucson_boundary` object using the `st_transform()` function to match the CRS we will use below.
 
 ```{r}
 
-st_crs( tucson_boundary )
+tucson_boundary <- st_transform( tucson_boundary, crs = 2223 )
 
 ```
-
-This is a lot of meta-data, but you will see on the bottom line `ID["EPSG",4269]]`.
-
-For Tucson-area public safety data, one likely projection is EPSG:2223, which corresponds to: NAD83 / Arizona Central (ftUS).
-This CRS is commonly used in Arizona municipal and county GIS systems.
-
-HERE WITH WORKING THROUGH
 
 As we did before, we need to take our existing data and create an `sf` object.
 However, we need to alter the `coords =` argument and the `crs =` argument.
@@ -464,10 +460,34 @@ We create an `sf` object using the `st_as_sf()` function:
 
 tucson_bike_sf <- st_as_sf(
   tidy_tucson_bike,
-  coords = c( "x_coord", "y_coord" ),
-  crs = 4269
+  coords = c( "x_cord", "y_cord" ),
+  crs = 2223
 )
 
+```
+
+Now, we just do as before and plug these objects into our `geom_sf` functions:
+
+```{r}
+
+ggplot() +
+  
+  geom_sf( data = tucson_boundary, color = "blue", fill = "grey", alpha = 0.8 ) +
+  geom_sf( data = tucson_bike_sf, color = "darkred", alpha = 0.6, size = 2 ) +
+
+  theme_minimal() +
+  
+  labs( title = "Bicycle Related Incidents in Tucson, AZ" ) +
+  
+  theme(
+
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+ 
 ```
 
 <br>
