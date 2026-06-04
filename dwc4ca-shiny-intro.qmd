@@ -17,7 +17,7 @@ library( scales )
 
 ```
 
-# Introduction to Shiny {.unnumbered}
+# Dynamic Visualization: Introduction to Shiny {.unnumbered}
 
 Motivating question: In statistics, you learned that when we sample, we want large sample sizes.
 *Why?*
