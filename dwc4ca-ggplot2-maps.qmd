@@ -28,10 +28,10 @@ Also, maps are just super cool as a data visualization tool!
 
 Spatial visualizations allow analysts to:
 
--   identify clusters and hotspots\
--   recognize geographic trends
--   compare activity across areas
--   communicate patterns more effectively to decision-makers
+- identify clusters and hotspots\
+- recognize geographic trends
+- compare activity across areas
+- communicate patterns more effectively to decision-makers
 
 In many ways, maps help transform raw coordinate data into information that can be interpreted visually and operationally.
 Just like we have seen with other visualizations, spatial visualization tools are tremendeously valuable for helping us tell a story about our data.
@@ -53,9 +53,9 @@ Instead, the objective is to demonstrate how spatial data can be incorporated in
 
 In real-world crime analysis and open-source data work, spatial data is often imperfect:
 
--   coordinates may be missing
--   different coordinate systems may be used\
--   data may come from multiple agencies or formats
+- coordinates may be missing
+- different coordinate systems may be used\
+- data may come from multiple agencies or formats
 
 For this reason, analysts must understand not only how to create maps, but also how to interpret and prepare coordinate-based data correctly.
 
@@ -148,7 +148,7 @@ library( sf )
 In `tigris`, the `places()` function retrieves incorporated places and city boundaries from the Census Bureau.
 We can download the city boundaries in Arizona as an `sf` object.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 
 az_places <- places( state = "AZ", year = 2024 )
 
@@ -202,8 +202,8 @@ tempe_hate_sf <- st_as_sf(
 
 Let's take a closer look here:
 
--   we pass the data object, `tidy_tempe_hate`, and tell the function that the coordinates are stored with the variables names `lon` and `lat` using `coords = c("lon", "lat")`
--   the argument `crs =` is the "coordinate reference system" (CRS) which tells R how to interpret geographic coordinates and the most common CRS for latitude/longitude data is EPSG:4326
+- we pass the data object, `tidy_tempe_hate`, and tell the function that the coordinates are stored with the variables names `lon` and `lat` using `coords = c("lon", "lat")`
+- the argument `crs =` is the "coordinate reference system" (CRS) which tells R how to interpret geographic coordinates and the most common CRS for latitude/longitude data is EPSG:4326
 
 If you take a look at the object we created, `tempe_hate_sf`, you will see that it has mapped the coordinate information to a column called `geometry`.
 
