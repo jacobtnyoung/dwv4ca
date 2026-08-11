@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
   )
 
 library( DWVpack )
+library( scales )
 
 ```
 
@@ -21,33 +22,29 @@ The `dplyr` package is designed to make data wrangling faster, clearer, and more
 
 At its core, `dplyr` is built around the idea of **“verbs”** where each function represents a common action you perform on data:
 
--   `filter()`: keep certain rows
--   `select()`: choose specific columns
--   `mutate()`: create or modify variables
--   `arrange()`: sort the data
--   `summarize()`: compute summary statistics
--   `group_by()`: apply operations within groups
+- `filter()`: keep certain rows
+- `select()`: choose specific columns
+- `mutate()`: create or modify variables
+- `arrange()`: sort the data
+- `summarize()`: compute summary statistics
+- `group_by()`: apply operations within groups
 
 These verbs can be combined to create a step-by-step workflow that mirrors how analysts actually think.
 Another way to think of this is like a "data recipe" where we stipulate a set of steps to follow to give us a particular data set.
+Just as with baking, where you start with ingredients and follow a recipe to make bread (or cookies!), a data recipe starts with raw data and identifies the sequence of steps to return an analytic dataset.
 
 ### Why This Matters for Crime Analysts
 
 Crime data is often messy, complex, and large.
-Analysts regularly need to:
-
--   Isolate specific types of incidents (e.g., use of force)
--   Focus on certain time periods or locations
--   Create new variables (e.g., month, crime categories)
--   Summarize patterns across groups (e.g., by neighborhood or offense type)
+Analysts regularly need to isolate specific types of incidents (e.g., use of force), focus on certain time periods or locations, create new variables (e.g., month, crime categories), summarize patterns across groups (e.g., by neighborhood or offense type), and many other tasks.
 
 `dplyr` makes these tasks:
 
--   **Readable**: Code looks like a sequence of logical steps
--   **Efficient**: Handles large datasets quickly
--   **Reproducible**: Every step is documented and can be rerun
+- **Readable**: Code looks like a sequence of logical steps
+- **Efficient**: Handles large datasets quickly
+- **Reproducible**: Every step is documented and can be rerun
 
-Instead of manually filtering or copying data in spreadsheets, analysts can build a clear, repeatable workflow that turns raw data into meaningful insight.
+Instead of manually filtering or copying data in spreadsheets, analysts can build a clear, repeatable workflow that turns raw data into meaningful insight (remember the recipe metaphor?).
 As you work through this section, the advantages of these features should become more clear.
 
 To facilitate that, let's look at some data on *use of force* incidents.
@@ -55,12 +52,14 @@ To facilitate that, let's look at some data on *use of force* incidents.
 # Use of Force in Phoenix
 
 Imagine you are a crime analyst working for a non-profit in Phoenix, Arizona.
-Your supervisor asks: “We’ve been getting questions from local constituents about use of force.
-Can you tell me what’s going on?”
-At first glance, this sounds straightforward: just open the data and look (since these are publicly available, it is easy to do so).
+Your supervisor asks: "We’ve been getting questions from local constituents about use of force. Can you tell me what’s going on?" At first glance, this sounds straightforward: just open the data and look (since these are publicly available, it is easy to do so, right?).
+Let's take a look at the data.
 
 The `DWVpack` package contains a data set for use of force incidents from 2018-2024 in Phoenix.
-(As a reminder, if you have not not installed the `DWVpack` package, please review the [Getting Started with R]() chapter where this is covered.) To look at the data, we need to first load the `DWVpack` package and then examine the data, called `phx_uof` in the package, using the `View()` function.
+These data were collected from the Phoenix [Open Data Portal](https://www.phoenixopendata.com/dataset/uof) and have been restructured a bit to help with instruction.
+As a reminder, if you have not not installed the `DWVpack` package, please review the [Getting Started with R](https://jacobtnyoung.github.io/dwv4ca/dwc4ca-r-intro.html) chapter where this is covered (see the "Installing DWVpack" section).
+
+To look at the data, we need to first load the `DWVpack` package and then examine the data, called `phx_uof` in the package, using the `View()` function.
 This function takes an object and creates a separate viewing pane where we can "view" the data.
 
 Here are the commands:
@@ -75,22 +74,37 @@ View( phx_uof )
 
 ```
 
-Take a look through the data file and think about what we have.
+Take a look through the data file (shown in the pane that looks like a spreadsheet).
+What do you see?
+
 In the *rows*, we have each incident from 2018-2024.
-If you scroll to the bottom of the file, you will see that there are `r dim(phx_uof)[1]` total incidents.
-In the *columns* we have the variables.
+If you scroll to the bottom of the file, you will see that there are `r comma( dim( phx_uof )[1] )` total incidents.
+These are our **cases**.
+In the *columns* we have different ways of describing the incidents.
+These are **variables**.
 
 Let's take a look at the first column, which is the variable `INC_IA_NO`.
-According to the [data dictionary](https://www.phoenixopendata.com/dataset/ouof/resource/c79b2135-e936-439e-a8a3-79e61d4518d2) for these data, the first variable `INC_IA_NO` is a record number to use as a unique identifier for each officer Use of Force report (aka officer use of force report).
-A Use of Force report is completed for each involved individual within an incident.
-This field is available beginning in 2021 when Phoenix Police Department implemented a new application for tracking UOF interactions to allow for additional information to be collected about each UOF interaction.
+According to the [data dictionary](https://www.phoenixopendata.com/dataset/ouof/resource/c79b2135-e936-439e-a8a3-79e61d4518d2) for these data, this variable is a:
 
-What about the tenth column, `HUNDRED_BLOCK`?
-This is the address of the incident, anonymized to the hundred block.
+> Record number to use as a unique identifier for each officer Use of Force report (aka officer use of force report).
+> A Use of Force report is completed for each involved individual within an incident.
+> This field is available beginning in 2021 when Phoenix Police Department implemented a new application for tracking UOF interactions to allow for additional information to be collected about each UOF interaction.
+
+Now, take a look through the data file.
+Notice anything about `INC_IA_NO`?
+If you said "some cases are labeled "Not Applicable", great job! Now, think about why this is the case...
+
+Take a look at the tenth column, `HUNDRED_BLOCK`.
+This is:
+
+> Address of the officer Use of Force incident, anonymized to the hundred block.
+> UOF incidents where the location information was not entered are listed as "Not Available."
+
 As you can see if you scroll through the incidents, there are some listed as "Not Available", meaning that (for some reason) the location information was not entered.
 
 If you keep looking through the data (go ahead, I can wait), you will see that we can't just dive into analyzing the data.
 We need to clean and structure the data.
+Just like if we were baking, where we would need to handle certain aspects of our ingredients and document the process.
 This is where data wrangling comes in.
 
 ## Analytical Questions and Workflow
@@ -103,46 +117,17 @@ What proportion of incidents involve the suspect having a gun?
 Are non-white suspects more prevalent in the data than White suspects?
 
 Each of these questions requires transforming raw data into a usable format as raw datasets rarely arrive ready for analysis (as we saw above).
-Instead, we typically move through a series of steps (a workflow):
+Instead, we typically move through a series of steps (a **workflow**):
 
--   Select relevant variables
--   Filter observations of interest
--   Create new variables (e.g., time, categories)
--   Group and summarize data
--   Check for missing or unusual values
+- Select relevant variables
+- Filter observations of interest
+- Create new variables (e.g., time, categories)
+- Group and summarize data
+- Check for missing or unusual values
 
 The `dplyr` package is designed to make each of these steps clear, consistent, and reproducible.
 
-# `dplyr` Basics
-
-You’re about to learn the primary `dplyr` verbs (functions), which will allow you to solve the vast majority of your data manipulation challenges.
-But before we discuss their individual differences, it’s worth stating what they have in common:
-
--   The first argument is always a data frame.
--   The subsequent arguments typically describe which columns to operate on using the variable names (without quotes).
--   The output is always a new data frame.
-
-Because each verb does one thing well, solving complex problems will usually require combining multiple verbs, and we’ll do so with the pipe, `|>`.
-We’ll discuss the pipe more, but in brief, the pipe allows us to string together multiple verbs.
-The easiest way to pronounce the pipe is “then”.
-That makes it possible to get a sense of the following code even though you haven’t yet learned the details:
-
-``` r
-
-phx_uof |>
-  filter( CIT_GENDER == "Male" ) |> 
-  group_by( INC_YEAR ) |> 
-  summarize(
-    male_uof = n()
-  )
-  
-```
-
-`dplyr`’s verbs are organized into four groups based on what they operate on: rows, columns, groups, or tables.
-In the following sections, you’ll learn the most important verbs for rows, columns, and groups.
-Let’s dive in!
-
-To use these functions, we need to install `dyplr`:
+First, we need to install `dyplr`:
 
 ```{r}
 install.packages( "dplyr" )
@@ -155,6 +140,52 @@ After installing (or if you already have the package installed), we need to use 
 library( dplyr )
 
 ```
+
+# `dplyr` Basics
+
+You’re about to learn the primary `dplyr` verbs (functions), which will allow you to solve the vast majority of your data manipulation challenges.
+But before we discuss their individual differences, it’s worth stating what they have in common:
+
+- The first argument is always a data frame.
+- The subsequent arguments typically describe which columns to operate on using the variable names (without quotes).
+- The output is always a new data frame.
+
+Because each verb does one thing well, solving complex problems will usually require combining multiple verbs.
+To combine multiple verbs, we will do so with the pipe, `|>`.
+We’ll discuss the pipe more later, but in brief, the pipe allows us to string together multiple verbs.
+The easiest way to pronounce the pipe is “then”.
+Like following a recipe where we get an apple, then cut the skin off, then slice it, then remove the core and seeds:
+
+``` r
+
+get an apple |>
+  cut the skin off |> 
+  slice into pieces |> 
+  remove the core and seeds
+  )
+  
+```
+
+Now that you have a model of how this works, the following code should make sense even though you haven’t yet learned the details:
+
+``` r
+
+phx_uof |>
+  filter( CIT_GENDER == "Male" ) |> 
+  group_by( INC_YEAR ) |> 
+  summarize(
+    male_uof = n()
+  )
+  
+```
+
+What this says is: take the `phx_uof` data, then filter the variable `CIT_GENDER` such that we only include `Males`, then group by year, then summarize it.
+If that doesn't make sense, no worries!
+We are going to go through each line, step-by-step.
+
+`dplyr`’s verbs are organized into four groups based on what they operate on: rows, columns, groups, or tables.
+In the following sections, you’ll learn the most important verbs for rows, columns, and groups.
+Let’s dive in!
 
 ## Rows
 
@@ -183,6 +214,8 @@ In this case we are filtering the only to only keep rows where the `CIT_GENDER` 
 
 We can use various operators for the condition.
 Above we used `==` equal to, but we could say `!=` which would give is all the values *except* "Male".
+The `!=` operator means "not equal to".
+
 Let's think about this.
 Here are all the unique values for the `CIT_GENDER` variable:
 
@@ -203,7 +236,7 @@ phx_uof |>
 
 For numeric variables, we can also use `>` (greater than), `>=` (greater than or equal to), `<` (less than), and `<=` (less than or equal to).
 
-For example, if we wanted all years after 2018:
+For example, if we wanted all years after 2018, then we want all cases where year is greater than the value 2018:
 
 ``` r
 
@@ -216,7 +249,7 @@ We can also combine conditions with `&` to indicate “and” (check for both co
 
 ``` r
 
-# take years 2018 and Males using the & "and" operationr:
+# take years 2018 and Males using the & "and" operatior:
 
 phx_uof |>
   filter( CIT_GENDER == "Male" & INC_YEAR == 2018 )
@@ -231,18 +264,20 @@ phx_uof |>
 
 When you run `filter()` `dplyr` executes the filtering operation, creating a new data frame, and then prints it.
 It doesn’t modify the existing dataset because `dplyr` functions never modify their inputs.
-To save the result, you need to use the assignment operator, `<-`:
+To save the result, you need to use the assignment operator, `<-`, to create a new object (that is, a new dataset meeting the conditions):
 
 ``` r
 
 uof_2018_and_2025 <- phx_uof |>
   filter( INC_YEAR == 2018 | INC_YEAR == 2025 ) 
   
+View ( uof_2018_and_2025 )  
+  
 ```
 
 ### `arrange()`
 
-`arrange()` changes the order of the rows based on the value of the columns.
+`arrange()` sorts the data by changing the order of the rows based on the value of the columns.
 It takes a data frame and a set of column names.
 If you provide more than one column name, each additional column will be used to break ties in the values of the preceding columns.
 For example, the following code sorts by `INC_YEAR` then by `CIT_GENDER`.
@@ -302,6 +337,10 @@ phx_uof |>
 
 As we will see, we can string together many of these instructions for how we want to augment into a single command using the `|>` operator.
 
+Also, the `table()` function returns an object of a different class than the `distinct()` function.
+If the reason why that is important doesn't make sense, don't worry.
+It will become more clear as we start working with object classes.
+
 ## Columns
 
 There are also verbs that operate on the columns.
@@ -313,21 +352,21 @@ It’s not uncommon to get datasets with hundreds or even thousands of variables
 In this situation, the first challenge is often just focusing on the variables you’re interested in.
 `select()` allows you to rapidly zoom in on a useful subset using operations based on the names of the variables:
 
--   Select columns by name
+- Select columns by name
 
 ``` r
 phx_uof |> 
   select( INC_YEAR, CIT_GENDER )
 ```
 
--   Select all columns between `INC_YEAR` and `CIT_GENDER`
+- Select all columns between `INC_YEAR` and `CIT_GENDER`
 
 ``` r
 phx_uof |> 
   select( INC_YEAR : CIT_GENDER )
 ```
 
--   Select all columns except `INC_YEAR` and `CIT_GENDER`
+- Select all columns except `INC_YEAR` and `CIT_GENDER`
 
 ``` r
 phx_uof |> 
@@ -340,10 +379,10 @@ I recommend using `!` because it reads as “not” and combines well with `&` a
 
 There are also a number of helper functions you can use within `select()`:
 
--   `starts_with("abc")`: matches names that begin with “abc”.
--   `ends_with("xyz")`: matches names that end with “xyz”.
--   `contains("ijk")`: matches names that contain “ijk”.
--   `num_range("x", 1:3)`: matches x1, x2 and x3.
+- `starts_with("abc")`: matches names that begin with “abc”.
+- `ends_with("xyz")`: matches names that end with “xyz”.
+- `contains("ijk")`: matches names that contain “ijk”.
+- `num_range("x", 1:3)`: matches x1, x2 and x3.
 
 You can rename variables as you `select()` them by using `=`.
 The new name appears on the left-hand side of the `=`, and the old variable appears on the right-hand side:
@@ -517,10 +556,10 @@ phx_uof |>
 
 Now that we know how to manipulate the dataset, lets revisit our questions:
 
--   Are incidents increasing or decreasing over time?
--   How many incidents involve Male (vs. Female) individuals?
--   What proportion of incidents involve the suspect having a gun (see the `SUBJ_ARMED_GUN` column)?
--   Are non-white suspects more prevalent in the data than White suspects?
+- Are incidents increasing or decreasing over time?
+- How many incidents involve Male (vs. Female) individuals?
+- What proportion of incidents involve the suspect having a gun (see the `SUBJ_ARMED_GUN` column)?
+- Are non-white suspects more prevalent in the data than White suspects?
 
 Before reviewing this section, I would encourage you to take a crack at it on your own, and then work through the solutions here.
 
@@ -611,4 +650,52 @@ phx_uof |>
 
 <br>
 
-## Test Your Knowledge Exercises
+## Summary {.unnumbered}
+
+In this chapter, you learned the foundations of data wrangling with `dplyr`.
+Rather than manually modifying data, `dplyr` allows us to construct a reproducible **data recipe**: a sequence of explicit steps that transforms raw data into something we can use to answer analytical questions.
+You learned how to use `filter()` and `arrange()` to work with rows, `select()` and `mutate()` to work with columns, and `group_by()` and `summarize()` to examine patterns across groups.
+You also learned how the pipe, `|>`, connects these individual operations into a workflow that is readable, reproducible, and easy to modify.
+
+Using the Phoenix use-of-force data, we applied these tools to questions that crime analysts might encounter in practice.
+We filtered observations, selected relevant variables, created new categories, calculated counts and proportions, and summarized patterns across groups and over time.
+Importantly, the code we wrote documents exactly how we moved from the original data to our results.
+If our analytical question changes, or new data become available, we can modify or rerun the same recipe rather than starting over (like finding a new type of flour for that bread you love!).
+
+There is an important assumption behind much of what we did in this chapter, however: our data were already organized in a way that made these operations relatively straightforward.
+We generally had cases in rows, variables in columns, and values in cells.
+Real-world data do not always arrive in this convenient form.
+Sometimes information that should be stored in one variable is spread across several columns, multiple pieces of information are stored in a single column, or a single case is spread across multiple rows.
+
+Before we build more complicated data recipes, we therefore need to think about the **structure** of our data.
+In the next chapter, I introduce the concept of **tidy data**, a set of principles for organizing datasets so they are easier to manipulate, analyze, and visualize.
+As we will see, getting the structure of the data right can make everything we learned about `dplyr` much easier to use.
+
+## Test Your Knowledge {.unnumbered}
+
+Before moving on, use the prompts below to test your understanding of the material in this chapter.
+Try to answer each question or write the R code needed to complete the task without looking back at the examples.
+
+- In your own words, explain what **data wrangling** means and why it is an important part of crime analysis.
+
+- What is the purpose of the **pipe (`|>`)**?
+  Explain how you would read the following code out loud: `phx_uof |> filter(CIT_GENDER == "Male")`.
+
+- Write `dplyr` code that keeps only incidents from **2020** in the `phx_uof` dataset.
+
+- Write code that keeps all incidents **except** those involving Male individuals.
+
+- Use `arrange()` to sort `phx_uof` from the **earliest incident year to the latest**.
+  Then modify your code to sort from the latest year to the earliest.
+
+- Use `select()` to create a dataset containing only `INC_YEAR`, `CIT_GENDER`, and `CIT_AGE`.
+  Rename `INC_YEAR` to `year`.
+
+- Use `mutate()` to create a new variable called `adult` that identifies whether an individual is **18 or older** based on `CIT_AGE`.
+
+- Write a `dplyr` workflow that calculates the **number of use-of-force incidents in each year**.
+
+- Modify the previous workflow so that it calculates the **proportion of all incidents represented by each year**.
+
+- Write a workflow that calculates the **average age of individuals in each `CIT_RACE` category**.
+  Make sure your code handles missing values appropriately.
