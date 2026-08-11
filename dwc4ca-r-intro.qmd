@@ -148,17 +148,17 @@ The utility of this will be more obvious later.
 Objects in R can be of different types or **classes**.
 There are four:
 
--   numeric, a number (e.g., `1, 2`)
--   character, a letter or word (e.g., `"Shelley", "Trevor"`)
--   factor, a category (e.g., `female, male`)
--   logical, True or False values (e.g., `TRUE, FALSE`)
+- numeric, a number (e.g., `1, 2`)
+- character, a letter or word (e.g., `"Shelley", "Trevor"`)
+- factor, a category (e.g., `female, male`)
+- logical, True or False values (e.g., `TRUE, FALSE`)
 
 Each type of vector serves different purposes:
 
--   *numeric*: keep track of quantitative measures, counts, or orders of things\
--   *character*: store non-numeric data, typically unstructured text\
--   *factor*: represent distinct and mutually-exclusive categories\
--   *logical*: designate cases that meet some criteria, usually group inclusion
+- *numeric*: keep track of quantitative measures, counts, or orders of things\
+- *character*: store non-numeric data, typically unstructured text\
+- *factor*: represent distinct and mutually-exclusive categories\
+- *logical*: designate cases that meet some criteria, usually group inclusion
 
 For example, let's build a few objects:
 
@@ -334,13 +334,43 @@ Note that we *do not* have to reinstall the package using `install.packages()`, 
 
 If you have installed the package, but have not loaded it, R will return an error saying that a particular function is not found.
 
-### Installing tidyverse
+### Installing tidyverse {.unnumbered}
 
 Throughout this book we will use a package called `tidyverse`.
 This is actually a set of packages that are used for getting data "tidy".
 We will discuss this in later chapters.
 But for now, you can install the `tidyverse` by typing: `install.packages( "tidyverse" )`.
 Now, if you type `library( tidyverse )` it will load the functions and show you which packages it is using.
+
+### Installing DWVpack {.unnumbered}
+
+Throughout this book, we will use a package called `DWVpack.` This is a package I wrote specifically for this book.
+The package contains datasets and other resources we will use through the book.
+Unlike packages such as `dplyr` and `ggplot2`, `DWVpack` is hosted on GitHub rather than CRAN.
+As a result, we need to take an additional step to install it.
+
+First, install the `remotes` package.
+You only need to do this once on your computer: `install.packages("remotes")`.
+
+Next, use `remotes` to install `DWVpack` directly from GitHub using: `remotes::install_github( "jacobtnyoung/DWVpack" )`.
+
+You may see quite a bit of text appear in the Console window while the package is being downloaded and installed.
+That is normal.
+You may also be asked whether you want to update other packages.
+For now, you can select the option to skip package updates.
+
+Once the installation is complete, load `DWVpack` using: `library( DWVpack )`.
+
+Remember that installing and loading a package are two different things.
+You generally install a package only once, but you must load it with `library()` each time you start a new R session and want to use it.
+
+#### Checking Your Installation
+
+Let's make sure everything worked.
+Run: `library( DWVpack )`.
+If the command runs without an error, you are ready to go!
+If you receive an error `saying that there is no package called DWVpack`, return to the installation step and make sure that `remotes::install_github("jacobtnyoung/DWVpack")` completed successfully.
+We will use `DWVpack` throughout the book, so getting it installed now will make it easier to follow along with the examples and exercises in the chapters ahead.
 
 ## RStudio
 
@@ -368,22 +398,23 @@ However, there are more tools available in RStudio.
 
 ## Test Your Knowledge Exercises
 
--   After installing R, what does the `>` prompt represent?
--   Create an object called `a` with the value 7.
--   Which of the following is a valid object name?
-    -   3cats
-    -   .hidden_data
-    -   my-object
-    -   \_underscore
--   Explain what the following code does: `b <- 10`?
--   What is a function in R? Explain using the `c()` function as an example.
--   Create an object called `numbers` that contains the values 2, 4, 6, 8, and 10 using the `c()` function.
--   Type the following code: `length( numbers )`. What is the meaning of the number it returns?
--   Create a vector `z` with the values 10 through 20. Now, write code to retrieve:
-    -   The 3rd element in `z`.
-    -   The 2nd through 5th elements in `z`.
-    -   The 1st and last elements in `z`.
--   What is the difference between `z[3:5]` and `z[ c(3,5) ]`?
--   What is the purpose of the `install.packages()` function? The `library()` function?
--   Why might you see a "function not found" error when trying to use a function from a package?
--   Look through the packages on the CRAN repository. Find one and install it.
+- After installing R, what does the `>` prompt represent?
+- Create an object called `a` with the value 7.
+- Which of the following is a valid object name?
+  - 3cats
+  - .hidden_data
+  - my-object
+  - \_underscore
+- Explain what the following code does: `b <- 10`?
+- What is a function in R? Explain using the `c()` function as an example.
+- Create an object called `numbers` that contains the values 2, 4, 6, 8, and 10 using the `c()` function.
+- Type the following code: `length( numbers )`. What is the meaning of the number it returns?
+- Create a vector `z` with the values 10 through 20. Now, write code to retrieve:
+  - The 3rd element in `z`.
+  - The 2nd through 5th elements in `z`.
+  - The 1st and last elements in `z`.
+- What is the difference between `z[3:5]` and `z[ c(3,5) ]`?
+- What is the purpose of the `install.packages()` function? The `library()` function?
+- Enter this code `help( package = "DWVpack" )`. Now, look through the help files in the `DWVpack` package. What do they tell you?
+- Why might you see a "function not found" error when trying to use a function from a package?
+- Look through the packages on the CRAN repository. Find one and install it.

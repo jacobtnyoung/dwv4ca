@@ -13,7 +13,7 @@ Rather, my goal is to help you develop a way of thinking about *accessibility*.
 You will learn how to transform messy, real-world datasets (i.e. data wrangling) into insightful graphics and visual displays (i.e. visualization).
 These skills are essential tools for any crime analyst.
 
-A key foundation of this work is the set of principles often referred to as open science.
+A key foundation of this work is the set of principles often referred to as *open science*.
 In practice, this means your analyses should be transparent, reproducible, and accessible.
 Others should be able to understand how you arrived at your conclusions, replicate your methods, and build upon your work.
 In a field that directly shapes public policy and community outcomes, this level of accountability is not just ideal, it is essential.
@@ -34,5 +34,11 @@ You should expect to engage actively with the material.
 The examples and exercises are drawn from real-world data and reflect the kinds of challenges you will encounter in professional settings.
 The goal is not simply to teach you how to do something, but to help you understand why it matters and when it is appropriate.
 
+Each chapter in this book will contain R code, which is in “code chunks”.
+You will notice a code chunk because the font will change.
+Code chunks will have text that looks `like this`.
+R code chunks can be copied and pasted directly into R and RStudio.
+As you work through the tutorials, follow along in the software by copying and pasting the code and seeing it work on your end.
+
 Ultimately, this book is about building your capacity as a thoughtful, ethical, and effective analyst.
-If you take one idea from it, let it be this: good analysis is not just about producing results, it is about producing results that others can trust, understand, and use.
+If you take one idea from it, let it be this: good analysis is not just about producing results, it is about producing results that others can trust, understand, reproduce, and use.
