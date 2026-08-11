@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.37">
+<meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Jacob T.N. Young">
 <title>Getting Started with R – Data Wrangling &amp; Visualization for Crime Analysts</title>
@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-70606838c043939020f7d83e81782c39.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
@@ -227,6 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="#packages-and-the-install.packages-and-library-functions" id="toc-packages-and-the-install.packages-and-library-functions" class="nav-link" data-scroll-target="#packages-and-the-install.packages-and-library-functions">Packages and the <code>install.packages()</code> and <code>library()</code> Functions</a>
   <ul class="collapse">
 <li><a href="#installing-tidyverse" id="toc-installing-tidyverse" class="nav-link" data-scroll-target="#installing-tidyverse">Installing tidyverse</a></li>
+  <li><a href="#installing-dwvpack" id="toc-installing-dwvpack" class="nav-link" data-scroll-target="#installing-dwvpack">Installing DWVpack</a></li>
   </ul>
 </li>
   <li>
@@ -406,9 +407,18 @@ We could also have used the <code>length=</code> argument: <code>seq( from=1, to
 <p>After the package is installed on your machine, you do <u>not</u> (I repeat NOT) need to reinstall the package each time you open a new session. Rather, you just need to load the package using the <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> function like this: <code>library("</code>package name<code>")</code>. The <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function is getting the package contents and installing them on your machine. The <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> function is simply loading the package.</p>
 <p>Note that each time you open R, you have to load any packages that you manually loaded using the <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function. In other words, if we closed R and then reopened it, we would need to type <code><a href="https://statnet.org">library( "sna" )</a></code> to load the functions in <code>sna</code>. Note that we <em>do not</em> have to reinstall the package using <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, we just have to load the library.</p>
 <p>If you have installed the package, but have not loaded it, R will return an error saying that a particular function is not found.</p>
-<section id="installing-tidyverse" class="level3"><h3 class="anchored" data-anchor-id="installing-tidyverse">Installing tidyverse</h3>
+<section id="installing-tidyverse" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="installing-tidyverse">Installing tidyverse</h3>
 <p>Throughout this book we will use a package called <code>tidyverse</code>. This is actually a set of packages that are used for getting data “tidy”. We will discuss this in later chapters. But for now, you can install the <code>tidyverse</code> by typing: <code>install.packages( "tidyverse" )</code>. Now, if you type <code><a href="https://tidyverse.tidyverse.org">library( tidyverse )</a></code> it will load the functions and show you which packages it is using.</p>
-</section></section><section id="rstudio" class="level2"><h2 class="anchored" data-anchor-id="rstudio">RStudio</h2>
+</section><section id="installing-dwvpack" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="installing-dwvpack">Installing DWVpack</h3>
+<p>Throughout this book, we will use a package called <code>DWVpack.</code> This is a package I wrote specifically for this book. The package contains datasets and other resources we will use through the book. Unlike packages such as <code>dplyr</code> and <code>ggplot2</code>, <code>DWVpack</code> is hosted on GitHub rather than CRAN. As a result, we need to take an additional step to install it.</p>
+<p>First, install the <code>remotes</code> package. You only need to do this once on your computer: <code>install.packages("remotes")</code>.</p>
+<p>Next, use <code>remotes</code> to install <code>DWVpack</code> directly from GitHub using: <code>remotes::install_github( "jacobtnyoung/DWVpack" )</code>.</p>
+<p>You may see quite a bit of text appear in the Console window while the package is being downloaded and installed. That is normal. You may also be asked whether you want to update other packages. For now, you can select the option to skip package updates.</p>
+<p>Once the installation is complete, load <code>DWVpack</code> using: <code><a href="https://rdrr.io/r/base/library.html">library( DWVpack )</a></code>.</p>
+<p>Remember that installing and loading a package are two different things. You generally install a package only once, but you must load it with <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> each time you start a new R session and want to use it.</p>
+<section id="checking-your-installation" class="level4"><h4 class="anchored" data-anchor-id="checking-your-installation">Checking Your Installation</h4>
+<p>Let’s make sure everything worked. Run: <code><a href="https://rdrr.io/r/base/library.html">library( DWVpack )</a></code>. If the command runs without an error, you are ready to go! If you receive an error <code>saying that there is no package called DWVpack</code>, return to the installation step and make sure that <code>remotes::install_github("jacobtnyoung/DWVpack")</code> completed successfully. We will use <code>DWVpack</code> throughout the book, so getting it installed now will make it easier to follow along with the examples and exercises in the chapters ahead.</p>
+</section></section></section><section id="rstudio" class="level2"><h2 class="anchored" data-anchor-id="rstudio">RStudio</h2>
 <p>You may be surprised to discover how little functionality is implemented in the standard R GUI (i.e., graphical user interface). The standard R GUI implements only very rudimentary functionality through menus: reading help, managing multiple graphics windows, editing some source and data files, and some other basic functionality. There are no menu items, buttons, or palettes for loading data, transforming data, plotting data, or doing any real work with data. Commercial applications like SAS, SPSS, and Stata include user interfaces with much more functionality.</p>
 <p>This was just the nature of working with R until some awesome human beings created RStudio. RStudio is one of several projects to build an easier-to-use GUI for R. It is a free, open-source IDE (i.e., integrated development environment) for working with R. Unlike the standard R GUI, RStudio tiles windows on the screen and puts different windows in different tabs. RStudio can be downloaded from: <a href="http://www.rstudio.com" class="uri">http://www.rstudio.com</a>.</p>
 <section id="rstudio-workthrough" class="level3"><h3 class="anchored" data-anchor-id="rstudio-workthrough">RStudio workthrough</h3>
@@ -440,6 +450,7 @@ We could also have used the <code>length=</code> argument: <code>seq( from=1, to
 </li>
 <li>What is the difference between <code>z[3:5]</code> and <code>z[ c(3,5) ]</code>?</li>
 <li>What is the purpose of the <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function? The <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> function?</li>
+<li>Enter this code <code><a href="https://rdrr.io/pkg/DWVpack/man">help( package = "DWVpack" )</a></code>. Now, look through the help files in the <code>DWVpack</code> package. What do they tell you?</li>
 <li>Why might you see a “function not found” error when trying to use a function from a package?</li>
 <li>Look through the packages on the CRAN repository. Find one and install it.</li>
 </ul>
