@@ -25,20 +25,21 @@ If so, then your second thought might have been, "this is going to be a lot of w
 
 Sound familiar?
 That’s not a coincidence.
-Rather it is the reality of working with open-source data or data "in the wild".
+Rather, it is the reality of working with open-source data or data "in the wild".
 In data wrangling, we want to corral that wild data and get it into a format with which we can work.
 
 There’s a common misconception that data analysis is mostly about: building models, creating visualizations, creating output, etc.
-But in practice, most analysts spend the majority of their time doing something cleaning and organizing data.
+But in practice, most analysts spend the majority of their time cleaning and organizing data.
 Ironically, when we (i.e. scholars) teach methods and statistics for crime analysis, most of the time is spent on analysis and very little time is spent on preparing data.
+As a result, most analysts leave school without some foundational skills in cleaning and data management.
 
 "Tidying" data is one of the most important skills you can develop.
 In this chapter we are going to focus on turning messy data into something you can actually analyze.
 
 ## What Is “Tidy Data”?
 
-We’re going to use a concept from the [tidyverse](https://tidyverse.org/)(a collection of R packages for data transformation) called *tidy data*.
-This gives us a standard way to structure datasets so they are easy to work with.
+We’re going to use a concept from the [tidyverse](https://tidyverse.org/) (a collection of R packages for data transformation) called *tidy data*.
+This gives us a standard way to structure datasets so they are easy to work with and is consistent.
 Also, organizing data in this way is quickly becoming an industry standard, so knowing what it is and how to do it is valuable.
 
 A dataset is considered tidy when it follows three simple rules:
@@ -97,6 +98,7 @@ bad_data_2
 
 If you said “year” is hidden in column names, then you win a prize!
 Data organized in this way make it hard to analyze trends by year.
+
 Rather, we would prefer data like this:
 
 ```{r, echo=FALSE}
@@ -114,7 +116,7 @@ good_data_2
 ```
 
 Note the difference.
-We know have a variable for "year".
+We now have a variable for "year".
 
 ### Untidy Data: Example 3
 
@@ -133,6 +135,7 @@ bad_data_3
 
 These data are untidy because two people are stored in one row.
 It would be difficult to count or analyze individuals properly.
+
 We can fix this by making a variable for "subjects" and listing each one:
 
 ```{r, echo=FALSE}
@@ -146,14 +149,19 @@ good_data_3
 
 ### Why Tidy?
 
-Why ensure that your data is tidy?
+You have seen some examples of untidy and tidy data, but why shoudl you ensure that your data is tidy?
 There are two main advantages:
 
-1.  There’s a general advantage to picking one consistent way of storing data. If you have a consistent data structure, it’s easier to learn the tools that work with it because they have an underlying uniformity. 2, There’s a specific advantage to placing variables in columns because it allows R’s vectorized nature to shine. Most built-in R functions work with vectors of values. That makes transforming tidy data feel particularly natural.
+1.  There’s a general advantage to picking one consistent way of storing data.
+    If you have a consistent data structure, it’s easier to learn the tools that work with it because they have an underlying uniformity.
+
+2.  There’s a specific advantage to placing variables in columns because it allows R’s vectorized nature to shine.
+    Most built-in R functions work with vectors of values.
+    That makes transforming tidy data feel particularly natural.
 
 `dplyr` (remember `dplyr`!?!), `ggplot2`, and all the other packages in the `tidyverse` are designed to work with tidy data.
 
-Since we will be working with functions that tidy data, we need to install `tidyverse`:
+Since we will be working with functions that use tidy data, we need to install `tidyverse`:
 
 ```{r, eval=FALSE}
 install.packages( "tidyverse" )
@@ -164,6 +172,9 @@ After installing (or if you already have the package installed), we need to use 
 ```{r, eval=FALSE}
 library( tidyverse )
 ```
+
+As a reminder, if you try to use a `tidyverse` function (or any function in R that is loaded from an external library) without first loading the package, you may encounter an error.
+If you see an error that says **`could not find function`**, check that you have loaded the `tidyverse` package.
 
 <br>
 
@@ -193,16 +204,18 @@ This makes it had to extract this information for year.
 
 ### Wide vs Long Data
 
-This issue we saw in the example above has a specific name.
+This issue has a specific name.
 These data are **wide**, meaning that there are many columns and the variable (in this case "year") is spread over multiple columns.
-This is in contrast to data that is **long**, where there are fewer columns and values stacked into rows
+This is in contrast to data that is **long**, where there are fewer columns and values stacked into rows.
 
-Think of it like this:\
-- “Wide data spreads information across columns.” - “Long data stacks information down rows.”
+Think of it like this:
 
-#### `pivot_longer`
+- “Wide data spreads information across columns.”
+- “Long data stacks information down rows.”
 
-There is where the `pivot_longer` function comes in.
+#### `pivot_longer()`
+
+There is where the `pivot_longer()` function comes in.
 
 First, let's create our simple **wide** data object:
 
@@ -236,11 +249,11 @@ data_long
 
 Ok, let's see what we did:
 
--   `cols = c( "arrests_2022", "arrests_2023")` asks "which column are we resphaping?" and we use two column names (note that we have to use `c()` to combine them into a vector.
+- `cols = c( "arrests_2022", "arrests_2023")` asks "which column are we reshaping?" and we use two column names (note that we have to use `c()` to combine them into a vector.)
 
--   `names_to = "year"` tells `pivot_longer()` where the old column names are supposed to go.
+- `names_to = "year"` tells `pivot_longer()` where the old column names are supposed to go.
 
--   `values_to = "arrests"` tells the function what to do with the values.
+- `values_to = "arrests"` tells the function what to do with the values.
 
 In this case, they are going to go to a variable called `num_arrests`.
 
@@ -299,6 +312,9 @@ data_long <- data_long |>
     year = str_remove(year, "arrests_")
   )
 
+# take a look
+data_long
+
 ```
 
 Now, we can create a table using the tools from `dplyr`!
@@ -323,13 +339,19 @@ data_long |>
   
 ```
 
-### `pivot_wide`
+### `pivot_wide()`
 
 So far, we’ve taken messy wide data and made it tidy.
 But sometimes we actually want to go the other direction.
 This usually happens when we’re preparing results for reports or summaries.
-There is where the `pivot_wide` function comes in.
-First, let's create a simple **long** data object.
+There is where the `pivot_wide()` function comes in.
+
+To see the functionality of the `pivot_wide()` function, let's create a simple **long** data object.
+We’ll use the `tibble()` function to create a small dataset by hand.
+A tibble is the tidyverse version of a data frame and works much like the data frames we have already been using.
+Inside `tibble()`, we provide the name of each variable followed by the values it should contain.
+This gives us a quick and convenient way to create a simple dataset that we can use for our example.
+
 Suppose we had some data like this for crimes in two neighborhoods:
 
 ```{r}
@@ -361,9 +383,9 @@ data_wide
 
 Ok, let's see what we did:
 
--   `names_from = "year"` tells `pivot_wider()` to use values in the year column as new column names.
+- `names_from = "year"` tells `pivot_wider()` to use values in the year column as new column names.
 
--   `values_from = "crimes"` tells the function to fill the values with counts of crimes.
+- `values_from = "crimes"` tells the function to fill the values with counts of crimes.
 
 Note the difference from `pivot_longer()` in terms of the arguments which uses `...._to =` whereas `pivot_wider()` uses `..._from =`.
 
