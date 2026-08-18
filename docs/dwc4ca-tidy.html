@@ -228,10 +228,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <a href="#reshaping-data" id="toc-reshaping-data" class="nav-link" data-scroll-target="#reshaping-data">Reshaping Data</a>
   <ul class="collapse">
 <li><a href="#wide-vs-long-data" id="toc-wide-vs-long-data" class="nav-link" data-scroll-target="#wide-vs-long-data">Wide vs Long Data</a></li>
-  <li><a href="#pivot_wide" id="toc-pivot_wide" class="nav-link" data-scroll-target="#pivot_wide"><code>pivot_wide</code></a></li>
+  <li><a href="#pivot_wide" id="toc-pivot_wide" class="nav-link" data-scroll-target="#pivot_wide"><code>pivot_wide()</code></a></li>
   </ul>
 </li>
-  <li><a href="#test-your-knowledge-exercises" id="toc-test-your-knowledge-exercises" class="nav-link" data-scroll-target="#test-your-knowledge-exercises">Test Your Knowledge Exercises</a></li>
+  <li>
+<a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+<li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge">Test Your Knowledge</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-tidy.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -251,11 +256,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><p>Have you ever opened a dataset and immediately thought, “This is a mess”? Columns don’t make sense. Dates are inconsistent. And even if you can read it, it’s hard to actually do anything with it. If so, then your second thought might have been, “this is going to be a lot of work to fix”.</p>
-<p>Sound familiar? That’s not a coincidence. Rather it is the reality of working with open-source data or data “in the wild”. In data wrangling, we want to corral that wild data and get it into a format with which we can work.</p>
-<p>There’s a common misconception that data analysis is mostly about: building models, creating visualizations, creating output, etc. But in practice, most analysts spend the majority of their time doing something cleaning and organizing data. Ironically, when we (i.e.&nbsp;scholars) teach methods and statistics for crime analysis, most of the time is spent on analysis and very little time is spent on preparing data.</p>
+<p>Sound familiar? That’s not a coincidence. Rather, it is the reality of working with open-source data or data “in the wild”. In data wrangling, we want to corral that wild data and get it into a format with which we can work.</p>
+<p>There’s a common misconception that data analysis is mostly about: building models, creating visualizations, creating output, etc. But in practice, most analysts spend the majority of their time cleaning and organizing data. Ironically, when we (i.e.&nbsp;scholars) teach methods and statistics for crime analysis, most of the time is spent on analysis and very little time is spent on preparing data. As a result, most analysts leave school without some foundational skills in cleaning and data management.</p>
 <p>“Tidying” data is one of the most important skills you can develop. In this chapter we are going to focus on turning messy data into something you can actually analyze.</p>
 <section id="what-is-tidy-data" class="level2"><h2 class="anchored" data-anchor-id="what-is-tidy-data">What Is “Tidy Data”?</h2>
-<p>We’re going to use a concept from the <a href="https://tidyverse.org/">tidyverse</a>(a collection of R packages for data transformation) called <em>tidy data</em>. This gives us a standard way to structure datasets so they are easy to work with. Also, organizing data in this way is quickly becoming an industry standard, so knowing what it is and how to do it is valuable.</p>
+<p>We’re going to use a concept from the <a href="https://tidyverse.org/">tidyverse</a> (a collection of R packages for data transformation) called <em>tidy data</em>. This gives us a standard way to structure datasets so they are easy to work with and is consistent. Also, organizing data in this way is quickly becoming an industry standard, so knowing what it is and how to do it is valuable.</p>
 <p>A dataset is considered tidy when it follows three simple rules:</p>
 <ol type="1">
 <li>Each variable has its own column</li>
@@ -299,7 +304,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2 B                  30           45</code></pre>
 </div>
 </div>
-<p>If you said “year” is hidden in column names, then you win a prize! Data organized in this way make it hard to analyze trends by year. Rather, we would prefer data like this:</p>
+<p>If you said “year” is hidden in column names, then you win a prize! Data organized in this way make it hard to analyze trends by year.</p>
+<p>Rather, we would prefer data like this:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 3
@@ -311,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 4 B        2023       45</code></pre>
 </div>
 </div>
-<p>Note the difference. We know have a variable for “year”.</p>
+<p>Note the difference. We now have a variable for “year”.</p>
 </section><section id="untidy-data-example-3" class="level3"><h3 class="anchored" data-anchor-id="untidy-data-example-3">Untidy Data: Example 3</h3>
 <p>Last one (you got this!):</p>
 <div class="cell" data-layout-align="center">
@@ -323,7 +329,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2           2 Sara;Anna</code></pre>
 </div>
 </div>
-<p>These data are untidy because two people are stored in one row. It would be difficult to count or analyze individuals properly. We can fix this by making a variable for “subjects” and listing each one:</p>
+<p>These data are untidy because two people are stored in one row. It would be difficult to count or analyze individuals properly.</p>
+<p>We can fix this by making a variable for “subjects” and listing each one:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
@@ -336,12 +343,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section><section id="why-tidy" class="level3"><h3 class="anchored" data-anchor-id="why-tidy">Why Tidy?</h3>
-<p>Why ensure that your data is tidy? There are two main advantages:</p>
+<p>You have seen some examples of untidy and tidy data, but why shoudl you ensure that your data is tidy? There are two main advantages:</p>
 <ol type="1">
-<li>There’s a general advantage to picking one consistent way of storing data. If you have a consistent data structure, it’s easier to learn the tools that work with it because they have an underlying uniformity. 2, There’s a specific advantage to placing variables in columns because it allows R’s vectorized nature to shine. Most built-in R functions work with vectors of values. That makes transforming tidy data feel particularly natural.</li>
+<li><p>There’s a general advantage to picking one consistent way of storing data. If you have a consistent data structure, it’s easier to learn the tools that work with it because they have an underlying uniformity.</p></li>
+<li><p>There’s a specific advantage to placing variables in columns because it allows R’s vectorized nature to shine. Most built-in R functions work with vectors of values. That makes transforming tidy data feel particularly natural.</p></li>
 </ol>
 <p><code>dplyr</code> (remember <code>dplyr</code>!?!), <code>ggplot2</code>, and all the other packages in the <code>tidyverse</code> are designed to work with tidy data.</p>
-<p>Since we will be working with functions that tidy data, we need to install <code>tidyverse</code>:</p>
+<p>Since we will be working with functions that use tidy data, we need to install <code>tidyverse</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span> <span class="st">"tidyverse"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -349,6 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>As a reminder, if you try to use a <code>tidyverse</code> function (or any function in R that is loaded from an external library) without first loading the package, you may encounter an error. If you see an error that says <strong><code>could not find function</code></strong>, check that you have loaded the <code>tidyverse</code> package.</p>
 <p><br></p>
 </section></section><section id="reshaping-data" class="level2"><h2 class="anchored" data-anchor-id="reshaping-data">Reshaping Data</h2>
 <p>Now that we know what tidy data should look like, the next step is learning how to transform messy data into that structure. One of the most common problems you’ll run into is that your data is in the wrong <em>shape</em>.</p>
@@ -365,11 +374,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If I asked you to give me a table of “arrests” over time, what problems do you see?</p>
 <p>You probably noticed that the year is embedded in column names. This makes it had to extract this information for year.</p>
 <section id="wide-vs-long-data" class="level3"><h3 class="anchored" data-anchor-id="wide-vs-long-data">Wide vs Long Data</h3>
-<p>This issue we saw in the example above has a specific name. These data are <strong>wide</strong>, meaning that there are many columns and the variable (in this case “year”) is spread over multiple columns. This is in contrast to data that is <strong>long</strong>, where there are fewer columns and values stacked into rows</p>
-<p>Think of it like this:<br>
-- “Wide data spreads information across columns.” - “Long data stacks information down rows.”</p>
-<section id="pivot_longer" class="level4"><h4 class="anchored" data-anchor-id="pivot_longer"><code>pivot_longer</code></h4>
-<p>There is where the <code>pivot_longer</code> function comes in.</p>
+<p>This issue has a specific name. These data are <strong>wide</strong>, meaning that there are many columns and the variable (in this case “year”) is spread over multiple columns. This is in contrast to data that is <strong>long</strong>, where there are fewer columns and values stacked into rows.</p>
+<p>Think of it like this:</p>
+<ul>
+<li>“Wide data spreads information across columns.”</li>
+<li>“Long data stacks information down rows.”</li>
+</ul>
+<section id="pivot_longer" class="level4"><h4 class="anchored" data-anchor-id="pivot_longer"><code>pivot_longer()</code></h4>
+<p>There is where the <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> function comes in.</p>
 <p>First, let’s create our simple <strong>wide</strong> data object:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_wide</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
@@ -407,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Ok, let’s see what we did:</p>
 <ul>
-<li><p><code>cols = c( "arrests_2022", "arrests_2023")</code> asks “which column are we resphaping?” and we use two column names (note that we have to use <code><a href="https://rdrr.io/r/base/c.html">c()</a></code> to combine them into a vector.</p></li>
+<li><p><code>cols = c( "arrests_2022", "arrests_2023")</code> asks “which column are we reshaping?” and we use two column names (note that we have to use <code><a href="https://rdrr.io/r/base/c.html">c()</a></code> to combine them into a vector.)</p></li>
 <li><p><code>names_to = "year"</code> tells <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> where the old column names are supposed to go.</p></li>
 <li><p><code>values_to = "arrests"</code> tells the function what to do with the values.</p></li>
 </ul>
@@ -462,12 +474,24 @@ A --&gt; B --&gt; C
 <span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
 <span>    year <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">year</span>, <span class="st">"arrests_"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># take a look</span></span>
+<span><span class="va">data_long</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  precinct year  arrests
+  &lt;chr&gt;    &lt;chr&gt;   &lt;dbl&gt;
+1 A        2022       50
+2 A        2023       60
+3 B        2022       30
+4 B        2023       45</code></pre>
+</div>
 </div>
 <p>Now, we can create a table using the tools from <code>dplyr</code>!</p>
 <p>Perhaps average arrests by year:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> avg_arrests <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">arrests</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -480,7 +504,7 @@ A --&gt; B --&gt; C
 </div>
 <p>Or average arrests by precinct:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">|&gt;</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">precinct</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> avg_arrests <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span> <span class="va">arrests</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -491,10 +515,12 @@ A --&gt; B --&gt; C
 2 B               37.5</code></pre>
 </div>
 </div>
-</section></section><section id="pivot_wide" class="level3"><h3 class="anchored" data-anchor-id="pivot_wide"><code>pivot_wide</code></h3>
-<p>So far, we’ve taken messy wide data and made it tidy. But sometimes we actually want to go the other direction. This usually happens when we’re preparing results for reports or summaries. There is where the <code>pivot_wide</code> function comes in. First, let’s create a simple <strong>long</strong> data object. Suppose we had some data like this for crimes in two neighborhoods:</p>
+</section></section><section id="pivot_wide" class="level3"><h3 class="anchored" data-anchor-id="pivot_wide"><code>pivot_wide()</code></h3>
+<p>So far, we’ve taken messy wide data and made it tidy. But sometimes we actually want to go the other direction. This usually happens when we’re preparing results for reports or summaries. There is where the <code>pivot_wide()</code> function comes in.</p>
+<p>To see the functionality of the <code>pivot_wide()</code> function, let’s create a simple <strong>long</strong> data object. We’ll use the <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code> function to create a small dataset by hand. A tibble is the tidyverse version of a data frame and works much like the data frames we have already been using. Inside <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code>, we provide the name of each variable followed by the values it should contain. This gives us a quick and convenient way to create a simple dataset that we can use for our example.</p>
+<p>Suppose we had some data like this for crimes in two neighborhoods:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  neighborhood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span> <span class="op">)</span>,</span>
 <span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>,<span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span> <span class="op">)</span>,</span>
 <span>  crimes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">30</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">40</span> <span class="op">)</span></span>
@@ -515,7 +541,7 @@ A --&gt; B --&gt; C
 </div>
 <p>If we want this in a format that’s easier to read in a report we could have one row per precinct and separate columns for each year. We can do that by creating a data object that is in <strong>wide</strong> format using the <code>pivot_wide()</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_wide</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_wide</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
 <span>    names_from <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    values_from <span class="op">=</span> <span class="va">crimes</span></span>
@@ -579,7 +605,7 @@ A --&gt; B --&gt; C
 </div>
 <p>Note that this works if we are using multiple variables as well. For example, say we were looking at arrests and calls for service in a neighborhood and our <strong>long</strong> data looked like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
 <span>  neighborhood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>, <span class="st">"B"</span> <span class="op">)</span>,</span>
 <span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span>,<span class="st">"2020"</span>, <span class="st">"2021"</span>, <span class="st">"2022"</span> <span class="op">)</span>,</span>
 <span>  arrests <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">30</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">40</span> <span class="op">)</span>,</span>
@@ -601,7 +627,7 @@ A --&gt; B --&gt; C
 </div>
 <p>Then, we can create columns by year for arrests and calls like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_wide</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_wide</span> <span class="op">&lt;-</span> <span class="va">data_long</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
 <span>    names_from <span class="op">=</span> <span class="va">year</span>,</span>
 <span>    values_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="va">arrests</span>, <span class="va">calls</span> <span class="op">)</span></span>
@@ -618,10 +644,28 @@ A --&gt; B --&gt; C
 </div>
 </div>
 <p>In general, use <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> when you’re making a table for a report, you want side-by-side comparisons, you’re exporting data (Excel, dashboards), and so on. In comparing the two functions, think of it like this: <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> helps us prepare data for analysis, whereas <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> helps us present results.</p>
-</section></section><section id="test-your-knowledge-exercises" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge-exercises">Test Your Knowledge Exercises</h2>
+<p><br></p>
+</section></section><section id="summary" class="level1 unnumbered"><h1 class="unnumbered">Summary</h1>
+<p>In this chapter, you learned that effective data wrangling is not just about changing the values in a dataset. It is also about getting those data into the right <strong>structure</strong>. The concept of <strong>tidy data</strong> gives us a consistent way to think about that structure: each variable should have its own column, each observation should have its own row, and each value should occupy a single cell. When data violate these principles, even relatively simple analytical tasks can become difficult.</p>
+<p>You also learned that one of the most common structural problems involves the <strong>shape</strong> of our data. Wide data spread information across columns, while long data stack that information across rows. Using <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code>, we can take information stored across multiple columns and transform it into variables that are easier to analyze. In the other direction, <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> allows us to spread values across columns, which can be particularly useful when preparing tables, reports, or other outputs. A useful way to remember the distinction is that <strong><code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> often helps us prepare data for analysis, while <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> often helps us present our results</strong>.</p>
+<p>Most importantly, tidying data is not an end in itself. We tidy data because a consistent structure makes the other tools in our data wrangling toolkit much easier to use. Once our data are tidy, we can apply the <code>dplyr</code> skills from the previous chapter (e.g.&nbsp;<code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>) to answer analytical questions more efficiently. As we continue, these ideas will become part of a larger workflow: identify how the data are structured, reshape them when necessary, and then use our data recipe to transform those data into information we can analyze and communicate.</p>
+<section id="test-your-knowledge" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="test-your-knowledge">Test Your Knowledge</h2>
+<p>Before moving on, use the prompts below to test your understanding of the material in this chapter. Try to answer each question or write the R code needed to complete the task without looking back at the examples:</p>
+<ul>
+<li>In your own words, explain what <strong>tidy data</strong> means. What are the three rules that a dataset should follow to be considered tidy?</li>
+<li>Suppose a dataset contains a variable called <code>demographics</code> with values such as <code>"Male_Adult"</code> and <code>"Female_Juvenile"</code>. Explain why this violates the principles of tidy data. How should the data be organized instead?</li>
+<li>Consider a crime dataset with columns named <code>crime_2022</code>, <code>crime_2023</code>, and <code>crime_2024</code>. Is this dataset in <strong>wide</strong> or <strong>long</strong> format? What information is currently stored in the column names?</li>
+<li>Explain the difference between <strong>wide</strong> and <strong>long</strong> data in your own words. Why is long data often more useful for analysis?</li>
+<li>Write code using <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> to reshape <code>crime_2022</code>, <code>crime_2023</code>, and <code>crime_2024</code> into two new variables called <code>year</code> and <code>crimes</code>.</li>
+<li>After completing the previous transformation, suppose the values of <code>year</code> are <code>"crime_2022"</code>, <code>"crime_2023"</code>, and <code>"crime_2024"</code>. Use <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove()</a></code> to remove <code>"crime_"</code> so that the variable contains only the year.</li>
+<li>Suppose you have a long dataset containing the variables <code>county</code>, <code>year</code>, and <code>crimes</code>. Write code using <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> that creates one row for each county and separate columns based on <code>year</code>, with the cells containing the values of <code>crimes</code>.</li>
+<li>What is the difference between the <code>names_to</code> and <code>values_to</code> arguments used with <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> and the <code>names_from</code> and <code>values_from</code> arguments used with <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code>? Explain what each tells R to do.</li>
+<li>Imagine a dataset contains a <code>subjects</code> variable where multiple people are stored in the same cell, such as <code>"John;Mike"</code>. Explain why this creates a problem for analysis and identify the function introduced in this chapter that could be used to place each subject into a separate row.</li>
+<li>Imagine you download a crime dataset from an open data portal. Before beginning your analysis, describe how you would determine whether the dataset is <strong>tidy</strong>. If it is not, identify the types of changes you might need to make before applying the <code>dplyr</code> tools you learned in the previous chapter.</li>
+</ul>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();

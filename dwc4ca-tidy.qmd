@@ -456,4 +456,38 @@ data_wide
 In general, use `pivot_wider()` when you’re making a table for a report, you want side-by-side comparisons, you’re exporting data (Excel, dashboards), and so on.
 In comparing the two functions, think of it like this: `pivot_longer()` helps us prepare data for analysis, whereas `pivot_wider()` helps us present results.
 
-## Test Your Knowledge Exercises
+<br>
+
+# Summary {.unnumbered}
+
+In this chapter, you learned that effective data wrangling is not just about changing the values in a dataset.
+It is also about getting those data into the right **structure**.
+The concept of **tidy data** gives us a consistent way to think about that structure: each variable should have its own column, each observation should have its own row, and each value should occupy a single cell.
+When data violate these principles, even relatively simple analytical tasks can become difficult.
+
+You also learned that one of the most common structural problems involves the **shape** of our data.
+Wide data spread information across columns, while long data stack that information across rows.
+Using `pivot_longer()`, we can take information stored across multiple columns and transform it into variables that are easier to analyze.
+In the other direction, `pivot_wider()` allows us to spread values across columns, which can be particularly useful when preparing tables, reports, or other outputs.
+A useful way to remember the distinction is that **`pivot_longer()` often helps us prepare data for analysis, while `pivot_wider()` often helps us present our results**.
+
+Most importantly, tidying data is not an end in itself.
+We tidy data because a consistent structure makes the other tools in our data wrangling toolkit much easier to use.
+Once our data are tidy, we can apply the `dplyr` skills from the previous chapter (e.g. `filter()`, `mutate()`, `group_by()`, `summarize()`) to answer analytical questions more efficiently.
+As we continue, these ideas will become part of a larger workflow: identify how the data are structured, reshape them when necessary, and then use our data recipe to transform those data into information we can analyze and communicate.
+
+## Test Your Knowledge {.unnumbered}
+
+Before moving on, use the prompts below to test your understanding of the material in this chapter.
+Try to answer each question or write the R code needed to complete the task without looking back at the examples:
+
+- In your own words, explain what **tidy data** means. What are the three rules that a dataset should follow to be considered tidy?
+- Suppose a dataset contains a variable called `demographics` with values such as `"Male_Adult"` and `"Female_Juvenile"`. Explain why this violates the principles of tidy data. How should the data be organized instead?
+- Consider a crime dataset with columns named `crime_2022`, `crime_2023`, and `crime_2024`. Is this dataset in **wide** or **long** format? What information is currently stored in the column names?
+- Explain the difference between **wide** and **long** data in your own words. Why is long data often more useful for analysis?
+- Write code using `pivot_longer()` to reshape `crime_2022`, `crime_2023`, and `crime_2024` into two new variables called `year` and `crimes`.
+- After completing the previous transformation, suppose the values of `year` are `"crime_2022"`, `"crime_2023"`, and `"crime_2024"`. Use `mutate()` and `str_remove()` to remove `"crime_"` so that the variable contains only the year.
+- Suppose you have a long dataset containing the variables `county`, `year`, and `crimes`. Write code using `pivot_wider()` that creates one row for each county and separate columns based on `year`, with the cells containing the values of `crimes`.
+- What is the difference between the `names_to` and `values_to` arguments used with `pivot_longer()` and the `names_from` and `values_from` arguments used with `pivot_wider()`? Explain what each tells R to do.
+- Imagine a dataset contains a `subjects` variable where multiple people are stored in the same cell, such as `"John;Mike"`. Explain why this creates a problem for analysis and identify the function introduced in this chapter that could be used to place each subject into a separate row.
+- Imagine you download a crime dataset from an open data portal. Before beginning your analysis, describe how you would determine whether the dataset is **tidy**. If it is not, identify the types of changes you might need to make before applying the `dplyr` tools you learned in the previous chapter.
