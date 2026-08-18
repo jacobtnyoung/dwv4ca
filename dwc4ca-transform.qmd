@@ -33,26 +33,40 @@ We reshape variables, create new ones, and standardize messy information so that
 
 For example, a dataset might give us:
 
--   A date like “2023-07-14”
--   A time stored as a number like “23”
--   A text field with inconsistent labels like “phx”, “Phoenix”, and “PHOENIX”
+- A date like “2023-07-14”
+- A time stored as a number like “23”
+- A text field with inconsistent labels like “phx”, “Phoenix”, and “PHOENIX”
 
 On their own, these aren’t very helpful.
-But through transformation, we can turn them into: - Day of the week (Was this a weekend incident?)\
+But through transformation, we can turn them into:
+
+- Day of the week (Was this a weekend incident?)\
 - Time category (Did this occur during a night shift?)\
-- Cleaned location data (So everything is consistently labeled)
+- Cleaned location data (Where did this occur?)
 
-In this chapter, we’re going to focus on three major types of transformations:
+In this chapter, we’re going to focus on three major types of transformations.
 
--   First, *logical* transformations. These allow us to ask yes/no questions of our data and create new variables based on conditions. For example: Was the incident on a weekend? Did it occur at night? These kinds of variables are essential for analysis.
--   Second, *string* transformations. Many important variables, such as location descriptions or offense types, are stored as text. We’ll learn how to clean, standardize, and search text data so that it becomes usable.
--   Third, date and time transformations. Time is one of the most important dimensions in crime data. We’ll learn how to convert raw date values into meaningful components like month, day of week, and time of day.
+First, *logical* transformations.
+These allow us to ask yes/no questions of our data and create new variables based on conditions.
+For example: Was the incident on a weekend?
+Did it occur at night?
+These kinds of variables are essential for analysis.
+
+Second, *string* transformations.
+Many important variables, such as location descriptions or offense types, are stored as text.
+We’ll learn how to clean, standardize, and search text data so that it becomes usable.
+
+Third, *date and time* transformations.
+Time is one of the most important dimensions in crime data.
+We’ll learn how to convert raw date values into meaningful components like month, day of week, and time of day.
 
 All of these transformations have one ultimate goal: to prepare our data for analysis and visualization.
 
-Why is this important?
-When we move into visualization using `ggplot2` and start building visual displays, we won’t just be plotting data we pulled from an open source location.
+### Why is this important?
+
+When we move into visualization using `ggplot2` and start building visual displays, as well as building dynamic visualizations using `shiny`, we won’t just be plotting data we pulled from an open-source location.
 We’ll be plotting variables that we created, like shifts, weekends, trends over time, and categorized outcomes.
+So, we need to know how to get our open-source data in shape for these tasks.
 
 ## Logical Vectors & Conditional Operations
 
@@ -66,7 +80,13 @@ For example:\
 
 In R, every time you ask a question like that, you get back `TRUE` or `FALSE`.
 
-To illustrate, let's start by creating a toy data set of crime incidents to work with:
+To illustrate, let's start by creating a toy data set of crime incidents.
+Here we will use the `data.frame()` function to create the dataset.
+Earlier, we used `tibble()`, but I want to illustrate here that both functions behave in very similar ways.
+`data.frame()` is part of base R, whereas `tibble()` comes from the tidyverse.
+You will encounter both when working with R, so it is useful to become comfortable recognizing and working with either type of data object.
+
+Here is how we can construct our toy dataset:
 
 ```{r}
 
@@ -89,19 +109,19 @@ dat
 
 Let's think of a few questions we can ask with the data:
 
--   Which incidents occur after 7?
--   Which incidents occur on Friday?
+- Which incidents occurred after 7?
+- Which incidents occurred on a Friday?
 
 The way we ask questions with logical vectors is to use comparison operators:
 
--   `==` equal to (note: `=` is used to assign objects in R so we use `==` for an equality statement)
--   `!=` not equal to
--   `>` greater than
--   `<` less than
--   `>=` greater than or equal to
--   `<=` less than or equal to
+- `==` equal to (note: `=` is used to assign objects in R so we use `==` for an equality statement)
+- `!=` not equal to
+- `>` greater than
+- `<` less than
+- `>=` greater than or equal to
+- `<=` less than or equal to
 
-#### Which incidents occur after 7?
+#### Which incidents occurred after 7?
 
 To answer this we can use the `>` operator like so:
 
@@ -125,7 +145,7 @@ dat$INC_HOUR > 7
 It is a vector of logical values telling us for which case the condition is `TRUE` or `FALSE`.
 For example, the first case has a value of `r dat$INC_HOUR[1]` for the `INC_HOUR` variable so the value for the logical vector is `r dat$INC_HOUR[1] > 7` because it is not greater than 7.
 
-#### Which incidents occur on Friday?
+#### Which incidents occurred on a Friday?
 
 ```{r, eval = FALSE}
 
@@ -229,8 +249,11 @@ dat |>
 
 Now we shift from logical thinking to text data, which are everywhere in open-source datasets.
 
-Think about variables like: - Offense descriptions\
-- Location fields - City names\
+Think about variables like:
+
+- Offense descriptions
+- Location fields
+- City names
 - Narrative reports
 
 Unlike numbers, text data are often inconsistent ("Phoenix", "PHOENIX", "phx") and messy (extra spaces, abbreviations) making them hard to analyze directly.
@@ -263,8 +286,16 @@ dat
 ```
 
 Take a look through the data.
-Look for the following issues we commonly find with string variables: - inconsistent capitalization - extra spaces\
-- abbreviations - punctuation differences - multi-word labels - alternate spellings for the same thing
+Look for the following issues we commonly find with string variables.
+
+There are several:
+
+- inconsistent capitalization
+- extra spaces
+- abbreviations
+- punctuation differences
+- multi-word labels
+- alternate spellings for the same thing
 
 This is fairly standard for what you will see with open-source data.
 Let's take a look at fixing some of these issues.
@@ -310,12 +341,15 @@ dat <- dat |>
 
 ```
 
-We used a few functions, here is what they are doing: -`str_to_title()` converts to title case, where only the first letter of each word is capitalized.
+We used a few functions, here is what they are doing:
+
+\-`str_to_title()` converts to title case, where only the first letter of each word is capitalized.
 If you look, you can see that the first letter of "city" and "offense" are now capitalized.
 - `str_to_upper()` converts to upper case.
 For "location" we made all the letters upper case.
 
-There is also: - `str_to_lower()` which converts to lower case.
+There is also:\
+- `str_to_lower()` which converts to lower case.
 - `str_to_sentence()` which convert to sentence case, where only the first letter of sentence is capitalized (nice for long strings like quotes or descriptions).
 
 ### Remove White Space
@@ -381,17 +415,20 @@ dat <- dat |>
 
 ```
 
-Ok, that was a lot so let's unpack it: - we are using `mutate` to create a new variable.
-- we are using `case_when()` to check conditions we specify from the first to the last value of the variable "city".
-What the function is doing is taking each case and if the condition is TRUE, it assigns the value on the right side.
-- the statement `city %in% c("Phx", "Phoenix") ~ "Phoenix"` says "take the variable city and if the string is "Phx" or "Phoenix" make the string in city_clean be "Phoenix". - we repeated this for Temple, Glendale, Mesa, and Scottsdale. - the last line `TRUE ~ city` tells the function what to do if the conditions above are not met. For example, what should it do if not of the conditions are above are met? Well, we want it to return the value for "city" (otherwise it will return NA; try it!)
+Ok, that was a lot so let's unpack it:
+
+- we are using `mutate` to create a new variable.
+- we are using `case_when()` to check conditions we specify from the first to the last value of the variable "city". What the function is doing is taking each case and if the condition is TRUE, it assigns the value on the right side.
+- the statement `city %in% c("Phx", "Phoenix") ~ "Phoenix"` says "take the variable city and if the string is "Phx" or "Phoenix" make the string in city_clean be "Phoenix".
+- we repeated this for Temple, Glendale, Mesa, and Scottsdale.
+- the last line `TRUE ~ city` tells the function what to do if the conditions above are not met. For example, what should it do if not of the conditions are above are met? Well, we want it to return the value for "city" (otherwise it will return NA; try it!)
 
 ### Replace Text
 
 Sometimes you do not want a new label, you just want to fix the text.
 We can use the `str_replace_all()` function to accomplish this task.
 
-For example, take a look at the "location" variable and you will see that there are a few different usages of *street*.
+For example, take a look at the "location" variable and you will see that there are a few different usages of "street".
 If we want these to be consistent, then we can replace the text:
 
 ```{r}
@@ -563,7 +600,8 @@ dat_dates |>
 ```
 
 This prints out the messy data as well as a new column "date_clean" that has been parsed.
-Ok, let's take a look at what the function is doing:\
+Ok, let's take a look at what the function is doing:
+
 - using `mutate()`, we are creating a new variable called "date_clean" with the `parse_date_time()` function.
 - the `parse_date_time()` function takes the messy data, "incident_date", and then uses some additional info to parse it.
 - the `orders =` argument takes several pieces: `ymd` is year-month-day, `mdy` is month-day-year, and `B d Y` is full month name, day, year.
@@ -660,13 +698,19 @@ head( phx_crime$time_date )
 
 We can see that the `time_date` variable contains the **date** of the incident as well as the **time** and looks like this: `r head( phx_crime$time_date )[1]`.
 There is a lot of information here.
-What we want to do is pull it apart and get several variables:\
-- Year - Month - Day - Time
+What we want to do is pull it apart and get several variables:
 
-We can use `dplyr` and `lubridate` to help us create these variables.
+- Year
+- Month
+- Day
+- Time
+
+We can use `dplyr` and `lubridate` to help us create these variables!
+
 Let's start by getting the date and time separated.
-If you take a look, `r head( phx_crime$time_date )[1]`, you will see that the format is: "month/day/year hour:minute".
+If you take a look at the first entry, `r head( phx_crime$time_date )[1]`, you will see that the format is: "month/day/year hour:minute".
 There is a function in `lubridate` called `mdy_hm()` that is build specifically for this format and converts a character string into a true date-time object that R can recognize and work with.
+
 For example, `mdy_hm( "11/1/2015 14:30" )` becomes something like `"2015-11-01 14:30:00 UTC"` where `2015-11-01` is the date stored in standardized YYYY-MM-DD format, `14:30:00` is the time in 24-hour format, and `UTC` is the time zone (“Coordinated Universal Time”).
 
 Take a look using the Phoenix data:
@@ -737,7 +781,70 @@ phx_crime_clean_date_time <- phx_crime |>
 
 We will work with these data in subsequent chapters.
 To avoid having to create a tidy data set with the cleaned date variables, `DWVpack` includes a data object called `tidy_phx_crime` which has already cleaned up the date and time variables.
+I would encourage you to take a look through them and compare.
+You can do this easily with the following commands: `head( tidy_phx_crime )` and `head( phx_crime )`.
 
-<br>
+## Summary {.unnumbered}
 
-NEED EXERCISES FOR TEST YOUR KNOWLEDGE
+In this chapter, you learned that getting data into a tidy structure is only part of the data wrangling process.
+Even when each variable has its own column and each observation has its own row, the values stored in those variables may not yet be useful for analysis.
+**Data transformation** allows us to take those existing values and clean or transform them into variables that better represent the questions we want to answer.
+
+We began with **logical operations**, which allow us to ask questions of our data that return `TRUE` or `FALSE`.
+Using comparison operators such as `==`, `!=`, `>`, and `<`, along with operators such as `&`, `|`, and `%in%`, we can define conditions that identify particular observations.
+These logical conditions become especially powerful when combined with tools such as `filter()`, `mutate()`, and `case_when()` because they allow us to select cases or construct new variables based on meaningful analytical categories.
+
+We then turned to **strings**, or text data.
+Crime data frequently contain text fields with inconsistent capitalization, extra spaces, abbreviations, and different labels for the same thing.
+Using functions from `stringr`, such as `str_to_title()`, `str_to_upper()`, `str_squish()`, and `str_replace_all()`, we can standardize these values so that R treats equivalent information consistently.
+Importantly, these cleaning operations can be combined into a single reproducible workflow rather than making changes manually.
+
+Finally, we examined **dates and times**, which are especially important in crime analysis.
+Using `lubridate`, we learned how to parse messy date and date-time values and extract useful components such as year, month, day, date, and time.
+The Phoenix crime data used as an example in this chapter demonstrated why this matters: a single date-time field can be transformed into several variables that allow us to investigate when incidents occur and eventually examine temporal patterns in crime.
+
+As with the previous chapters, the goal is not to memorize every function or transformation.
+Instead, you should begin thinking in terms of a **data recipe**: identify what is messy or analytically unhelpful about the original variables, determine what you want those variables to look like, and then construct a reproducible sequence of transformations to get there.
+With our data now tidy, cleaned, and transformed, we are getting closer to the ultimate goal of data wrangling: creating data that allow us to identify and communicate meaningful patterns.
+
+## Test Your Knowledge {.unnumbered}
+
+Before moving on, use the prompts below to test your understanding of the material in this chapter.
+Try to answer each question or write the R code needed to complete the task without looking back at the examples:
+
+- In your own words, explain the difference between **tidying** data and **transforming** data.
+  Why might a dataset be tidy but still require transformation before it can be analyzed?
+
+- What is a **logical vector**?
+  What values would R return for the expression `c( 5, 10, 15, 20 ) > 10`?
+  Try to answer before running the code.
+
+- Using the `dat` crime incident dataset from this chapter, write a logical statement that identifies incidents occurring at **8:00 PM or later**.
+  Remember that `INC_HOUR` is stored using a 24-hour clock.
+
+- Write a logical statement that identifies incidents occurring on **Friday, Saturday, or Sunday**.
+  Use `%in%` rather than writing three separate conditions connected with `|`.
+
+- Suppose you want incidents that occurred at 8:00 PM or later **and** occurred on Friday, Saturday, or Sunday.
+  Combine the previous two conditions and use them inside `filter()` to return only those incidents.
+
+- A `city` variable contains the values `"PHOENIX"`, `"Phoenix"`, `"phoenix"`, and `" Phoenix "`.
+  Explain why R does not initially treat all four strings as identical.
+  Write a transformation using functions from `stringr` that would make these values consistent.
+
+- Suppose a `location` variable contains both `"123 MAIN STREET"` and `"123 MAIN ST"`.
+  Write a transformation using `str_replace_all()` that standardizes `"STREET"` as `"ST"`.
+
+- What is the purpose of `case_when()`?
+  Suppose a variable called `offense` contains `"Auto Theft"`, `"Vehicle Theft"`, and `"Stolen Vehicle"`.
+  Write a `mutate()` statement using `case_when()` that creates a new variable called `offense_clean` and classifies all three values as `"Vehicle Theft"`.
+  Make sure observations that do not meet these conditions retain their original `offense` value.
+
+- Suppose an incident date is stored as `"08/15/2025"`.
+  What information would you need to give `parse_date_time()` so that R can correctly interpret this value?
+  Once it has been converted to a date object, identify the `lubridate` functions you could use to extract its **year**, **month**, and **day**.
+
+- Finally, imagine you receive a crime dataset containing a variable called `incident_datetime` with values such as `"07/18/2025 22:35"`.
+  You want to determine whether crime is more common at night and on weekends.
+  Describe the **data recipe** you would use to transform this raw variable into the variables needed to answer the question.
+  Identify the transformations you would make and the R functions or logical operations you could use at each step.

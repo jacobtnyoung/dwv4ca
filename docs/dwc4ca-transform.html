@@ -215,7 +215,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#logical-vectors-conditional-operations" id="toc-logical-vectors-conditional-operations" class="nav-link active" data-scroll-target="#logical-vectors-conditional-operations">Logical Vectors &amp; Conditional Operations</a></li>
+<li><a href="#why-is-this-important" id="toc-why-is-this-important" class="nav-link active" data-scroll-target="#why-is-this-important">Why is this important?</a></li>
+  <li><a href="#logical-vectors-conditional-operations" id="toc-logical-vectors-conditional-operations" class="nav-link" data-scroll-target="#logical-vectors-conditional-operations">Logical Vectors &amp; Conditional Operations</a></li>
   <li>
 <a href="#working-with-strings-text-data" id="toc-working-with-strings-text-data" class="nav-link" data-scroll-target="#working-with-strings-text-data">Working with Strings (Text Data)</a>
   <ul class="collapse">
@@ -233,6 +234,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul>
 </li>
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge">Test Your Knowledge</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-transform.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -260,25 +263,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>A time stored as a number like “23”</li>
 <li>A text field with inconsistent labels like “phx”, “Phoenix”, and “PHOENIX”</li>
 </ul>
-<p>On their own, these aren’t very helpful. But through transformation, we can turn them into: - Day of the week (Was this a weekend incident?)<br>
-- Time category (Did this occur during a night shift?)<br>
-- Cleaned location data (So everything is consistently labeled)</p>
-<p>In this chapter, we’re going to focus on three major types of transformations:</p>
+<p>On their own, these aren’t very helpful. But through transformation, we can turn them into:</p>
 <ul>
-<li>First, <em>logical</em> transformations. These allow us to ask yes/no questions of our data and create new variables based on conditions. For example: Was the incident on a weekend? Did it occur at night? These kinds of variables are essential for analysis.</li>
-<li>Second, <em>string</em> transformations. Many important variables, such as location descriptions or offense types, are stored as text. We’ll learn how to clean, standardize, and search text data so that it becomes usable.</li>
-<li>Third, date and time transformations. Time is one of the most important dimensions in crime data. We’ll learn how to convert raw date values into meaningful components like month, day of week, and time of day.</li>
+<li>Day of the week (Was this a weekend incident?)<br>
+</li>
+<li>Time category (Did this occur during a night shift?)<br>
+</li>
+<li>Cleaned location data (Where did this occur?)</li>
 </ul>
+<p>In this chapter, we’re going to focus on three major types of transformations.</p>
+<p>First, <em>logical</em> transformations. These allow us to ask yes/no questions of our data and create new variables based on conditions. For example: Was the incident on a weekend? Did it occur at night? These kinds of variables are essential for analysis.</p>
+<p>Second, <em>string</em> transformations. Many important variables, such as location descriptions or offense types, are stored as text. We’ll learn how to clean, standardize, and search text data so that it becomes usable.</p>
+<p>Third, <em>date and time</em> transformations. Time is one of the most important dimensions in crime data. We’ll learn how to convert raw date values into meaningful components like month, day of week, and time of day.</p>
 <p>All of these transformations have one ultimate goal: to prepare our data for analysis and visualization.</p>
-<p>Why is this important? When we move into visualization using <code>ggplot2</code> and start building visual displays, we won’t just be plotting data we pulled from an open source location. We’ll be plotting variables that we created, like shifts, weekends, trends over time, and categorized outcomes.</p>
-<section id="logical-vectors-conditional-operations" class="level2"><h2 class="anchored" data-anchor-id="logical-vectors-conditional-operations">Logical Vectors &amp; Conditional Operations</h2>
+<section id="why-is-this-important" class="level3"><h3 class="anchored" data-anchor-id="why-is-this-important">Why is this important?</h3>
+<p>When we move into visualization using <code>ggplot2</code> and start building visual displays, as well as building dynamic visualizations using <code>shiny</code>, we won’t just be plotting data we pulled from an open-source location. We’ll be plotting variables that we created, like shifts, weekends, trends over time, and categorized outcomes. So, we need to know how to get our open-source data in shape for these tasks.</p>
+</section><section id="logical-vectors-conditional-operations" class="level2"><h2 class="anchored" data-anchor-id="logical-vectors-conditional-operations">Logical Vectors &amp; Conditional Operations</h2>
 <p>At its core, a <strong>logical vector</strong> is just a series of <code>TRUE</code> and <code>FALSE</code> values. These come from asking questions of your data.</p>
 <p>For example:<br>
 - Is the hour greater than 20?<br>
 - Is the day Saturday or Sunday?<br>
 - Does this record match a certain condition?</p>
 <p>In R, every time you ask a question like that, you get back <code>TRUE</code> or <code>FALSE</code>.</p>
-<p>To illustrate, let’s start by creating a toy data set of crime incidents to work with:</p>
+<p>To illustrate, let’s start by creating a toy data set of crime incidents. Here we will use the <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> function to create the dataset. Earlier, we used <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code>, but I want to illustrate here that both functions behave in very similar ways. <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> is part of base R, whereas <code><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble()</a></code> comes from the tidyverse. You will encounter both when working with R, so it is useful to become comfortable recognizing and working with either type of data object.</p>
+<p>Here is how we can construct our toy dataset:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>  id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
@@ -310,8 +318,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Let’s think of a few questions we can ask with the data:</p>
 <ul>
-<li>Which incidents occur after 7?</li>
-<li>Which incidents occur on Friday?</li>
+<li>Which incidents occurred after 7?</li>
+<li>Which incidents occurred on a Friday?</li>
 </ul>
 <p>The way we ask questions with logical vectors is to use comparison operators:</p>
 <ul>
@@ -328,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <code>&lt;=</code> less than or equal to</li>
 </ul>
-<section id="which-incidents-occur-after-7" class="level4"><h4 class="anchored" data-anchor-id="which-incidents-occur-after-7">Which incidents occur after 7?</h4>
+<section id="which-incidents-occurred-after-7" class="level4"><h4 class="anchored" data-anchor-id="which-incidents-occurred-after-7">Which incidents occurred after 7?</h4>
 <p>To answer this we can use the <code>&gt;</code> operator like so:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dat</span><span class="op">$</span><span class="va">INC_HOUR</span> <span class="op">&gt;</span> <span class="fl">7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -341,7 +349,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>It is a vector of logical values telling us for which case the condition is <code>TRUE</code> or <code>FALSE</code>. For example, the first case has a value of 2 for the <code>INC_HOUR</code> variable so the value for the logical vector is FALSE because it is not greater than 7.</p>
-</section><section id="which-incidents-occur-on-friday" class="level4"><h4 class="anchored" data-anchor-id="which-incidents-occur-on-friday">Which incidents occur on Friday?</h4>
+</section><section id="which-incidents-occurred-on-a-friday" class="level4"><h4 class="anchored" data-anchor-id="which-incidents-occurred-on-a-friday">Which incidents occurred on a Friday?</h4>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dat</span><span class="op">$</span><span class="va">INC_DAY_WEEK</span> <span class="op">==</span> <span class="st">"Friday"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -403,9 +411,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section></section><section id="working-with-strings-text-data" class="level2"><h2 class="anchored" data-anchor-id="working-with-strings-text-data">Working with Strings (Text Data)</h2>
 <p>Now we shift from logical thinking to text data, which are everywhere in open-source datasets.</p>
-<p>Think about variables like: - Offense descriptions<br>
-- Location fields - City names<br>
-- Narrative reports</p>
+<p>Think about variables like:</p>
+<ul>
+<li>Offense descriptions</li>
+<li>Location fields</li>
+<li>City names</li>
+<li>Narrative reports</li>
+</ul>
 <p>Unlike numbers, text data are often inconsistent (“Phoenix”, “PHOENIX”, “phx”) and messy (extra spaces, abbreviations) making them hard to analyze directly.</p>
 <p>Let’s create a separate toy dataset to work with for strings.</p>
 <div class="cell" data-layout-align="center">
@@ -445,8 +457,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 12 12 scottsdale              theft           100 N CENTER RD</code></pre>
 </div>
 </div>
-<p>Take a look through the data. Look for the following issues we commonly find with string variables: - inconsistent capitalization - extra spaces<br>
-- abbreviations - punctuation differences - multi-word labels - alternate spellings for the same thing</p>
+<p>Take a look through the data. Look for the following issues we commonly find with string variables.</p>
+<p>There are several:</p>
+<ul>
+<li>inconsistent capitalization</li>
+<li>extra spaces</li>
+<li>abbreviations</li>
+<li>punctuation differences</li>
+<li>multi-word labels</li>
+<li>alternate spellings for the same thing</li>
+</ul>
 <p>This is fairly standard for what you will see with open-source data. Let’s take a look at fixing some of these issues.</p>
 <section id="standardize-case" class="level3"><h3 class="anchored" data-anchor-id="standardize-case">Standardize Case</h3>
 <p>A very common first step is to make everything the same case. Why do this? There are several reasons: It makes values easier to compare, it reduces duplicates caused only by case differences, it makes later cleaning more consistent.</p>
@@ -475,8 +495,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    location <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper</a></span><span class="op">(</span> <span class="va">location</span> <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We used a few functions, here is what they are doing: -<code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_title()</a></code> converts to title case, where only the first letter of each word is capitalized. If you look, you can see that the first letter of “city” and “offense” are now capitalized. - <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper()</a></code> converts to upper case. For “location” we made all the letters upper case.</p>
-<p>There is also: - <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_lower()</a></code> which converts to lower case. - <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_sentence()</a></code> which convert to sentence case, where only the first letter of sentence is capitalized (nice for long strings like quotes or descriptions).</p>
+<p>We used a few functions, here is what they are doing:</p>
+<p>-<code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_title()</a></code> converts to title case, where only the first letter of each word is capitalized. If you look, you can see that the first letter of “city” and “offense” are now capitalized. - <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper()</a></code> converts to upper case. For “location” we made all the letters upper case.</p>
+<p>There is also:<br>
+- <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_lower()</a></code> which converts to lower case. - <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_sentence()</a></code> which convert to sentence case, where only the first letter of sentence is capitalized (nice for long strings like quotes or descriptions).</p>
 </section><section id="remove-white-space" class="level3"><h3 class="anchored" data-anchor-id="remove-white-space">Remove White Space</h3>
 <p>Extra spaces are one of the most common hidden problems. Take a look through the <code>dat</code> object and see if you can spot instances where there is extra space (i.e.&nbsp;white space) that should not be there.</p>
 <p>For the variable “city” you can see that the second and ninth cases have an extra space:</p>
@@ -532,10 +554,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Ok, that was a lot so let’s unpack it: - we are using <code>mutate</code> to create a new variable. - we are using <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when()</a></code> to check conditions we specify from the first to the last value of the variable “city”. What the function is doing is taking each case and if the condition is TRUE, it assigns the value on the right side. - the statement <code>city %in% c("Phx", "Phoenix") ~ "Phoenix"</code> says “take the variable city and if the string is”Phx” or “Phoenix” make the string in city_clean be “Phoenix”. - we repeated this for Temple, Glendale, Mesa, and Scottsdale. - the last line <code>TRUE ~ city</code> tells the function what to do if the conditions above are not met. For example, what should it do if not of the conditions are above are met? Well, we want it to return the value for “city” (otherwise it will return NA; try it!)</p>
-</section><section id="replace-text" class="level3"><h3 class="anchored" data-anchor-id="replace-text">Replace Text</h3>
+<p>Ok, that was a lot so let’s unpack it:</p>
+<ul>
+<li>we are using <code>mutate</code> to create a new variable.</li>
+<li>we are using <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when()</a></code> to check conditions we specify from the first to the last value of the variable “city”. What the function is doing is taking each case and if the condition is TRUE, it assigns the value on the right side.</li>
+<li>the statement <code>city %in% c("Phx", "Phoenix") ~ "Phoenix"</code> says “take the variable city and if the string is”Phx” or “Phoenix” make the string in city_clean be “Phoenix”.</li>
+<li>we repeated this for Temple, Glendale, Mesa, and Scottsdale.</li>
+<li>the last line <code>TRUE ~ city</code> tells the function what to do if the conditions above are not met. For example, what should it do if not of the conditions are above are met? Well, we want it to return the value for “city” (otherwise it will return NA; try it!)</li>
+</ul></section><section id="replace-text" class="level3"><h3 class="anchored" data-anchor-id="replace-text">Replace Text</h3>
 <p>Sometimes you do not want a new label, you just want to fix the text. We can use the <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code> function to accomplish this task.</p>
-<p>For example, take a look at the “location” variable and you will see that there are a few different usages of <em>street</em>. If we want these to be consistent, then we can replace the text:</p>
+<p>For example, take a look at the “location” variable and you will see that there are a few different usages of “street”. If we want these to be consistent, then we can replace the text:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">dat</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
@@ -690,8 +718,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 10 10    10/31/2022 2022-10-31</code></pre>
 </div>
 </div>
-<p>This prints out the messy data as well as a new column “date_clean” that has been parsed. Ok, let’s take a look at what the function is doing:<br>
-- using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, we are creating a new variable called “date_clean” with the <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time()</a></code> function. - the <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time()</a></code> function takes the messy data, “incident_date”, and then uses some additional info to parse it. - the <code>orders =</code> argument takes several pieces: <code>ymd</code> is year-month-day, <code>mdy</code> is month-day-year, and <code>B d Y</code> is full month name, day, year.</p>
+<p>This prints out the messy data as well as a new column “date_clean” that has been parsed. Ok, let’s take a look at what the function is doing:</p>
+<ul>
+<li>using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, we are creating a new variable called “date_clean” with the <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time()</a></code> function.</li>
+<li>the <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time()</a></code> function takes the messy data, “incident_date”, and then uses some additional info to parse it.</li>
+<li>the <code>orders =</code> argument takes several pieces: <code>ymd</code> is year-month-day, <code>mdy</code> is month-day-year, and <code>B d Y</code> is full month name, day, year.</li>
+</ul>
 <p>The <code>orders =</code> argument might be a bit confusing. Essentially we are telling the function the different ways that the date is presented in the “incident_date” variable. For example, in the <code>dat_dates</code> object, look at the first case and you will see that the date looks like 2022-01-15. This is year, month, day format which the <code>orders =</code> argument recognizes with the <code>ymd</code> value. How about <code>mdy</code>? Take a look at the second case: 01/22/2021. And so on. You can see these different format codes by examining the help page for the <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time()</a></code> function with: <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">?parse_date_time</a></code>.</p>
 <p>Working with dates is often a trial and error process of getting a sense of what formats are being used and how to parse them correctly. For example, let’s say we didn’t see that some of the dates are in <code>ymd</code> format and exclude this from <code>orders =</code>:</p>
 <div class="cell" data-layout-align="center">
@@ -772,9 +804,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [4] "11/01/2015  00:00" "11/01/2015  00:00" "11/01/2015  00:00"</code></pre>
 </div>
 </div>
-<p>We can see that the <code>time_date</code> variable contains the <strong>date</strong> of the incident as well as the <strong>time</strong> and looks like this: 11/01/2015 00:00. There is a lot of information here. What we want to do is pull it apart and get several variables:<br>
-- Year - Month - Day - Time</p>
-<p>We can use <code>dplyr</code> and <code>lubridate</code> to help us create these variables. Let’s start by getting the date and time separated. If you take a look, 11/01/2015 00:00, you will see that the format is: “month/day/year hour:minute”. There is a function in <code>lubridate</code> called <code><a href="https://lubridate.tidyverse.org/reference/ymd_hms.html">mdy_hm()</a></code> that is build specifically for this format and converts a character string into a true date-time object that R can recognize and work with. For example, <code>mdy_hm( "11/1/2015 14:30" )</code> becomes something like <code>"2015-11-01 14:30:00 UTC"</code> where <code>2015-11-01</code> is the date stored in standardized YYYY-MM-DD format, <code>14:30:00</code> is the time in 24-hour format, and <code>UTC</code> is the time zone (“Coordinated Universal Time”).</p>
+<p>We can see that the <code>time_date</code> variable contains the <strong>date</strong> of the incident as well as the <strong>time</strong> and looks like this: 11/01/2015 00:00. There is a lot of information here. What we want to do is pull it apart and get several variables:</p>
+<ul>
+<li>Year</li>
+<li>Month</li>
+<li>Day</li>
+<li>Time</li>
+</ul>
+<p>We can use <code>dplyr</code> and <code>lubridate</code> to help us create these variables!</p>
+<p>Let’s start by getting the date and time separated. If you take a look at the first entry, 11/01/2015 00:00, you will see that the format is: “month/day/year hour:minute”. There is a function in <code>lubridate</code> called <code><a href="https://lubridate.tidyverse.org/reference/ymd_hms.html">mdy_hm()</a></code> that is build specifically for this format and converts a character string into a true date-time object that R can recognize and work with.</p>
+<p>For example, <code>mdy_hm( "11/1/2015 14:30" )</code> becomes something like <code>"2015-11-01 14:30:00 UTC"</code> where <code>2015-11-01</code> is the date stored in standardized YYYY-MM-DD format, <code>14:30:00</code> is the time in 24-hour format, and <code>UTC</code> is the time zone (“Coordinated Universal Time”).</p>
 <p>Take a look using the Phoenix data:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># create the object</span></span>
@@ -835,9 +874,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We will work with these data in subsequent chapters. To avoid having to create a tidy data set with the cleaned date variables, <code>DWVpack</code> includes a data object called <code>tidy_phx_crime</code> which has already cleaned up the date and time variables.</p>
-<p><br></p>
-<p>NEED EXERCISES FOR TEST YOUR KNOWLEDGE</p>
+<p>We will work with these data in subsequent chapters. To avoid having to create a tidy data set with the cleaned date variables, <code>DWVpack</code> includes a data object called <code>tidy_phx_crime</code> which has already cleaned up the date and time variables. I would encourage you to take a look through them and compare. You can do this easily with the following commands: <code>head( tidy_phx_crime )</code> and <code>head( phx_crime )</code>.</p>
+</section><section id="summary" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="summary">Summary</h2>
+<p>In this chapter, you learned that getting data into a tidy structure is only part of the data wrangling process. Even when each variable has its own column and each observation has its own row, the values stored in those variables may not yet be useful for analysis. <strong>Data transformation</strong> allows us to take those existing values and clean or transform them into variables that better represent the questions we want to answer.</p>
+<p>We began with <strong>logical operations</strong>, which allow us to ask questions of our data that return <code>TRUE</code> or <code>FALSE</code>. Using comparison operators such as <code>==</code>, <code>!=</code>, <code>&gt;</code>, and <code>&lt;</code>, along with operators such as <code>&amp;</code>, <code>|</code>, and <code>%in%</code>, we can define conditions that identify particular observations. These logical conditions become especially powerful when combined with tools such as <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when()</a></code> because they allow us to select cases or construct new variables based on meaningful analytical categories.</p>
+<p>We then turned to <strong>strings</strong>, or text data. Crime data frequently contain text fields with inconsistent capitalization, extra spaces, abbreviations, and different labels for the same thing. Using functions from <code>stringr</code>, such as <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_title()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper()</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_trim.html">str_squish()</a></code>, and <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code>, we can standardize these values so that R treats equivalent information consistently. Importantly, these cleaning operations can be combined into a single reproducible workflow rather than making changes manually.</p>
+<p>Finally, we examined <strong>dates and times</strong>, which are especially important in crime analysis. Using <code>lubridate</code>, we learned how to parse messy date and date-time values and extract useful components such as year, month, day, date, and time. The Phoenix crime data used as an example in this chapter demonstrated why this matters: a single date-time field can be transformed into several variables that allow us to investigate when incidents occur and eventually examine temporal patterns in crime.</p>
+<p>As with the previous chapters, the goal is not to memorize every function or transformation. Instead, you should begin thinking in terms of a <strong>data recipe</strong>: identify what is messy or analytically unhelpful about the original variables, determine what you want those variables to look like, and then construct a reproducible sequence of transformations to get there. With our data now tidy, cleaned, and transformed, we are getting closer to the ultimate goal of data wrangling: creating data that allow us to identify and communicate meaningful patterns.</p>
+</section><section id="test-your-knowledge" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="test-your-knowledge">Test Your Knowledge</h2>
+<p>Before moving on, use the prompts below to test your understanding of the material in this chapter. Try to answer each question or write the R code needed to complete the task without looking back at the examples:</p>
+<ul>
+<li><p>In your own words, explain the difference between <strong>tidying</strong> data and <strong>transforming</strong> data. Why might a dataset be tidy but still require transformation before it can be analyzed?</p></li>
+<li><p>What is a <strong>logical vector</strong>? What values would R return for the expression <code>c( 5, 10, 15, 20 ) &gt; 10</code>? Try to answer before running the code.</p></li>
+<li><p>Using the <code>dat</code> crime incident dataset from this chapter, write a logical statement that identifies incidents occurring at <strong>8:00 PM or later</strong>. Remember that <code>INC_HOUR</code> is stored using a 24-hour clock.</p></li>
+<li><p>Write a logical statement that identifies incidents occurring on <strong>Friday, Saturday, or Sunday</strong>. Use <code>%in%</code> rather than writing three separate conditions connected with <code>|</code>.</p></li>
+<li><p>Suppose you want incidents that occurred at 8:00 PM or later <strong>and</strong> occurred on Friday, Saturday, or Sunday. Combine the previous two conditions and use them inside <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> to return only those incidents.</p></li>
+<li><p>A <code>city</code> variable contains the values <code>"PHOENIX"</code>, <code>"Phoenix"</code>, <code>"phoenix"</code>, and <code>" Phoenix "</code>. Explain why R does not initially treat all four strings as identical. Write a transformation using functions from <code>stringr</code> that would make these values consistent.</p></li>
+<li><p>Suppose a <code>location</code> variable contains both <code>"123 MAIN STREET"</code> and <code>"123 MAIN ST"</code>. Write a transformation using <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code> that standardizes <code>"STREET"</code> as <code>"ST"</code>.</p></li>
+<li><p>What is the purpose of <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when()</a></code>? Suppose a variable called <code>offense</code> contains <code>"Auto Theft"</code>, <code>"Vehicle Theft"</code>, and <code>"Stolen Vehicle"</code>. Write a <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> statement using <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when()</a></code> that creates a new variable called <code>offense_clean</code> and classifies all three values as <code>"Vehicle Theft"</code>. Make sure observations that do not meet these conditions retain their original <code>offense</code> value.</p></li>
+<li><p>Suppose an incident date is stored as <code>"08/15/2025"</code>. What information would you need to give <code><a href="https://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time()</a></code> so that R can correctly interpret this value? Once it has been converted to a date object, identify the <code>lubridate</code> functions you could use to extract its <strong>year</strong>, <strong>month</strong>, and <strong>day</strong>.</p></li>
+<li><p>Finally, imagine you receive a crime dataset containing a variable called <code>incident_datetime</code> with values such as <code>"07/18/2025 22:35"</code>. You want to determine whether crime is more common at night and on weekends. Describe the <strong>data recipe</strong> you would use to transform this raw variable into the variables needed to answer the question. Identify the transformations you would make and the R functions or logical operations you could use at each step.</p></li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
