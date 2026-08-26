@@ -487,28 +487,28 @@ p1 + plot_spacer() + p2
 
 ## Summary {.unnumbered}
 
-In this chapter, you learned how to move from **wrangling data to visualizing it**.
+In this chapter, you learned how to move from wrangling data to visualizing it.
 Tables and summary statistics are useful, but visualizations allow us to see patterns that may otherwise be difficult to identify.
 For crime analysts, visualizations can help reveal trends over time, compare categories, identify unusual observations, and communicate findings to audiences who may never examine the underlying data themselves.
 Because visualizations can shape how people interpret information, we also need to design them carefully, with an emphasis on clarity, accuracy, simplicity, and purpose.
 
-We introduced `ggplot2`, a visualization package built around the **Grammar of Graphics**.
+We introduced `ggplot2`, a visualization package built around the Grammar of Graphics.
 Rather than thinking of a graph as a single finished object, `ggplot2` allows us to construct visualizations from individual components.
 We begin with a **dataset**, use `aes()` to **map variables to visual properties**, and then add one or more **geoms** that determine how those observations are displayed.
 Additional layers can then be added to modify or improve the visualization.
 Much like the data recipes we developed in previous chapters, this gives us a consistent framework for building increasingly sophisticated plots.
 
-Using the Phoenix crime data, we also saw that creating a visualization often begins **before we write any `ggplot2` code**.
+Using the Phoenix crime data, we also saw that creating a visualization often begins before we write any `ggplot2` code.
 We first need to think about what we want to visualize and structure our data accordingly.
 Using tools from `dplyr`, we transformed individual crime records into monthly counts and then used those summarized data as the input for our plots.
-This connection between **data wrangling and visualization** is important: the variables and observations available in our plotting dataset determine what we are able to visualize.
+This connection between data wrangling and visualization is important: the variables and observations available in our plotting dataset determine what we are able to visualize.
 
 Finally, we began building plots layer by layer.
 We used `geom_point()` and `geom_line()` to determine how observations were represented, the `group` aesthetic to tell `ggplot2` which observations belonged together, and the `color` aesthetic to visually distinguish years.
 We also used `labs()` to provide meaningful titles, axis labels, and legend labels.
-Each addition had a specific purpose, demonstrating one of the central advantages of the Grammar of Graphics: instead of memorizing a different procedure for every type of graph, we can **build visualizations by combining components that each have a specific role**.
+Each addition had a specific purpose, demonstrating one of the central advantages of the Grammar of Graphics: instead of memorizing a different procedure for every type of graph, we can build visualizations by combining components that each have a specific role.
 
-As we continue working with `ggplot2`, the plots will become more sophisticated, but the basic approach will remain the same: **prepare the data, define the mappings, choose how the data should be displayed, and then add layers that make the visualization clearer and more informative**.
+As we continue working with `ggplot2`, the plots will become more sophisticated, but the basic approach will remain the same: prepare the data, define the mappings, choose how the data should be displayed, and then add layers that make the visualization clearer and more informative.
 The goal is not simply to make attractive graphs, but to create visualizations that help us discover, understand, and communicate meaningful patterns in crime data.
 
 <br>

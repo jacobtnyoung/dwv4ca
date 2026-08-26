@@ -233,6 +233,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#a-better-plot-crimes-by-year" id="toc-a-better-plot-crimes-by-year" class="nav-link" data-scroll-target="#a-better-plot-crimes-by-year">A Better Plot: Crimes by Year</a></li>
   </ul>
 </li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge">Test Your Knowledge</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-ggplot2-intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
@@ -320,8 +322,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+<p><br></p>
 <p>The table provides information (property crime each month), but a visualization makes patterns much easier to recognize immediately.</p>
-<p>For example, a line graph would quickly reveal: - overall growth throughout the year - periods of rapid increase - slight slowdowns or dips - seasonal patterns - long-term trends</p>
+<p>For example, a line graph would quickly reveal:</p>
+<ul>
+<li>overall growth throughout the year</li>
+<li>periods of rapid increase</li>
+<li>slight slowdowns or dips</li>
+<li>seasonal patterns</li>
+<li>long-term trends</li>
+</ul>
 <p>You <em>can</em> see these if you look through the table, but the visualization of the data makes them <strong>easier</strong> to see:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -333,22 +343,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Visualization improves comprehension by allowing analysts to identify relationships and patterns that may not be obvious in raw numerical tables alone.</p>
 <section id="principles-of-effective-visualization" class="level2"><h2 class="anchored" data-anchor-id="principles-of-effective-visualization">Principles of Effective Visualization</h2>
-<p>Before we get started with creating visual displays, we should think about what properties are desirable. Good visualizations are: clear, accurate, simple, and focused on insight. The reader (viewer?) should be able to look at the visualization and make sense of it without being led astray by too many colors, misleading axes, cluttered labels, unnecessary 3D effects, or overcomplicated graphics.</p>
+<p>Before we get started with creating visual displays, we should think about what properties are desirable in a visualization. In general, a good visualization is: clear, accurate, simple, and focused on insight. The reader (viewer?) should be able to look at the visualization and make sense of it without being led astray by too many colors, misleading axes, cluttered labels, unnecessary 3D effects, or overcomplicated graphics. (you can find a good rant about this <a href="https://medium.com/@purohitpraveen/data-vizualization-why-3d-charts-are-a-terrible-idea-32657fbb928e">here</a>)</p>
 <section id="design-principles" class="level3"><h3 class="anchored" data-anchor-id="design-principles">Design Principles</h3>
 <p>Here are several design principles to keep in mind when creating visualizations:</p>
 <ul>
 <li>Simplicity - Remove unnecessary elements</li>
 <li>Readability - Labels and titles should be easy to understand</li>
-<li>Appropriate Chart Selection - Use the correct chart for the question being asked</li>
+<li>Appropriate Visual Display Selection - Use the correct type of visualization for the question being asked</li>
 <li>Color with Purpose - Colors should highlight meaning, not distract</li>
 </ul>
 <p>For an excellent review of visualization (with some really great examples), check out Kieran Healy’s <a href="https://socviz.co/01-look-at-data.html#what-makes-bad-figures-bad">Look at Data</a> chapter of his <a href="https://socviz.co/">Data Visualization: A Practical Introduction</a> book.</p>
 </section></section><section id="what-is-ggplot2" class="level2"><h2 class="anchored" data-anchor-id="what-is-ggplot2">What is ggplot2?</h2>
-<p><code>ggplot2</code> is a data visualization package in R based on the <a href="https://link.springer.com/book/10.1007/0-387-28695-0">“Grammar of Graphics”</a>, a framework for building data visualizations by combining independent visual components together in layers. Rather than treating each chart type as a completely separate object, the Grammar of Graphics views all graphics as combinations of:<br>
-- data - mappings - geometric shapes - scales - coordinate systems - visual themes</p>
-<p>This framework was originally developed by statistician <a href="https://en.wikipedia.org/wiki/Leland_Wilkinson">Leland Wilkinson</a> and later implemented in R through the <code>ggplot2</code> package by <a href="https://hadley.nz/">Hadley Wickham</a>.</p>
-<p>The name <code>ggplot2</code> literally means: - gg = Grammar of Graphics - plot2 = second version of the plotting system</p>
-<p>Traditional graphing systems often require users to memorize separate commands for each chart type. In contrast, <code>ggplot2</code> uses a consistent structure for nearly every visualization. This means that once you learn the grammar, you can build many different types of graphics while only changing specific layers.</p>
+<p><code>ggplot2</code> is a data visualization package in R based on the <a href="https://link.springer.com/book/10.1007/0-387-28695-0">“Grammar of Graphics”</a>, a framework for building data visualizations by combining independent visual components together in layers. Rather than treating each chart type as a completely separate object, the Grammar of Graphics views all graphics as combinations of:</p>
+<ul>
+<li>data</li>
+<li>mappings</li>
+<li>geometric shapes</li>
+<li>scales</li>
+<li>coordinate systems</li>
+<li>visual themes</li>
+</ul>
+<p>This framework was originally developed by statistician <a href="https://en.wikipedia.org/wiki/Leland_Wilkinson">Leland Wilkinson</a> and later implemented in R through the <code>ggplot2</code> package by <a href="https://hadley.nz/">Hadley Wickham</a>. The name <code>ggplot2</code> literally means: - gg = Grammar of Graphics - plot2 = second version of the plotting system.</p>
+<p>Traditional graphing systems often require users to memorize separate commands for each chart type. For example, <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> or <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>. In contrast, <code>ggplot2</code> uses a consistent structure for nearly every visualization. This means that once you learn the grammar, you can build many different types of graphics while only changing specific layers.</p>
 <p>The utility might not be immediately obvious, but as we start building visualizations, it will become more clear (hang with me on this one!) This layered structure makes visualization more logical, flexible, easier to customize, and easier to interpret.</p>
 <section id="key-components" class="level3"><h3 class="anchored" data-anchor-id="key-components">Key Components</h3>
 <p>Every <code>ggplot2</code> plot has three key components:</p>
@@ -370,8 +386,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot it</span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_dat</span>, </span>
-<span>        <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">crimes</span>, y <span class="op">=</span> <span class="va">month</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span> </span>
+<span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_dat</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">crimes</span>, y <span class="op">=</span> <span class="va">month</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -388,7 +404,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Layer: points</li>
 </ul>
 <p>The dataset contains the variables that will be visualized, the aesthetic mapping determines how variables are connected to visual properties, and layer is how the information is displayed.</p>
-<p>Run this code and think about what is happening:</p>
+<p>Let’s start working through this together. Start by installing <code>ggplot2</code> with <code>install.packages( "ggplot2" )</code> and then use the <code><a href="https://ggplot2.tidyverse.org">library( ggplot2 )</a></code> command to load the functions.</p>
+<p>Now, run this code and think about what is happening:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_dat</span>, </span>
 <span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">crimes</span>, y <span class="op">=</span> <span class="va">month</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -399,10 +416,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Why are there no dots? Let’s think about what we did. We have the data and we have the aesthetic mapping, but we do not have the <strong>layer</strong>. We add the layer with the <code>+ geom_point()</code> line (hence the inclusion of the <code>+</code> operator)</p>
-<p>This basic point is key to understating the power of the <code>ggplot2</code> for visualization. Instead of creating an entire chart with one complicated command, we start by stipulating our data and mapping the variables to their positions, then we add layers, then we customize the appearance. This is the basic setup that allows us to develop very sophisticated visual displays of information.</p>
+<p><em>Why are there no dots?</em></p>
+<p>Let’s think about what we did. We have the data and we have the aesthetic mapping, but we do not have the <strong>layer</strong>.</p>
+<p>Compare the two sets of code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="co"># what we just did:</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_dat</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">crimes</span>, y <span class="op">=</span> <span class="va">month</span> <span class="op">)</span> <span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># what we did before:</span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_dat</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">crimes</span>, y <span class="op">=</span> <span class="va">month</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><em>See the difference?</em></p>
+<p>In the second block, we add the <strong>layer</strong> with the <code>+ geom_point()</code> line (hence the inclusion of the <code>+</code> operator).</p>
+<p>This basic point is key to understating the power of <code>ggplot2</code> for visualization. Instead of creating an entire chart with one complicated command, we start by stipulating our data and mapping the variables to their positions, then we add layers, then we customize the appearance. This is the basic setup that allows us to develop very sophisticated visual displays of information.</p>
+<p>This is why we call it the “grammar of graphics”: a plot is built by combining parts that each have a specific role, much like a sentence is built from parts of speech. In 1, the data, mappings, and geoms (layers) work together to define what is being plotted, how variables are represented, and what visual form the plot takes.</p>
+<p>To help this sink in, let’s work through a real example.</p>
 </section></section><section id="crimes-in-phoenix" class="level2"><h2 class="anchored" data-anchor-id="crimes-in-phoenix">Crimes in Phoenix</h2>
-<p>Recall from the prior chapters that we spent some time tidying the <code>phx_crime</code> object in <code>DWVpack</code> and that data object is called <code>tidy_phx_crime</code>. We can now use those tidied data (tidier data?) to create a visualization. Specifically, we want to recreate this plot:</p>
+<p>Recall from the prior chapters that we spent some time tidying the <code>phx_crime</code> object in <code>DWVpack</code> and that data object is called <code>tidy_phx_crime</code>. We can now use those tidied data (tidier data?) to create a visualization.</p>
+<p>Specifically, we want to recreate this plot:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -411,15 +444,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Now, think for a bit about what we need. Effectively, we want a data object to plot that has a column for months and number of crimes. We can use <code>dplyr</code> to create the data object. Let’s start with using the <code>arrange()</code> and <code>group_by()</code> functions to sort the data by “month” and then we will group them to create a summary measure that is the count of crimes:</p>
+<p>Think for a bit about what we need. Look at the plot and try to identify all of the “parts of speech” that make up the visualization.</p>
+<p>First, we need the data in a proper shape. We want a data object to plot that has a column for months and number of crimes. We can use <code>dplyr</code> to create the data object. Let’s start with using the <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> functions to sort the data by “month” and then we will group them to create a summary measure that is the count of crimes:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_monthly</span> <span class="op">&lt;-</span> <span class="va">tidy_phx_crime</span>  <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">select</span><span class="op">(</span> <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">arrange</span><span class="op">(</span> <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span> <span class="va">month</span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">summarize</span><span class="op">(</span> crimes <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span> , .groups <span class="op">=</span> <span class="st">"drop"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># load the libraries we need</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va">DWVpack</span> <span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span> <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create the data object</span></span>
+<span><span class="va">crime_monthly</span> <span class="op">&lt;-</span> <span class="va">tidy_phx_crime</span>  <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span> <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">month</span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> crimes <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> , .groups <span class="op">=</span> <span class="st">"drop"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Now, take a look at the data using <code>View( crime_monthly )</code> (it will pop up a separate window pane). Let’s walk through this to see what we are doing:</p>
+<p>You might have noticed something new: <code>.groups = "drop"</code> in the <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> function. <em>What is that?</em></p>
+<p>Ok we have our object, take a look at the data using <code>View( crime_monthly )</code> (it will pop up a separate window pane). Let’s walk through this to see what we are doing:</p>
 <ul>
 <li>
 <code>crime_monthly &lt;- tidy_phx_crime</code> says to create a new object called <code>crime_monthly</code> from the <code>tidy_phx_crime</code> object. We create a new object since that will be the data just for this plot.</li>
@@ -432,10 +472,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <code>summarize( crimes = n() , .groups = "drop" )</code> creates a new column called <code>crimes</code> which is a count for each month (because they data are grouped that way). The <code>.groups = "drop"</code> command just tells R to remove the grouping from the object after it is done creating the new column.</li>
 </ul>
-<p>Now that we have our data object, we can start building our plot. As we stated above, every <code>ggplot2</code> plot has three key components: <strong>data</strong> (which we just created), a set of <strong>aesthetic mappings</strong> between variables in the data and visual properties, and at least one layer which describes how to render each observation, created with a <strong>geom</strong> function.</p>
+<p>In this data recipe, <code>.groups = "drop"</code> tells <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> what to do with the grouping structure after the summary is created. Because the data are grouped by month, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> counts the number of rows in each month. Then, <code>.groups = "drop"</code> removes the grouping so that <code>crime_monthly</code> object is returned as a regular, ungrouped data frame rather than staying grouped by month. Including <code>.groups = "drop"</code> makes the instructions clear: after counting crimes by month, we want the resulting object to no longer be treated as grouped data.</p>
+<p>Now that we have our data object, we can start building our plot. As we stated above, every <code>ggplot2</code> plot has three key components:</p>
+<ul>
+<li>
+<strong>data</strong> (which we just created)</li>
+<li>a set of <strong>aesthetic mappings</strong> between variables in the data and visual properties</li>
+<li>at least one layer which describes how to render each observation, created with a <strong>geom</strong> function</li>
+</ul>
 <p>Let’s set up our mapping by making the x-axis the month and the y-axis the count of crimes:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span> <span class="op">)</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span> <span class="op">)</span> </span>
+<span>        <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="dwc4ca-ggplot2-intro_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
@@ -443,10 +492,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Note that the plot is blank because we have not set up the third piece, the layer.</p>
+<p>Note that the plot is blank because we have not set up the third piece, the <strong>layer</strong>.</p>
 <p>To set up a layer of points, we can use the <code>geom_point()</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span> <span class="op">)</span> </span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -455,9 +506,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The points are helpful, but adding a line here would help a great deal. We can also add a line using the <code>geom_line()</code> function. Note that we are just adding another layer:</p>
+<p>Note that we are just <em>adding</em> a layer (hence the <code>+</code> operator). The code basically says: here is a ggplot with these data and this mapping, now add some points.</p>
+<p>The points are helpful, but adding a line here would help a great deal. We can also add a line using the <code>geom_line()</code> function. Note that we are just <em>adding</em> another layer (hence the <code>+</code> operator, again):</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span> <span class="op">)</span> </span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -467,10 +521,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Ok, that didn’t work and we got a warning.</p>
-<p>We got the warning because <code>geom_line()</code> connects observations together in order. That is, we have a line that connects January to February and so on. To do that, ggplot must know which observations belong to the same line. This is determined by the <code>group =</code> aesthetic. The problem is <code>ggplot</code> is assuming that each month is its own group, which prevents a continuous line from being drawn. We need to tell <code>ggplot</code> that there is only a single group and that the line should connect the dots. This is done using <code>group = 1</code>:</p>
+<p>Ok, that didn’t work and we got a warning. :(</p>
+<p>We got the warning because <code>geom_line()</code> connects observations together in order. That is, we have a line that connects January to February and so on. To do that, <code>ggplot</code> must know which observations belong to the same line.</p>
+<p>This is determined by the <code>group =</code> aesthetic. The problem is <code>ggplot</code> is assuming that each month is its own group, which prevents a continuous line from being drawn. We need to tell <code>ggplot</code> that there is only a single group and that the line should connect the dots.</p>
+<p>This is done using <code>group = 1</code> inside <code>ggplot</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="fl">1</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="fl">1</span>  <span class="op">)</span></span>
+<span>        <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -483,13 +541,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Think about what this plot shows. It is the count of crimes per month in Phoenix across all years. What are some issues with the plot? Well to name a few: there is no title, the axes are not well labeled, we might want to separate crimes by years…</p>
 <section id="a-better-plot-crimes-by-year" class="level3"><h3 class="anchored" data-anchor-id="a-better-plot-crimes-by-year">A Better Plot: Crimes by Year</h3>
 <p>Ok, let’s now build a plot for crimes by year.</p>
-<p>Remember the first step: think about how the data should be structured. Effectively, we want a data object to plot that has a column for months and number of crimes (like before) but we also want a column for years. We can use <code>dplyr</code> to create the data object. Let’s start with using the <code>arrange()</code> and <code>group_by()</code> functions to sort the data by “year” and then “month” and we will group them to create a summary measure that is the count of crimes:</p>
+<p>Remember the first step: think about how the data should be structured. Effectively, we want a data object to plot that has a column for months and number of crimes (like before) but we also want a column for years. We can use <code>dplyr</code> to create the data object. Let’s start with using the <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> functions to sort the data by “year” and then “month” and we will group them to create a summary measure that is the count of crimes:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_monthly</span> <span class="op">&lt;-</span> <span class="va">tidy_phx_crime</span>  <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">select</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">arrange</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">summarize</span><span class="op">(</span> crimes <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span> , .groups <span class="op">=</span> <span class="st">"drop"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">crime_monthly</span> <span class="op">&lt;-</span> <span class="va">tidy_phx_crime</span>  <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span> <span class="va">year</span>, <span class="va">month</span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span> crimes <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span> , .groups <span class="op">=</span> <span class="st">"drop"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, take a look at the data using <code>View( crime_monthly )</code> (it will pop up a separate window pane). Let’s (again) walk through the data recipe to see what we are doing:</p>
 <ul>
@@ -506,7 +564,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>We can use the <code>ggplot</code> code from above, except that we have to update our <code>group=</code> argument. Since we want <code>ggplot</code> to separate the lines and dots for each year, we add that to the <code>group=</code> argument:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> </span>
+<span>          x <span class="op">=</span> <span class="va">month</span>,</span>
+<span>          y <span class="op">=</span> <span class="va">crimes</span>, </span>
+<span>          group <span class="op">=</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -516,10 +578,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Think about what the aesthetic (i.e.&nbsp;<code>aes</code>) function is doing. It reads: for each year, draw a dot for the month and then connect the months with a line.</p>
+<p>Think about what the aesthetic (i.e.&nbsp;<code>aes</code>) function is doing. It reads: for each year, draw a dot for the month and then connect the months with a line. The <code>aes</code> argument is the instructions for what the <strong>geom</strong> functions should do.</p>
 <p>Although we now have separate lines by year, it is hard to see which year is which. To do this, we can add color using the <code>color =</code> argument. The <code>color=</code> aesthetic maps a variable to different colors in the plot:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> </span>
+<span>          x <span class="op">=</span> <span class="va">month</span>, </span>
+<span>          y <span class="op">=</span> <span class="va">crimes</span>, </span>
+<span>          group <span class="op">=</span> <span class="va">year</span>, </span>
+<span>          color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
@@ -531,9 +598,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Here, we included <code>color = factor( year )</code> to indicate that we want <code>year</code> to be converted from numeric years into categories. This is so that <code>ggplot</code> treats them as separate groups (rather than a continuous scale of values). To see what happens when we don’t treat year as a category, but as a continuous variable, just remove the <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> </span>
+<span>          x <span class="op">=</span> <span class="va">month</span>, </span>
+<span>          y <span class="op">=</span> <span class="va">crimes</span>, </span>
+<span>          group <span class="op">=</span> <span class="va">year</span>, </span>
+<span>          color <span class="op">=</span>  <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span>       </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="dwc4ca-ggplot2-intro_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
@@ -544,9 +616,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This might be helpful in some cases, but treating it as a category works better for our case.</p>
 <p>Now, we need to update our labels. To do so, we can use the <code>labs</code> function which adds a new layer of labels. Let’s do it first and then walk through it:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> <span class="va">crime_monthly</span>, <span class="fu">aes</span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">year</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span> <span class="va">crime_monthly</span>, </span>
+<span>        mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span> </span>
+<span>          x <span class="op">=</span> <span class="va">month</span>, </span>
+<span>          y <span class="op">=</span> <span class="va">crimes</span>, </span>
+<span>          group <span class="op">=</span> <span class="va">year</span>, </span>
+<span>          color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">year</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="co"># note that we add a plus here to tell it to add a new layer after</span></span>
+<span>  </span>
 <span>  <span class="fu">labs</span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Crime in Phoenix"</span>,</span>
 <span>    subtitle <span class="op">=</span> <span class="st">"Monthly counts of crime by year"</span>,</span>
@@ -571,10 +649,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p><br></p>
-<p>NEED EXERCISES FOR TEST YOUR KNOWLEDGE</p>
+</section></section><section id="summary" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="summary">Summary</h2>
+<p>In this chapter, you learned how to move from <strong>wrangling data to visualizing it</strong>. Tables and summary statistics are useful, but visualizations allow us to see patterns that may otherwise be difficult to identify. For crime analysts, visualizations can help reveal trends over time, compare categories, identify unusual observations, and communicate findings to audiences who may never examine the underlying data themselves. Because visualizations can shape how people interpret information, we also need to design them carefully, with an emphasis on clarity, accuracy, simplicity, and purpose.</p>
+<p>We introduced <code>ggplot2</code>, a visualization package built around the <strong>Grammar of Graphics</strong>. Rather than thinking of a graph as a single finished object, <code>ggplot2</code> allows us to construct visualizations from individual components. We begin with a <strong>dataset</strong>, use <code>aes()</code> to <strong>map variables to visual properties</strong>, and then add one or more <strong>geoms</strong> that determine how those observations are displayed. Additional layers can then be added to modify or improve the visualization. Much like the data recipes we developed in previous chapters, this gives us a consistent framework for building increasingly sophisticated plots.</p>
+<p>Using the Phoenix crime data, we also saw that creating a visualization often begins <strong>before we write any <code>ggplot2</code> code</strong>. We first need to think about what we want to visualize and structure our data accordingly. Using tools from <code>dplyr</code>, we transformed individual crime records into monthly counts and then used those summarized data as the input for our plots. This connection between <strong>data wrangling and visualization</strong> is important: the variables and observations available in our plotting dataset determine what we are able to visualize.</p>
+<p>Finally, we began building plots layer by layer. We used <code>geom_point()</code> and <code>geom_line()</code> to determine how observations were represented, the <code>group</code> aesthetic to tell <code>ggplot2</code> which observations belonged together, and the <code>color</code> aesthetic to visually distinguish years. We also used <code>labs()</code> to provide meaningful titles, axis labels, and legend labels. Each addition had a specific purpose, demonstrating one of the central advantages of the Grammar of Graphics: instead of memorizing a different procedure for every type of graph, we can <strong>build visualizations by combining components that each have a specific role</strong>.</p>
+<p>As we continue working with <code>ggplot2</code>, the plots will become more sophisticated, but the basic approach will remain the same: <strong>prepare the data, define the mappings, choose how the data should be displayed, and then add layers that make the visualization clearer and more informative</strong>. The goal is not simply to make attractive graphs, but to create visualizations that help us discover, understand, and communicate meaningful patterns in crime data.</p>
+<p><br></p>
+</section><section id="test-your-knowledge" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="test-your-knowledge">Test Your Knowledge</h2>
+<p>Before moving on, use the prompts below to test your understanding of the material in this chapter. Try to answer each question or write the R code needed to complete the task without looking back at the examples:</p>
+<ul>
+<li><p>In your own words, explain why <strong>visualization</strong> is useful for crime analysis. What kinds of patterns might be easier to identify in a visualization than in a table?</p></li>
+<li><p>What are the three key components of a <code>ggplot2</code> visualization introduced in this chapter? Explain the role that each component plays in constructing a plot.</p></li>
+<li><p>Consider the following code and explain why are there no points, lines, or bars displayed yet:</p></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">crime_monthly</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><p>Add a layer to the previous code that displays each observation as a <strong>point</strong>. Then add a second layer that connects those observations with a <strong>line</strong>.</p></li>
+<li><p>In your own words, explain what <code>aes()</code> does. In the following code, identify which variables are mapped to the x-axis and y-axis:</p></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">crime_monthly</span>,</span>
+<span>  mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><p>Suppose <code>crime_monthly</code> contains separate observations for several years. Explain why <code>group = year</code> would be necessary when using <code>geom_line()</code>. What is <code>ggplot2</code> being told to do when you include this aesthetic?</p></li>
+<li><p>Modify the plot so that each year is represented by a different color. Why might you use <code>color = factor(year)</code> rather than simply <code>color = year</code>?</p></li>
+<li><p>Use <code>labs()</code> to add the following information to a visualization: a title of <code>"Here is my Fake Plot"</code>, a subtitle of <code>"This is a Subtitle"</code>, an x-axis label of <code>"Our Pal X-axis"</code>, a y-axis label of <code>"And his Friend Y-Axis"</code>, and a legend title of <code>"Myth"</code>.</p></li>
+</ul>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
