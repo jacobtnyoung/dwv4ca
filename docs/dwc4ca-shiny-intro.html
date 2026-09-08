@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.9.38">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Jacob T.N. Young">
-<title>Dynamic Visualization: Introduction to Shiny – Data Wrangling &amp; Visualization for Crime Analysts</title>
+<title>Dynamic Visualization using Shiny – Data Wrangling &amp; Visualization for Crime Analysts</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -65,6 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./dwc4ca-conclusion.html" rel="next">
 <link href="./dwc4ca-ggplot2-maps.html" rel="prev">
 <link href="./cover.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -136,7 +137,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-shiny-intro.html">Dynamic Visualization: Introduction to Shiny</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-shiny-intro.html">Dynamic Visualization using Shiny</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -228,7 +229,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-shiny-intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Dynamic Visualization: Introduction to Shiny</span></a>
+ <span class="menu-text">Dynamic Visualization using Shiny</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dwc4ca-conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Conclusion to Data Wrangling and Visualization</span></a>
   </div>
 </li>
     </ul>
@@ -239,7 +246,8 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#static-vs.-dynamic-visualization" id="toc-static-vs.-dynamic-visualization" class="nav-link active" data-scroll-target="#static-vs.-dynamic-visualization">Static vs.&nbsp;Dynamic Visualization</a></li>
+<li><a href="#motivating-question" id="toc-motivating-question" class="nav-link active" data-scroll-target="#motivating-question">Motivating Question</a></li>
+  <li><a href="#static-vs.-dynamic-visualization" id="toc-static-vs.-dynamic-visualization" class="nav-link" data-scroll-target="#static-vs.-dynamic-visualization">Static vs.&nbsp;Dynamic Visualization</a></li>
   <li><a href="#other-examples" id="toc-other-examples" class="nav-link" data-scroll-target="#other-examples">Other examples…</a></li>
   <li>
 <a href="#what-is-shiny-and-how-it-works" id="toc-what-is-shiny-and-how-it-works" class="nav-link" data-scroll-target="#what-is-shiny-and-how-it-works">What is Shiny and How it Works</a>
@@ -269,13 +277,19 @@ window.Quarto = {
   <li><a href="#connecting-the-ui-to-the-server" id="toc-connecting-the-ui-to-the-server" class="nav-link" data-scroll-target="#connecting-the-ui-to-the-server">Connecting the UI to the Server</a></li>
   </ul>
 </li>
-  <li><a href="#a-example" id="toc-a-example" class="nav-link" data-scroll-target="#a-example">A Example</a></li>
-  <li><a href="#further-reading-and-exploration" id="toc-further-reading-and-exploration" class="nav-link" data-scroll-target="#further-reading-and-exploration">Further Reading and Exploration</a></li>
+  <li><a href="#putting-it-all-together-an-interactive-crime-analysis" id="toc-putting-it-all-together-an-interactive-crime-analysis" class="nav-link" data-scroll-target="#putting-it-all-together-an-interactive-crime-analysis">Putting It All Together: An Interactive Crime Analysis</a></li>
+  <li>
+<a href="#further-reading-and-exploration" id="toc-further-reading-and-exploration" class="nav-link" data-scroll-target="#further-reading-and-exploration">Further Reading and Exploration</a>
+  <ul class="collapse">
+<li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge">Test Your Knowledge</a></li>
+  </ul>
+</li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-shiny-intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">Dynamic Visualization: Introduction to Shiny</h1>
+<h1 class="title">Dynamic Visualization using Shiny</h1>
 </div>
 
 
@@ -289,7 +303,26 @@ window.Quarto = {
   
 
 
-</header><p>Motivating question: In statistics, you learned that when we sample, we want large sample sizes. <em>Why?</em></p>
+</header><p>Up to this point, most of the tools we have developed have been designed for <strong>you</strong>, the analyst. We learned how to take wild data and make them tidy, use <code>dplyr</code> to build reproducible data recipes, transform variables into useful forms, and use <code>ggplot2</code> to identify and communicate patterns. We then expanded those visualization skills by thinking about how design choices can help us tell a story with data.</p>
+<p>But what happens when the person who needs the information is <em>not</em> the analyst? Imagine that you have been asked to examine crime trends for a police department. You clean and transform the data, summarize incidents by month and crime type, create a visualization showing how crime has changed over time, and then you send the visualization to a patrol commander. The commander looks at it and asks: “Can I see this for just 2024?” So, you filter the data, rerun your code, recreate the visualization, and send another figure. Then another question arrives: “What about just burglaries?” Then: “Can I compare burglaries and motor vehicle theft?” Then: “Can I look at a different year?”</p>
+<p>You could continue producing a new visualization every time the question changes. <em>Or</em>, you could give the user a way to explore those questions themselves. This is where <strong>Shiny</strong> comes in.</p>
+<p>Shiny allows us to take the data wrangling and visualization tools we have already learned and place them inside an <em>interactive</em> application. Instead of creating one static visualization with choices determined entirely by the analyst, we can allow users to make some of those choices themselves. A supervisor might select a year from a dropdown menu, choose a crime type, specify a date range, or adjust some other feature of the analysis. The application can then respond automatically by filtering the data, performing the necessary calculations, and updating the visualization.</p>
+<p>Importantly, we are <em>not</em> starting over or abandoning the tools we learned in previous chapters. Shiny brings those tools together.</p>
+<p>For example, think about what happens when a user selects “2024” from a dropdown menu. Behind the scenes, we might use:</p>
+<ul>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> from <code>dplyr</code> to select incidents from 2024,</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> to calculate the information we want to display, and</li>
+<li>
+<code>ggplot2</code> to create a visualization from those results.</li>
+</ul>
+<p>Sound familiar? The major difference is that the person using the application can now change the input. When the input changes, Shiny reruns the necessary parts of our data recipe and updates the output.</p>
+<p>This makes Shiny particularly useful for crime analysts. Crime analysis frequently involves recurring questions about <strong>when</strong>, <strong>where</strong>, and <strong>what types</strong> of incidents are occurring. Different users may also need different views of the same underlying data. A patrol commander, crime analyst, city manager, or member of the public may all be interested in the same dataset but want to ask different questions of it. An interactive application provides a way to give those users controlled access to the analytical workflow you have created without requiring them to write R code themselves.</p>
+<p>In that sense, this chapter represents an important transition in the book. Earlier chapters focused largely on building the analyst’s toolkit. Now we are going to use those tools to build something that <em>someone else</em> can use.</p>
+<p>Before building our first crime analysis application, let’s start with a simple example that illustrates the fundamental idea behind Shiny: the difference between a visualization that we create for someone and one that someone can interact with themselves.</p>
+<section id="motivating-question" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="motivating-question">Motivating Question</h2>
+<p>In statistics, you learned that when we sample, we want large sample sizes. Why?</p>
 <p>Let’s see this in practice. If we drew <span class="math inline">\(k = 2000\)</span> random samples of size <span class="math inline">\(n = 2\)</span>, <span class="math inline">\(n = 10\)</span>, and <span class="math inline">\(n = 50\)</span>, respectively, we would get three sampling distributions. We could then visualize each sampling distribution with a <code>ggplot2</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -302,7 +335,7 @@ window.Quarto = {
 <p>Take a look at each plot. What is the visualization showing you? By displaying this information visually, what do you learn?</p>
 <p>Now, take a look at a different way of using a visualization to convey this point: <a href="https://jacobtnyoung.shinyapps.io/sampling-distributions/" target="_blank" rel="noopener">visualization of sampling distributions</a>.</p>
 <p><br></p>
-<section id="static-vs.-dynamic-visualization" class="level2"><h2 class="anchored" data-anchor-id="static-vs.-dynamic-visualization">Static vs.&nbsp;Dynamic Visualization</h2>
+</section><section id="static-vs.-dynamic-visualization" class="level2"><h2 class="anchored" data-anchor-id="static-vs.-dynamic-visualization">Static vs.&nbsp;Dynamic Visualization</h2>
 <p>The visualizations above are examples of static and dynamic visualizations, respectively. What makes the latter visualization <em>dynamic</em> is that the user can alter the inputs to change what the visualization shows. It is not simply fixed by the author/developer/etc, it is interactive: the <strong>user</strong> is able to alter what is <em>rendered</em>.</p>
 </section><section id="other-examples" class="level2"><h2 class="anchored" data-anchor-id="other-examples">Other examples…</h2>
 <p>What if you were interested in:</p>
@@ -426,8 +459,7 @@ window.Quarto = {
 </ul>
 <p>And that is really it. Much of the code is tweaking the <code>ggplot</code> object.</p>
 <p>Now for our last piece:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Here, we are just running the <code><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp()</a></code> function and defining the arguments that function needs to operate: the UI and the server.</p>
 </section></section></section><section id="a-deeper-dive" class="level1"><h1>A Deeper Dive</h1>
 <p>Ok, that was a lot. What we want to do now is go back through the key parts of how shiny works in greater detail. We covered everything quickly above because I wanted you to have a sense of the scope of what we are doing. Now, we can go in more depth and think about what is occurring at each component.</p>
@@ -810,8 +842,8 @@ To illustrate, let’s take a look at a few of these functions.</p>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlab =</span> <span class="st">"Speed (mph)"</span>)</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>And there we have it! Those are our pieces.</p>
-</section></section><section id="a-example" class="level1"><h1>A Example</h1>
-<p>Ok, let’s work through this one more time drawing on a plot we created in the <a href="">Advanced <code>ggplot2</code> and Storytelling</a> chapter. If you recall, we created an object with monthly counts of each type of crime by year and we used <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> to panel by year:</p>
+</section></section><section id="putting-it-all-together-an-interactive-crime-analysis" class="level1"><h1>Putting It All Together: An Interactive Crime Analysis</h1>
+<p>Ok, let’s work through this one more time drawing on a plot we created in the <a href="https://jacobtnyoung.github.io/dwv4ca/dwc4ca-ggplot2-advanced.html">Advanced <code>ggplot2</code> and Storytelling</a> chapter. If you recall, we created an object with monthly counts of each type of crime by year by using the <code>tidy_phx_crime</code> object in the <code>DWVpack</code> package. After creating the object, we used <code><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap()</a></code> to panel by year:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># build the data</span></span>
 <span></span>
@@ -824,7 +856,10 @@ To illustrate, let’s take a look at a few of these functions.</p>
 <span></span>
 <span><span class="co"># render the plot</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span> <span class="va">crime_type_monthly</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span> </span>
+<span>  data <span class="op">=</span> <span class="va">crime_type_monthly</span>, </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> </span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  </span>
@@ -878,8 +913,10 @@ To illustrate, let’s take a look at a few of these functions.</p>
 <p>That is our reactive element because every time the user changes the input using the drop-down, the <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> function is going to rerun based on the new condition.</p>
 <p>Our final piece is just going to be updating our <code>ggplot</code> code to reflect that we want to use <code>filtered_data</code> instead of <code>crime_type_monthly</code></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
-<span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span> <span class="va">filtered_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span> </span>
+<span>  data <span class="op">=</span> <span class="va">filtered_data</span>, </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span> x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">crimes</span>, group <span class="op">=</span> <span class="va">crime_type_clean</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span> <span class="va">crime_type_clean</span> <span class="op">)</span> <span class="op">)</span> </span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -927,7 +964,7 @@ To illustrate, let’s take a look at a few of these functions.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section><section id="further-reading-and-exploration" class="level1"><h1>Further Reading and Exploration</h1>
-<p>This is only scratching the surface. You can build very elaborate apps. For example, check out this app designed to teach about <a href="https://shiny.posit.co/r/gallery/education/didacting-modeling/" target="_blank" rel="noopener">linear regression</a>.</p>
+<p>This is only scratching the surface. You can build very elaborate apps, but those are beyond the scope of what we will cover. For example, check out this app designed to teach about <a href="https://shiny.posit.co/r/gallery/education/didacting-modeling/" target="_blank" rel="noopener">linear regression</a>.</p>
 <p>If you are interested in reading up on it, here are some really good FREE books:</p>
 <ul>
 <li>
@@ -937,10 +974,24 @@ To illustrate, let’s take a look at a few of these functions.</p>
 </ul>
 <p>There is also an annual conference, <a href="https://www.shinyconf.com/" target="_blank" rel="noopener">ShinyConf</a>, where developers discuss their work. There are also awards for best apps. Here is a gallery of the <a href="https://posit.co/blog/winners-of-the-2024-shiny-contest/" target="_blank" rel="noopener">2024 winners</a>.</p>
 <p><br></p>
-<p>NEED EXERCISES FOR TEST YOUR KNOWLEDGE</p>
+<section id="summary" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="summary">Summary</h2>
+<p>In this chapter, you learned how to move from static visualization to dynamic, interactive analysis using Shiny. Rather than producing a single figure that reflects choices made entirely by the analyst, Shiny allows us to give users some control over those choices.</p>
+<p>At the center of a Shiny application are three concepts: the <strong>user interface (UI)</strong>, the <strong>server</strong>, and <strong>reactivity</strong>. The UI determines what the user sees and interacts with, including titles, layouts, input widgets, and locations for outputs. The server contains the instructions that process data and create plots, tables, or text. Reactivity connects these two pieces: when a user changes an input, Shiny automatically reruns the code that depends on that input and updates the appropriate output. Together, these components transform a static analysis into an interactive application. Understanding the connection between <strong>input → server → output</strong> is the foundation for building Shiny applications.</p>
+<p>Most importantly, Shiny allowed us to pull together many of the skills developed throughout this book. In the Phoenix crime example, we began with data that had already been tidied and transformed, used <code>dplyr</code> to organize and summarize crime incidents, used <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> to respond to a user’s selection, and then used <code>ggplot2</code> to visualize the resulting data. The individual tools were not new. What was new was connecting them to a user’s input so that the same data recipe could be rerun automatically as the user explored different questions.</p>
+<p>This illustrates a broader lesson about the crime analysis workflow we have developed throughout this book. We began with wild data, learned how to <strong>wrangle, tidy, and transform</strong> those data, and then used <strong>visualization</strong> to identify and communicate meaningful patterns. Shiny adds another layer by allowing other people to interact with the analytical products we create. The result is a workflow that moves from raw data to reproducible analysis to effective communication—and, ultimately, to tools that can help others explore information and make informed decisions.</p>
+<p>The Shiny applications developed here are intentionally simple, but the same basic structure can support much more sophisticated dashboards and analytical tools. As those applications become more complex, the fundamental idea remains the same: the UI collects information from the user, the server applies our analytical workflow, and reactivity connects the two. In that sense, Shiny is not a departure from the tools you have already learned. It is a way to bring those tools together and place them in the hands of someone else.</p>
+</section><section id="test-your-knowledge" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="test-your-knowledge">Test Your Knowledge</h2>
+<ul>
+<li><p>In your own words, explain the difference between a <strong>static</strong> and <strong>dynamic</strong> visualization. What does Shiny allow a user to do that a traditional <code>ggplot2</code> visualization does not?</p></li>
+<li><p>What are the three core components of a Shiny application introduced in this chapter? Explain the role of the <strong>UI</strong>, <strong>server</strong>, and <strong>reactivity</strong>.</p></li>
+<li><p>What is the purpose of an <code>inputId</code> in a Shiny input function? Suppose the UI contains <code>selectInput(inputId = "crime", ...)</code>. How would you access the user’s selection from the server?</p></li>
+<li><p>Create a <code><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput()</a></code> that allows a user to choose between <code>"Burglary"</code>, <code>"Robbery"</code>, <code>"Assault"</code>, and <code>"Theft"</code>. Give the input an ID of <code>"crime_type"</code> and make <code>"Burglary"</code> the default selection.</p></li>
+<li><p>Explain the relationship between <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code> and <code><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot()</a></code>. Where does each function appear in a Shiny application, and how are they connected?</p></li>
+<li><p>Create a simple Shiny UI containing a title, a slider that allows the user to select a value between 5 and 50, and a location for a plot. You do not need to create the server yet. Identify which parts of your code create <strong>text</strong>, an <strong>input</strong>, and an <strong>output placeholder</strong>.</p></li>
+</ul>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1345,6 +1396,9 @@ To illustrate, let’s take a look at a few of these functions.</p>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./dwc4ca-conclusion.html" class="pagination-link" aria-label="Conclusion to Data Wrangling and Visualization">
+        <span class="nav-page-text">Conclusion to Data Wrangling and Visualization</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
