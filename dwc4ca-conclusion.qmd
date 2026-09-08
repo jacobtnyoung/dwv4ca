@@ -1,0 +1,106 @@
+# Conclusion to Data Wrangling and Visualization {.unnumbered}
+
+Throughout this book, we have focused on a central idea: data do not speak for themselves.
+Data must be accessed, cleaned, reshaped, summarized, visualized, interpreted, and communicated.
+For crime analysts, this work matters because the results of analysis can shape how agencies understand problems, allocate resources, evaluate strategies, and communicate with the public.
+
+We began by thinking about the role of data wrangling and visualization in crime analysis.
+Open data sources have created new opportunities for analysts, researchers, agencies, and communities, but having access to data is only the first step.
+The real work begins when we ask what the data mean, how they were created, what limitations they contain, and how they can be transformed into information that others can understand and use.
+
+From there, we built the technical foundation needed to work in R and RStudio.
+You learned how to run code, work with objects, use packages, read in data, and create reproducible workflows.
+T hese skills are important because they allow your work to be transparent.
+Instead of relying on hidden steps or manual changes, you can show exactly how an analysis was produced.
+
+We then moved into R Markdown, where analysis and writing come together.
+Data analysis is not only about producing numbers or charts.
+It is also about communicating clearly.
+R Markdown allows you to combine code, output, explanation, and interpretation in one document.
+This helps make your work reproducible and easier to share with supervisors, colleagues, stakeholders, and the public.
+
+A major part of the book focused on data wrangling with `dplyr`.
+You learned how to select variables, filter rows, create new variables, arrange data, summarize information, and group observations.
+These tools are the everyday foundation of crime analysis.
+Whether you are examining calls for service, arrests, incidents, victims, locations, or time patterns, you need to be able to move from messy raw data to a structure that answers a specific question.
+
+We also spent time on tidy data.
+This is one of the most important ideas in the book because the structure of a dataset shapes what you can do with it.
+When data are tidy, variables are stored in columns, observations are stored in rows, and values are stored in cells.
+This structure makes it easier to analyze, visualize, and communicate results.
+In practice, real-world crime data will often arrive in formats that are inconvenient, inconsistent, or confusing.
+Learning how to recognize and fix those problems is part of becoming a stronger analyst.
+
+Next, we worked through data transformation.
+We practiced reshaping data, working with dates and times, and creating variables that better match the questions we want to answer.
+These tasks are especially important in crime analysis because useful insight often requires combining information from multiple sources.
+Calls for service, incident reports, use of force records, geographic boundaries, and demographic data may all tell part of the story.
+Transformation helps bring those pieces together.
+
+The book then turned to visualization with `ggplot2`.
+We used graphics to explore patterns, compare groups, examine trends, and communicate findings.
+You learned how different visual choices affect interpretation: which variables belong on each axis, when to use color or facets, how to choose an appropriate chart type, and how to make visualizations clearer.
+The goal was not simply to make charts that look polished.
+The goal was to make charts that help people see something meaningful in the data.
+
+We also discussed more advanced visualization and storytelling.
+Crime analysts are often asked to communicate with audiences who may not have technical training.
+A good visualization should guide the reader toward the key pattern without hiding uncertainty or oversimplifying the evidence.
+Titles, labels, ordering, annotations, and design choices all shape how a graphic is understood.
+Visualization is not decoration; it is part of the analysis.
+
+Mapping extended these ideas into geographic space.
+Crime and public safety are deeply spatial.
+Incidents happen in neighborhoods, on street segments, near businesses, schools, parks, transit stops, and other meaningful places.
+By using maps, analysts can identify spatial patterns, communicate geographic concentration, and help stakeholders understand where problems are occurring.
+At the same time, maps require care.
+They can be persuasive, but they can also mislead if the data, scale, or design choices are not handled thoughtfully.
+
+Finally, we brought many of these tools together through Shiny.
+Shiny allows analysts to create interactive dashboards and applications that let users explore data themselves.
+This is especially useful when different stakeholders have different questions.
+A supervisor may want a high-level trend.
+A community group may want neighborhood-level information.
+An analyst may want to filter by time, offense type, location, or other characteristics.
+Shiny provides a way to make analysis more accessible while still relying on the same reproducible workflow underneath.
+
+Taken together, the chapters in this book have emphasized a complete analytic process.
+You learned how to move from raw data to clean data, from clean data to summaries, from summaries to visualizations, and from visualizations to communication.
+Along the way, you practiced asking better questions of the data.
+What does this variable actually measure?
+What is missing?
+What comparisons are fair?
+What patterns are meaningful?
+What would someone need to know in order to trust this result?
+
+These questions are just as important as the code.
+The tools in this book are powerful, but the goal is not to become someone who simply knows R commands.
+The goal is to become a more thoughtful analyst.
+Good crime analysis requires technical skill, but it also requires judgment, transparency, humility, and care.
+
+As you continue using these tools, you will run into problems.
+Code will break.
+Data will be messier than expected.
+Variable names will be unclear.
+Dates will be formatted strangely.
+Categories will not line up.
+Maps will need cleaning.
+Dashboards will need revision.
+This is normal.
+In fact, this is much of the work.
+The important thing is that you now have a foundation for working through those problems in a systematic way.
+
+The broader message of this book is that good analysis should be useful, understandable, and trustworthy.
+It should help people make sense of complicated information.
+It should make methods visible.
+It should acknowledge limitations.
+And, especially in the context of crime and public safety, it should be created with an awareness that data represent real people, real places, and real consequences.
+
+My hope is that you leave this book with more than a set of technical skills.
+I hope you leave with confidence that you can approach messy data, ask clear questions, build reproducible workflows, and communicate findings in ways that help others understand what is happening.
+The tools will continue to change.
+New packages, platforms, and data sources will emerge.
+But the habits you have practiced here will remain valuable: be curious, be careful, be transparent, and keep asking whether your analysis helps people see the problem more clearly.
+
+That is the work of crime analysis.
+Not just producing results, but producing results that others can trust, understand, reproduce, and use.

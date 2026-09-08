@@ -29,6 +29,7 @@ book:
     - dwc4ca-ggplot2-advanced.qmd
     - dwc4ca-ggplot2-maps.qmd
     - dwc4ca-shiny-intro.qmd
+    - dwc4ca-conclusion.qmd
 format:
   html:
     theme:

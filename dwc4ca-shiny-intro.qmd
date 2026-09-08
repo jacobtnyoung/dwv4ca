@@ -17,10 +17,57 @@ library( scales )
 
 ```
 
-# Dynamic Visualization: Introduction to Shiny {.unnumbered}
+# Dynamic Visualization using Shiny {.unnumbered}
 
-Motivating question: In statistics, you learned that when we sample, we want large sample sizes.
-*Why?*
+Up to this point, most of the tools we have developed have been designed for **you**, the analyst.
+We learned how to take wild data and make them tidy, use `dplyr` to build reproducible data recipes, transform variables into useful forms, and use `ggplot2` to identify and communicate patterns.
+We then expanded those visualization skills by thinking about how design choices can help us tell a story with data.
+
+But what happens when the person who needs the information is *not* the analyst?
+Imagine that you have been asked to examine crime trends for a police department.
+You clean and transform the data, summarize incidents by month and crime type, create a visualization showing how crime has changed over time, and then you send the visualization to a patrol commander.
+The commander looks at it and asks: "Can I see this for just 2024?" So, you filter the data, rerun your code, recreate the visualization, and send another figure.
+Then another question arrives: "What about just burglaries?" Then: "Can I compare burglaries and motor vehicle theft?" Then: "Can I look at a different year?"
+
+You could continue producing a new visualization every time the question changes.
+*Or*, you could give the user a way to explore those questions themselves.
+This is where **Shiny** comes in.
+
+Shiny allows us to take the data wrangling and visualization tools we have already learned and place them inside an *interactive* application.
+Instead of creating one static visualization with choices determined entirely by the analyst, we can allow users to make some of those choices themselves.
+A supervisor might select a year from a dropdown menu, choose a crime type, specify a date range, or adjust some other feature of the analysis.
+The application can then respond automatically by filtering the data, performing the necessary calculations, and updating the visualization.
+
+Importantly, we are *not* starting over or abandoning the tools we learned in previous chapters.
+Shiny brings those tools together.
+
+For example, think about what happens when a user selects "2024" from a dropdown menu.
+Behind the scenes, we might use:
+
+- `filter()` from `dplyr` to select incidents from 2024,
+- `group_by()` and `summarize()` to calculate the information we want to display, and
+- `ggplot2` to create a visualization from those results.
+
+Sound familiar?
+The major difference is that the person using the application can now change the input.
+When the input changes, Shiny reruns the necessary parts of our data recipe and updates the output.
+
+This makes Shiny particularly useful for crime analysts.
+Crime analysis frequently involves recurring questions about **when**, **where**, and **what types** of incidents are occurring.
+Different users may also need different views of the same underlying data.
+A patrol commander, crime analyst, city manager, or member of the public may all be interested in the same dataset but want to ask different questions of it.
+An interactive application provides a way to give those users controlled access to the analytical workflow you have created without requiring them to write R code themselves.
+
+In that sense, this chapter represents an important transition in the book.
+Earlier chapters focused largely on building the analyst's toolkit.
+Now we are going to use those tools to build something that *someone else* can use.
+
+Before building our first crime analysis application, let's start with a simple example that illustrates the fundamental idea behind Shiny: the difference between a visualization that we create for someone and one that someone can interact with themselves.
+
+## Motivating Question {.unnumbered}
+
+In statistics, you learned that when we sample, we want large sample sizes.
+Why?
 
 Let's see this in practice.
 If we drew $k = 2000$ random samples of size $n = 2$, $n = 10$, and $n = 50$, respectively, we would get three sampling distributions.
@@ -71,8 +118,8 @@ It is not simply fixed by the author/developer/etc, it is interactive: the **use
 
 What if you were interested in:
 
--   identifying an optimal strategy for network disruption (check out this [network disruption app](https://jacobtnyoung.shinyapps.io/network-disruption/){target="_blank" rel="noopener"})
--   the spatial distribution of crime in Phoenix (check out this [Phoenix Crime Dashboard](https://jacobtnyoung.shinyapps.io/crime-in-phx/){target="_blank" rel="noopener"})
+- identifying an optimal strategy for network disruption (check out this [network disruption app](https://jacobtnyoung.shinyapps.io/network-disruption/){target="_blank" rel="noopener"})
+- the spatial distribution of crime in Phoenix (check out this [Phoenix Crime Dashboard](https://jacobtnyoung.shinyapps.io/crime-in-phx/){target="_blank" rel="noopener"})
 
 These are all built using [Shiny](https://shiny.posit.co/){target="_blank" rel="noopener"}!
 
@@ -85,27 +132,27 @@ It allows you to take static analyses and visualizations, like a `ggplot2`, and 
 
 With Shiny, users can:
 
--   Adjust inputs (sliders, dropdowns, buttons)
--   Filter data
--   Change model parameters
--   Instantly see updated visualizations and results
+- Adjust inputs (sliders, dropdowns, buttons)
+- Filter data
+- Change model parameters
+- Instantly see updated visualizations and results
 
 ## Core Concepts
 
 Shiny apps are built around three simple ideas:
 
--   The UI (User Interface), which is what the user sees.
-    It includes the layout of the page, input controls (sliders, dropdowns, checkboxes), and output placeholders (where plots, tables, or text will appear).
-    The UI defines the structure of the app.
+- The UI (User Interface), which is what the user sees.
+  It includes the layout of the page, input controls (sliders, dropdowns, checkboxes), and output placeholders (where plots, tables, or text will appear).
+  The UI defines the structure of the app.
 
--   The Server, this is what happens behind the scenes.
-    It is where we put the instructions for what is produced in the UI, where data is processed, and where calculations happen.
-    The server connects user inputs to outputs.
+- The Server, this is what happens behind the scenes.
+  It is where we put the instructions for what is produced in the UI, where data is processed, and where calculations happen.
+  The server connects user inputs to outputs.
 
--   Reactivity is what makes Shiny dynamic (and powerful).
-    Reactivity means that code reruns automatically when inputs change.
-    Think of it like Excel cell recalculation: If one cell changes, any dependent cells update automatically.
-    Shiny works the same way in that changes to the inputs trigger update which refresh the output.
+- Reactivity is what makes Shiny dynamic (and powerful).
+  Reactivity means that code reruns automatically when inputs change.
+  Think of it like Excel cell recalculation: If one cell changes, any dependent cells update automatically.
+  Shiny works the same way in that changes to the inputs trigger update which refresh the output.
 
 Let's go back to the [visualization of sampling distributions](https://jacobtnyoung.shinyapps.io/sampling-distributions/){target="_blank" rel="noopener"} app and take a closer look.
 Now, take a closer look "under the hood" to see what it looks like [here](https://github.com/jacobtnyoung/dynamic-viz/blob/main/apps/sampling/app.R){target="_blank" rel="noopener"}.
@@ -253,8 +300,8 @@ Specifically, we use the `renderPlot()` function.
 
 This is getting a bit more complicated, so let's take each line:
 
--   `x <- rnorm(input$n)` creates an object `x`, which is a random draw from a normal distribution, `rnorm`, where the size is defined by the user with `input$n`. Look back to the UI, where do you see `"n"`? **Look at what we just did**: we built into our plot function the changes that are being made by the user in the UI. This is called a **reactive value**.
--   `ggplot(data.frame(x = x), aes(x = x)) +`... defines a plot object, using `ggplot()`, that is based on the `x` object.
+- `x <- rnorm(input$n)` creates an object `x`, which is a random draw from a normal distribution, `rnorm`, where the size is defined by the user with `input$n`. Look back to the UI, where do you see `"n"`? **Look at what we just did**: we built into our plot function the changes that are being made by the user in the UI. This is called a **reactive value**.
+- `ggplot(data.frame(x = x), aes(x = x)) +`... defines a plot object, using `ggplot()`, that is based on the `x` object.
 
 And that is really it.
 Much of the code is tweaking the `ggplot` object.
@@ -262,7 +309,6 @@ Much of the code is tweaking the `ggplot` object.
 Now for our last piece:
 
 ``` r
-
 shinyApp(ui = ui, server = server)
 ```
 
@@ -310,10 +356,10 @@ shinyApp( ui, server )
 Everything inside `fluidPage()` gets rendered onto the webpage.
 These elements generally fall into four categories:
 
--   Titles/Text
--   Input widgets
--   Output placeholders
--   Layout/organization tools
+- Titles/Text
+- Input widgets
+- Output placeholders
+- Layout/organization tools
 
 ### Titles/Text
 
@@ -433,9 +479,9 @@ shinyApp( ui, server )
 
 Ok, take a look and see what it does:
 
--   We have a slider (from `sliderInput`) that lets us move a slider labeled "Number of bins:" (see the `label` argument) from 1 to 50 and the starting value is 30 (see the `min`, `max`, and `value` arguments)
--   We have a drop-down selector (from `selectInput`) labeled "Choose Crime Type:" (see the `label` argument) that lets us select the type of crime as given in the `choices` argument
--   We have a checkbox (from `checkboxInput`) that lets us check whether we want to show the line for the mean (i.e. `value = TRUE`) or not.
+- We have a slider (from `sliderInput`) that lets us move a slider labeled "Number of bins:" (see the `label` argument) from 1 to 50 and the starting value is 30 (see the `min`, `max`, and `value` arguments)
+- We have a drop-down selector (from `selectInput`) labeled "Choose Crime Type:" (see the `label` argument) that lets us select the type of crime as given in the `choices` argument
+- We have a checkbox (from `checkboxInput`) that lets us check whether we want to show the line for the mean (i.e. `value = TRUE`) or not.
 
 Recall above that the UI just handles what the user sees, it does not do any of the calculations.
 You can see this by interacting with the widgets on the app.
@@ -514,9 +560,9 @@ As you can see, there are a number of functions that we use to build the the UI 
 You can browse the functions that are build in `shiny` by typing `help( package = "shiny" )`.
 There are also many extensions that have been written:
 
--   [shiny widget gallery](https://shiny.posit.co/r/gallery/widgets/widget-gallery/){target="_blank" rel="noopener"}
--   [shinyWidgets](https://dreamrs.github.io/shinyWidgets/){target="_blank" rel="noopener"}
--   [awesome-shiny-extensions](https://github.com/nanxstats/awesome-shiny-extensions){target="_blank" rel="noopener"}
+- [shiny widget gallery](https://shiny.posit.co/r/gallery/widgets/widget-gallery/){target="_blank" rel="noopener"}
+- [shinyWidgets](https://dreamrs.github.io/shinyWidgets/){target="_blank" rel="noopener"}
+- [awesome-shiny-extensions](https://github.com/nanxstats/awesome-shiny-extensions){target="_blank" rel="noopener"}
 
 ## Connecting the UI to the Server
 
@@ -624,10 +670,11 @@ Now, we need to do two steps: define the output object, `output$speedPlot` using
 And there we have it!
 Those are our pieces.
 
-# A Example
+# Putting It All Together: An Interactive Crime Analysis
 
-Ok, let's work through this one more time drawing on a plot we created in the [Advanced `ggplot2` and Storytelling]() chapter.
-If you recall, we created an object with monthly counts of each type of crime by year and we used `facet_wrap()` to panel by year:
+Ok, let's work through this one more time drawing on a plot we created in the [Advanced `ggplot2` and Storytelling](https://jacobtnyoung.github.io/dwv4ca/dwc4ca-ggplot2-advanced.html) chapter.
+If you recall, we created an object with monthly counts of each type of crime by year by using the `tidy_phx_crime` object in the `DWVpack` package.
+After creating the object, we used `facet_wrap()` to panel by year:
 
 ```{r}
 
@@ -642,7 +689,10 @@ crime_type_monthly <- tidy_phx_crime  |>
 
 # render the plot
 
-ggplot( crime_type_monthly, aes( x = month, y = crimes, group = crime_type_clean, color = factor( crime_type_clean ) ) ) +
+ggplot( 
+  data = crime_type_monthly, 
+  aes( x = month, y = crimes, group = crime_type_clean, color = factor( crime_type_clean ) ) 
+  ) +
   geom_point() +
   geom_line() +
   
@@ -711,8 +761,10 @@ Our final piece is just going to be updating our `ggplot` code to reflect that w
 
 ``` r
 
-
-ggplot( filtered_data, aes( x = month, y = crimes, group = crime_type_clean, color = factor( crime_type_clean ) ) ) +
+ggplot( 
+  data = filtered_data, 
+  aes( x = month, y = crimes, group = crime_type_clean, color = factor( crime_type_clean ) ) 
+  ) +
   geom_point() +
   geom_line()
   
@@ -769,13 +821,13 @@ shinyApp(ui, server)
 # Further Reading and Exploration
 
 This is only scratching the surface.
-You can build very elaborate apps.
+You can build very elaborate apps, but those are beyond the scope of what we will cover.
 For example, check out this app designed to teach about [linear regression](https://shiny.posit.co/r/gallery/education/didacting-modeling/){target="_blank" rel="noopener"}.
 
 If you are interested in reading up on it, here are some really good FREE books:
 
--   [Mastering Shiny](https://mastering-shiny.org/index.html){target="_blank" rel="noopener"} is the first stop for moving forward with learning how to use Shiny.
--   [Unleash Shiny](https://unleash-shiny.rinterface.com/){target="_blank" rel="noopener"} and [Engineering Shiny](https://engineering-shiny.org/index.html){target="_blank" rel="noopener"} are great next steps for creating awesome apps.
+- [Mastering Shiny](https://mastering-shiny.org/index.html){target="_blank" rel="noopener"} is the first stop for moving forward with learning how to use Shiny.
+- [Unleash Shiny](https://unleash-shiny.rinterface.com/){target="_blank" rel="noopener"} and [Engineering Shiny](https://engineering-shiny.org/index.html){target="_blank" rel="noopener"} are great next steps for creating awesome apps.
 
 There is also an annual conference, [ShinyConf](https://www.shinyconf.com/){target="_blank" rel="noopener"}, where developers discuss their work.
 There are also awards for best apps.
@@ -783,4 +835,51 @@ Here is a gallery of the [2024 winners](https://posit.co/blog/winners-of-the-202
 
 <br>
 
-NEED EXERCISES FOR TEST YOUR KNOWLEDGE
+## Summary {.unnumbered}
+
+In this chapter, you learned how to move from static visualization to dynamic, interactive analysis using Shiny.
+Rather than producing a single figure that reflects choices made entirely by the analyst, Shiny allows us to give users some control over those choices.
+
+At the center of a Shiny application are three concepts: the **user interface (UI)**, the **server**, and **reactivity**.
+The UI determines what the user sees and interacts with, including titles, layouts, input widgets, and locations for outputs.
+The server contains the instructions that process data and create plots, tables, or text.
+Reactivity connects these two pieces: when a user changes an input, Shiny automatically reruns the code that depends on that input and updates the appropriate output.
+Together, these components transform a static analysis into an interactive application.
+Understanding the connection between **input → server → output** is the foundation for building Shiny applications.
+
+Most importantly, Shiny allowed us to pull together many of the skills developed throughout this book.
+In the Phoenix crime example, we began with data that had already been tidied and transformed, used `dplyr` to organize and summarize crime incidents, used `filter()` to respond to a user's selection, and then used `ggplot2` to visualize the resulting data.
+The individual tools were not new.
+What was new was connecting them to a user's input so that the same data recipe could be rerun automatically as the user explored different questions.
+
+This illustrates a broader lesson about the crime analysis workflow we have developed throughout this book.
+We began with wild data, learned how to **wrangle, tidy, and transform** those data, and then used **visualization** to identify and communicate meaningful patterns.
+Shiny adds another layer by allowing other people to interact with the analytical products we create.
+The result is a workflow that moves from raw data to reproducible analysis to effective communication—and, ultimately, to tools that can help others explore information and make informed decisions.
+
+The Shiny applications developed here are intentionally simple, but the same basic structure can support much more sophisticated dashboards and analytical tools.
+As those applications become more complex, the fundamental idea remains the same: the UI collects information from the user, the server applies our analytical workflow, and reactivity connects the two.
+In that sense, Shiny is not a departure from the tools you have already learned.
+It is a way to bring those tools together and place them in the hands of someone else.
+
+## Test Your Knowledge {.unnumbered}
+
+- In your own words, explain the difference between a **static** and **dynamic** visualization.
+  What does Shiny allow a user to do that a traditional `ggplot2` visualization does not?
+
+- What are the three core components of a Shiny application introduced in this chapter?
+  Explain the role of the **UI**, **server**, and **reactivity**.
+
+- What is the purpose of an `inputId` in a Shiny input function?
+  Suppose the UI contains `selectInput(inputId = "crime", ...)`.
+  How would you access the user's selection from the server?
+
+- Create a `selectInput()` that allows a user to choose between `"Burglary"`, `"Robbery"`, `"Assault"`, and `"Theft"`.
+  Give the input an ID of `"crime_type"` and make `"Burglary"` the default selection.
+
+- Explain the relationship between `plotOutput()` and `renderPlot()`.
+  Where does each function appear in a Shiny application, and how are they connected?
+
+- Create a simple Shiny UI containing a title, a slider that allows the user to select a value between 5 and 50, and a location for a plot.
+  You do not need to create the server yet.
+  Identify which parts of your code create **text**, an **input**, and an **output placeholder**.
