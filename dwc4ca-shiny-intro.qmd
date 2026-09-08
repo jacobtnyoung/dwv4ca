@@ -818,7 +818,97 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
-# Further Reading and Exploration
+## Publishing Your Shiny App with shinyapps.io
+
+Up to this point, we have been running our Shiny apps on our own computer.
+This is a great way to build and test an app, but it limits who can use it.
+If you want a supervisor, colleague, community partner, or classmate to interact with your dashboard, you need a way to publish it online.
+This is where **deployment** comes in.
+
+Deployment means taking an app that works on your computer and making it available somewhere else.
+For Shiny apps, one of the easiest places to publish is [shinyapps.io](https://www.shinyapps.io/), which is a hosting service from Posit.
+Once your app is deployed, users can open it in a web browser just like any other website.
+They do not need R, RStudio, or the code on their own computer.
+
+This is one of the main reasons Shiny is useful for crime analysts.
+A static report can show someone what you found, but an interactive dashboard lets them explore the data themselves.
+For example, a user might want to filter by year, crime type, precinct, neighborhood, or month.
+Instead of creating dozens of separate plots, you can build one app that lets the user select what they want to see.
+
+### Before You Publish
+
+Before publishing a Shiny app, make sure the app works correctly on your own computer.
+Click “Run App” in RStudio and test the main features:
+
+- Do all inputs work?
+- Do the plots, tables, or text outputs update correctly?
+- Are there any error messages?
+- Are the labels and titles clear?
+- Would someone else understand what they are looking at?
+
+This last question is important.
+When you deploy an app, the user may not be sitting next to you.
+They may not know what the variables mean, where the data came from, or what the dashboard is designed to show.
+A good Shiny app should include enough context that someone can use it without needing a full explanation from the analyst.
+
+### Create a shinyapps.io Account
+
+To publish to shinyapps.io, you first need an account.
+Go to: https://www.shinyapps.io/.
+You can create a free account, which is enough for learning and testing.
+After creating an account, you will have an account name.
+This is important because your deployed apps will use this account name in the app URL.
+
+For example, if your account name were crime-analysis-demo and your app were called traffic-speed-histogram, the app URL would look something like: https://crime-analysis-demo.shinyapps.io/traffic-speed-histogram/.
+Your exact URL will depend on your own account name and the name you give your app.
+
+### Install the rsconnect Package
+
+To deploy a Shiny app from RStudio, we use the `rsconnect` package.
+This package connects RStudio on your computer to your shinyapps.io account.
+
+Install it with:
+
+``` r
+install.packages( "rsconnect" )
+```
+
+Then load it:
+
+``` r
+library( rsconnect )
+```
+
+You only need to install the package once.
+After that, you can load it whenever you need to deploy or update an app.
+
+### Publishing from RStudio
+
+After installing the `rsconnect` package, the easiest way to publish your app is to use the "Publish" button in RStudio.
+
+First, open the Shiny app in RStudio and run it locally by clicking "Run App".
+Make sure the app works the way you expect.
+Try changing the inputs, checking the plots, and confirming that nothing produces an error.
+
+Once the app is working, look for the Publish button in the upper-right corner of the app preview window.
+Click "Publish".
+RStudio will walk you through the process of connecting to your shinyapps.io account.
+If this is your first time publishing, you may be asked to log in or connect your account.
+Follow the prompts from RStudio and shinyapps.io.
+
+When prompted, choose the files that belong to your app.
+For a simple app, this may just be named `app.R`.
+If your app uses a data file, such as `phx_crime_clean.rds`, make sure that file is included too.
+The deployed app needs access to everything required to run.
+If a dataset is only stored somewhere on your computer and is not included with the app, the published version will not work.
+
+After you confirm the files, RStudio will deploy the app to shinyapps.io.
+When the process finishes, your app will open in a web browser.
+You can then copy the URL and share it with others.
+
+<br>
+
+## Further Reading and Exploration
 
 This is only scratching the surface.
 You can build very elaborate apps, but those are beyond the scope of what we will cover.

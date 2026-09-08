@@ -277,11 +277,20 @@ window.Quarto = {
   <li><a href="#connecting-the-ui-to-the-server" id="toc-connecting-the-ui-to-the-server" class="nav-link" data-scroll-target="#connecting-the-ui-to-the-server">Connecting the UI to the Server</a></li>
   </ul>
 </li>
-  <li><a href="#putting-it-all-together-an-interactive-crime-analysis" id="toc-putting-it-all-together-an-interactive-crime-analysis" class="nav-link" data-scroll-target="#putting-it-all-together-an-interactive-crime-analysis">Putting It All Together: An Interactive Crime Analysis</a></li>
   <li>
-<a href="#further-reading-and-exploration" id="toc-further-reading-and-exploration" class="nav-link" data-scroll-target="#further-reading-and-exploration">Further Reading and Exploration</a>
+<a href="#putting-it-all-together-an-interactive-crime-analysis" id="toc-putting-it-all-together-an-interactive-crime-analysis" class="nav-link" data-scroll-target="#putting-it-all-together-an-interactive-crime-analysis">Putting It All Together: An Interactive Crime Analysis</a>
   <ul class="collapse">
-<li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+<li>
+<a href="#publishing-your-shiny-app-with-shinyapps.io" id="toc-publishing-your-shiny-app-with-shinyapps.io" class="nav-link" data-scroll-target="#publishing-your-shiny-app-with-shinyapps.io">Publishing Your Shiny App with shinyapps.io</a>
+  <ul class="collapse">
+<li><a href="#before-you-publish" id="toc-before-you-publish" class="nav-link" data-scroll-target="#before-you-publish">Before You Publish</a></li>
+  <li><a href="#create-a-shinyapps.io-account" id="toc-create-a-shinyapps.io-account" class="nav-link" data-scroll-target="#create-a-shinyapps.io-account">Create a shinyapps.io Account</a></li>
+  <li><a href="#install-the-rsconnect-package" id="toc-install-the-rsconnect-package" class="nav-link" data-scroll-target="#install-the-rsconnect-package">Install the rsconnect Package</a></li>
+  <li><a href="#publishing-from-rstudio" id="toc-publishing-from-rstudio" class="nav-link" data-scroll-target="#publishing-from-rstudio">Publishing from RStudio</a></li>
+  </ul>
+</li>
+  <li><a href="#further-reading-and-exploration" id="toc-further-reading-and-exploration" class="nav-link" data-scroll-target="#further-reading-and-exploration">Further Reading and Exploration</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   <li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge">Test Your Knowledge</a></li>
   </ul>
 </li>
@@ -963,7 +972,38 @@ To illustrate, let’s take a look at a few of these functions.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section><section id="further-reading-and-exploration" class="level1"><h1>Further Reading and Exploration</h1>
+<section id="publishing-your-shiny-app-with-shinyapps.io" class="level2"><h2 class="anchored" data-anchor-id="publishing-your-shiny-app-with-shinyapps.io">Publishing Your Shiny App with shinyapps.io</h2>
+<p>Up to this point, we have been running our Shiny apps on our own computer. This is a great way to build and test an app, but it limits who can use it. If you want a supervisor, colleague, community partner, or classmate to interact with your dashboard, you need a way to publish it online. This is where <strong>deployment</strong> comes in.</p>
+<p>Deployment means taking an app that works on your computer and making it available somewhere else. For Shiny apps, one of the easiest places to publish is <a href="https://www.shinyapps.io/">shinyapps.io</a>, which is a hosting service from Posit. Once your app is deployed, users can open it in a web browser just like any other website. They do not need R, RStudio, or the code on their own computer.</p>
+<p>This is one of the main reasons Shiny is useful for crime analysts. A static report can show someone what you found, but an interactive dashboard lets them explore the data themselves. For example, a user might want to filter by year, crime type, precinct, neighborhood, or month. Instead of creating dozens of separate plots, you can build one app that lets the user select what they want to see.</p>
+<section id="before-you-publish" class="level3"><h3 class="anchored" data-anchor-id="before-you-publish">Before You Publish</h3>
+<p>Before publishing a Shiny app, make sure the app works correctly on your own computer. Click “Run App” in RStudio and test the main features:</p>
+<ul>
+<li>Do all inputs work?</li>
+<li>Do the plots, tables, or text outputs update correctly?</li>
+<li>Are there any error messages?</li>
+<li>Are the labels and titles clear?</li>
+<li>Would someone else understand what they are looking at?</li>
+</ul>
+<p>This last question is important. When you deploy an app, the user may not be sitting next to you. They may not know what the variables mean, where the data came from, or what the dashboard is designed to show. A good Shiny app should include enough context that someone can use it without needing a full explanation from the analyst.</p>
+</section><section id="create-a-shinyapps.io-account" class="level3"><h3 class="anchored" data-anchor-id="create-a-shinyapps.io-account">Create a shinyapps.io Account</h3>
+<p>To publish to shinyapps.io, you first need an account. Go to: https://www.shinyapps.io/. You can create a free account, which is enough for learning and testing. After creating an account, you will have an account name. This is important because your deployed apps will use this account name in the app URL.</p>
+<p>For example, if your account name were crime-analysis-demo and your app were called traffic-speed-histogram, the app URL would look something like: https://crime-analysis-demo.shinyapps.io/traffic-speed-histogram/. Your exact URL will depend on your own account name and the name you give your app.</p>
+</section><section id="install-the-rsconnect-package" class="level3"><h3 class="anchored" data-anchor-id="install-the-rsconnect-package">Install the rsconnect Package</h3>
+<p>To deploy a Shiny app from RStudio, we use the <code>rsconnect</code> package. This package connects RStudio on your computer to your shinyapps.io account.</p>
+<p>Install it with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span> <span class="st">"rsconnect"</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then load it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://rstudio.github.io/rsconnect/">rsconnect</a></span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You only need to install the package once. After that, you can load it whenever you need to deploy or update an app.</p>
+</section><section id="publishing-from-rstudio" class="level3"><h3 class="anchored" data-anchor-id="publishing-from-rstudio">Publishing from RStudio</h3>
+<p>After installing the <code>rsconnect</code> package, the easiest way to publish your app is to use the “Publish” button in RStudio.</p>
+<p>First, open the Shiny app in RStudio and run it locally by clicking “Run App”. Make sure the app works the way you expect. Try changing the inputs, checking the plots, and confirming that nothing produces an error.</p>
+<p>Once the app is working, look for the Publish button in the upper-right corner of the app preview window. Click “Publish”. RStudio will walk you through the process of connecting to your shinyapps.io account. If this is your first time publishing, you may be asked to log in or connect your account. Follow the prompts from RStudio and shinyapps.io.</p>
+<p>When prompted, choose the files that belong to your app. For a simple app, this may just be named <code>app.R</code>. If your app uses a data file, such as <code>phx_crime_clean.rds</code>, make sure that file is included too. The deployed app needs access to everything required to run. If a dataset is only stored somewhere on your computer and is not included with the app, the published version will not work.</p>
+<p>After you confirm the files, RStudio will deploy the app to shinyapps.io. When the process finishes, your app will open in a web browser. You can then copy the URL and share it with others.</p>
+<p><br></p>
+</section></section><section id="further-reading-and-exploration" class="level2"><h2 class="anchored" data-anchor-id="further-reading-and-exploration">Further Reading and Exploration</h2>
 <p>This is only scratching the surface. You can build very elaborate apps, but those are beyond the scope of what we will cover. For example, check out this app designed to teach about <a href="https://shiny.posit.co/r/gallery/education/didacting-modeling/" target="_blank" rel="noopener">linear regression</a>.</p>
 <p>If you are interested in reading up on it, here are some really good FREE books:</p>
 <ul>
@@ -974,7 +1014,7 @@ To illustrate, let’s take a look at a few of these functions.</p>
 </ul>
 <p>There is also an annual conference, <a href="https://www.shinyconf.com/" target="_blank" rel="noopener">ShinyConf</a>, where developers discuss their work. There are also awards for best apps. Here is a gallery of the <a href="https://posit.co/blog/winners-of-the-2024-shiny-contest/" target="_blank" rel="noopener">2024 winners</a>.</p>
 <p><br></p>
-<section id="summary" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="summary">Summary</h2>
+</section><section id="summary" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="summary">Summary</h2>
 <p>In this chapter, you learned how to move from static visualization to dynamic, interactive analysis using Shiny. Rather than producing a single figure that reflects choices made entirely by the analyst, Shiny allows us to give users some control over those choices.</p>
 <p>At the center of a Shiny application are three concepts: the <strong>user interface (UI)</strong>, the <strong>server</strong>, and <strong>reactivity</strong>. The UI determines what the user sees and interacts with, including titles, layouts, input widgets, and locations for outputs. The server contains the instructions that process data and create plots, tables, or text. Reactivity connects these two pieces: when a user changes an input, Shiny automatically reruns the code that depends on that input and updates the appropriate output. Together, these components transform a static analysis into an interactive application. Understanding the connection between <strong>input → server → output</strong> is the foundation for building Shiny applications.</p>
 <p>Most importantly, Shiny allowed us to pull together many of the skills developed throughout this book. In the Phoenix crime example, we began with data that had already been tidied and transformed, used <code>dplyr</code> to organize and summarize crime incidents, used <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> to respond to a user’s selection, and then used <code>ggplot2</code> to visualize the resulting data. The individual tools were not new. What was new was connecting them to a user’s input so that the same data recipe could be rerun automatically as the user explored different questions.</p>
