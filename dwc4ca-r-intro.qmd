@@ -329,10 +329,23 @@ The `install.packages()` function is getting the package contents and installing
 The `library()` function is simply loading the package.
 
 Note that each time you open R, you have to load any packages that you manually loaded using the `install.packages()` function.
-In other words, if we closed R and then reopened it, we would need to type `library( "sna" )` to load the functions in `sna`.
+In other words, if we closed R and then reopened it, we would need to type `library( "dplyr" )` to load the functions in `dplyr`.
 Note that we *do not* have to reinstall the package using `install.packages()`, we just have to load the library.
 
 If you have installed the package, but have not loaded it, R will return an error saying that a particular function is not found.
+
+## RStudio
+
+You may be surprised to discover how little functionality is implemented in the standard R GUI (i.e., graphical user interface).
+The standard R GUI implements only very rudimentary functionality through menus: reading help, managing multiple graphics windows, editing some source and data files, and some other basic functionality.
+There are no menu items, buttons, or palettes for loading data, transforming data, plotting data, or doing any real work with data.
+Commercial applications like SAS, SPSS, and Stata include user interfaces with much more functionality.
+
+This was just the nature of working with R until some awesome human beings created RStudio.
+RStudio is one of several projects to build an easier-to-use GUI for R.
+It is a free, open-source IDE (i.e., integrated development environment) for working with R.
+Unlike the standard R GUI, RStudio tiles windows on the screen and puts different windows in different tabs.
+RStudio can be downloaded from: <http://www.rstudio.com>.
 
 ### Installing tidyverse {.unnumbered}
 
@@ -342,10 +355,19 @@ We will discuss this in later chapters.
 But for now, you can install the `tidyverse` by typing: `install.packages( "tidyverse" )`.
 Now, if you type `library( tidyverse )` it will load the functions and show you which packages it is using.
 
+### RStudio workthrough
+
+Ok, now open RStudio and let's take a look!
+
+Now that you have RStudio up and running, try rerunning some of the code above.
+You will see that R operates within the RStudio environment.
+So, you can do everything in RStudio that we did above in R.
+However, there are more tools available in RStudio.
+
 ### Installing DWVpack {.unnumbered}
 
-Throughout this book, we will use a package called `DWVpack.` This is a package I wrote specifically for this book.
-The package contains datasets and other resources we will use through the book.
+We will also use a package called `DWVpack.` This is a package I wrote specifically for this book and it contains datasets and other resources we will use.
+All the data are openly available, but the `DWVpack` package makes them conveniently available.
 Unlike packages such as `dplyr` and `ggplot2`, `DWVpack` is hosted on GitHub rather than CRAN.
 As a result, we need to take an additional step to install it.
 
@@ -371,28 +393,6 @@ Run: `library( DWVpack )`.
 If the command runs without an error, you are ready to go!
 If you receive an error `saying that there is no package called DWVpack`, return to the installation step and make sure that `remotes::install_github("jacobtnyoung/DWVpack")` completed successfully.
 We will use `DWVpack` throughout the book, so getting it installed now will make it easier to follow along with the examples and exercises in the chapters ahead.
-
-## RStudio
-
-You may be surprised to discover how little functionality is implemented in the standard R GUI (i.e., graphical user interface).
-The standard R GUI implements only very rudimentary functionality through menus: reading help, managing multiple graphics windows, editing some source and data files, and some other basic functionality.
-There are no menu items, buttons, or palettes for loading data, transforming data, plotting data, or doing any real work with data.
-Commercial applications like SAS, SPSS, and Stata include user interfaces with much more functionality.
-
-This was just the nature of working with R until some awesome human beings created RStudio.
-RStudio is one of several projects to build an easier-to-use GUI for R.
-It is a free, open-source IDE (i.e., integrated development environment) for working with R.
-Unlike the standard R GUI, RStudio tiles windows on the screen and puts different windows in different tabs.
-RStudio can be downloaded from: <http://www.rstudio.com>.
-
-### RStudio workthrough
-
-Ok, now open RStudio and let's take a look!
-
-Now that you have RStudio up and running, try rerunning some of the code above.
-You will see that R operates within the RStudio environment.
-So, you can do everything in RStudio that we did above in R.
-However, there are more tools available in RStudio.
 
 <br>
 

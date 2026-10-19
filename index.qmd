@@ -34,11 +34,15 @@ You should expect to engage actively with the material.
 The examples and exercises are drawn from real-world data and reflect the kinds of challenges you will encounter in professional settings.
 The goal is not simply to teach you how to do something, but to help you understand why it matters and when it is appropriate.
 
-Each chapter in this book will contain R code, which is in “code chunks”.
-You will notice a code chunk because the font will change.
-Code chunks will have text that looks `like this`.
-R code chunks can be copied and pasted directly into R and RStudio.
-As you work through the tutorials, follow along in the software by copying and pasting the code and seeing it work on your end.
+### A Note on Formatting
 
-Ultimately, this book is about building your capacity as a thoughtful, ethical, and effective analyst.
+Each chapter in this book will contain R code.
+You will notice a piece of code because the font will change.
+Code will have text that looks `like this`.
+R code can be copied and pasted directly into R and RStudio.
+As you work through the tutorials, I *strongly* encourage you to follow along in the software by copying and pasting the code and seeing it work on your end.
+
+Ultimately, this book is about building your capacity as an analyst.
 If you take one idea from it, let it be this: good analysis is not just about producing results, it is about producing results that others can trust, understand, reproduce, and use.
+
+Let's get cracking!

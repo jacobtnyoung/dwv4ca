@@ -14,7 +14,7 @@ Areas with the most calls get the most attention so resources should be deployed
 Easy peasy right?
 
 However, data are often "wild" in that their format makes it hard to analyze even basic questions.
-Said another way, the format in which data appear often do not make them accessible and require "wrangling".
+Said another way, the format in which data appear often do not make them *accessible* and require "wrangling".
 For example, consider several examples:
 
 - *Time* is not as simple as it appears. Are you analyzing when the call was received, when officers were dispatched, or when the incident actually occurred? Good data repositories will identify these features, but that is not always the case. Time could also appear in a complicated format. What if your date and time for a call looked like this: "01/01/2026 12:02:15 AM". It occurred on January 1st, 2026 at 12:02 AM. There are actually several variables in this data entry. Working with data in this format would require some modification so we could answer our question.
@@ -118,7 +118,7 @@ These dynamic tools are hugely valuable for information transfer and knowing how
 ## Why Open Science Matters {.unnumbered}
 
 Both of the examples discussed above illustrate a central principle: analysis is only as credible as it is transparent.
-Because datasets are increasingly open, more and more people are able to access the same underlying data.
+Because datasets are increasingly open (i.e. *available*), more and more people are able to obtain the same underlying data.
 But without clear, reproducible workflows, they cannot easily understand how conclusions were reached.
 
 By making your data processing explicit, through documentation and reproducible workflows, you allow others to:
@@ -129,7 +129,7 @@ By making your data processing explicit, through documentation and reproducible 
 
 This is particularly important in crime analysis, where findings can influence operational decisions, public policy, and community trust.
 
-Summary {.unnumbered}
+## Summary {.unnumbered}
 
 Crime analysts rarely encounter data that are ready for analysis.
 Whether working with 911 calls, use-of-force incidents, or other administrative data, turning raw records into meaningful information requires careful decisions about how data are cleaned, organized, interpreted, and communicated.
