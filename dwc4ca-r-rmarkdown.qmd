@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 ```
 
-# Creating Data-Driven Documents using RMarkdown {.unnumbered}
+# Creating Data-Driven Documents using RMarkdown
 
 In this chapter, you will be introduced to RMarkdown using RStudio.
 Learning RMarkdown is essential for crime analysts because it allows you to create dynamic, data-driven documents that seamlessly integrate narrative text, statistical analysis, and data visualizations.

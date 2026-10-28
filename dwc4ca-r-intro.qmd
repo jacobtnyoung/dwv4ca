@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 ```
 
-# Getting Started with R {.unnumbered}
+# Getting Started with R
 
 In this chapter, you will be introduced to the programming language R.
 The chapter (and this book) is designed for those who have no experience with R.
@@ -347,7 +347,7 @@ It is a free, open-source IDE (i.e., integrated development environment) for wor
 Unlike the standard R GUI, RStudio tiles windows on the screen and puts different windows in different tabs.
 RStudio can be downloaded from: <http://www.rstudio.com>.
 
-### Installing tidyverse {.unnumbered}
+### Installing tidyverse
 
 Throughout this book we will use a package called `tidyverse`.
 This is actually a set of packages that are used for getting data "tidy".
@@ -364,7 +364,7 @@ You will see that R operates within the RStudio environment.
 So, you can do everything in RStudio that we did above in R.
 However, there are more tools available in RStudio.
 
-### Installing DWVpack {.unnumbered}
+### Installing DWVpack
 
 We will also use a package called `DWVpack.` This is a package I wrote specifically for this book and it contains datasets and other resources we will use.
 All the data are openly available, but the `DWVpack` package makes them conveniently available.
