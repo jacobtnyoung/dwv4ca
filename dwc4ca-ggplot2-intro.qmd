@@ -18,9 +18,9 @@ library( patchwork ) # for multiple panels
 
 ```
 
-# Data Visualization with `ggplot2` {.unnumbered}
+# Data Visualization with `ggplot2` 
 
-In the prior chapters we have worked on obtaining an open-source data object, tidying it, and constructing variables.
+In the prior chapters we have worked on obtaining an open-source data object and tidying it.
 Now, we want to use those data to visualize the information.
 Data visualization transforms raw numbers into meaningful visual patterns that humans can interpret quickly.
 
@@ -65,7 +65,7 @@ For example, a line graph would quickly reveal:
 - seasonal patterns
 - long-term trends
 
-You *can* see these if you look through the table, but the visualization of the data makes them **easier** to see:
+You *can* see these if you look through the table, but the visualization of the data makes them *easier* to see:
 
 ```{r, echo=FALSE}
 
@@ -91,7 +91,7 @@ ggplot( data = crimes,
 
 ```
 
-Visualization improves comprehension by allowing analysts to identify relationships and patterns that may not be obvious in raw numerical tables alone.
+Though a simple illustration, it helps show that visualization improves comprehension by allowing analysts to identify relationships and patterns that may not be obvious in raw numerical tables alone.
 
 ## Principles of Effective Visualization
 
@@ -124,7 +124,10 @@ Rather than treating each chart type as a completely separate object, the Gramma
 - visual themes
 
 This framework was originally developed by statistician [Leland Wilkinson](https://en.wikipedia.org/wiki/Leland_Wilkinson) and later implemented in R through the `ggplot2` package by [Hadley Wickham](https://hadley.nz/).
-The name `ggplot2` literally means: - gg = Grammar of Graphics - plot2 = second version of the plotting system.
+The name `ggplot2` literally means: 
+
+- gg = Grammar of Graphics 
+- plot2 = second version of the plotting system.
 
 Traditional graphing systems often require users to memorize separate commands for each chart type.
 For example, `plot()` or `hist()`.
@@ -260,9 +263,9 @@ crime_monthly <- tidy_phx_crime  |>
 ```
 
 You might have noticed something new: `.groups = "drop"` in the `summarize()` function.
-*What is that?*
+*What is that?* (we will get there shortly)
 
-Ok we have our object, take a look at the data using `View( crime_monthly )` (it will pop up a separate window pane).
+Now that we have our object, take a look at the data using `View( crime_monthly )` (it will pop up a separate window pane).
 Let's walk through this to see what we are doing:
 
 - `crime_monthly <- tidy_phx_crime` says to create a new object called `crime_monthly` from the `tidy_phx_crime` object. We create a new object since that will be the data just for this plot.
@@ -357,6 +360,7 @@ Ok, let's now build a plot for crimes by year.
 
 Remember the first step: think about how the data should be structured.
 Effectively, we want a data object to plot that has a column for months and number of crimes (like before) but we also want a column for years.
+
 We can use `dplyr` to create the data object.
 Let's start with using the `arrange()` and `group_by()` functions to sort the data by "year" and then "month" and we will group them to create a summary measure that is the count of crimes:
 
@@ -485,7 +489,7 @@ p1 + plot_spacer() + p2
 
 <br>
 
-## Summary {.unnumbered}
+## Summary 
 
 In this chapter, you learned how to move from wrangling data to visualizing it.
 Tables and summary statistics are useful, but visualizations allow us to see patterns that may otherwise be difficult to identify.
@@ -494,7 +498,7 @@ Because visualizations can shape how people interpret information, we also need 
 
 We introduced `ggplot2`, a visualization package built around the Grammar of Graphics.
 Rather than thinking of a graph as a single finished object, `ggplot2` allows us to construct visualizations from individual components.
-We begin with a **dataset**, use `aes()` to **map variables to visual properties**, and then add one or more **geoms** that determine how those observations are displayed.
+We begin with a dataset, use `aes()` to map variables to visual properties, and then add one or more geoms that determine how those observations are displayed.
 Additional layers can then be added to modify or improve the visualization.
 Much like the data recipes we developed in previous chapters, this gives us a consistent framework for building increasingly sophisticated plots.
 
@@ -513,12 +517,12 @@ The goal is not simply to make attractive graphs, but to create visualizations t
 
 <br>
 
-## Test Your Knowledge {.unnumbered}
+## Test Your Knowledge 
 
 Before moving on, use the prompts below to test your understanding of the material in this chapter.
 Try to answer each question or write the R code needed to complete the task without looking back at the examples:
 
-- In your own words, explain why **visualization** is useful for crime analysis.
+- In your own words, explain why visualization is useful for crime analysis.
   What kinds of patterns might be easier to identify in a visualization than in a table?
 
 - What are the three key components of a `ggplot2` visualization introduced in this chapter?
@@ -533,8 +537,8 @@ ggplot(
 )
 ```
 
-- Add a layer to the previous code that displays each observation as a **point**.
-  Then add a second layer that connects those observations with a **line**.
+- Add a layer to the previous code that displays each observation as a point.
+  Then add a second layer that connects those observations with a line.
 
 - In your own words, explain what `aes()` does.
   In the following code, identify which variables are mapped to the x-axis and y-axis:
