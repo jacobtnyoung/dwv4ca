@@ -19,7 +19,7 @@ library( plotly )
 
 ```
 
-# Advanced `ggplot2` and Storytelling {.unnumbered}
+# Advanced `ggplot2` and Storytelling
 
 In the previous chapter, we learned the foundations of `ggplot2` and how to create clear, effective graphics using the three key components of a `ggplot()`: layers, aesthetics, and geometries.
 We focused on building individual visualizations that accurately represent data.
@@ -302,7 +302,11 @@ Since we are building a new plot, we need a new `ggplot()` object:
 crime_type_plot <- 
   ggplot( 
     data = crime_type_monthly, 
-    mapping = aes( x = month, y = crimes, group = crime_type_clean, color = factor( crime_type_clean ) ) ) +
+    mapping = aes( 
+      x = month, y = crimes, 
+      group = crime_type_clean, 
+      color = factor( crime_type_clean ) 
+      ) ) +
   geom_point()
 
 crime_type_plot
@@ -332,7 +336,7 @@ Each of these is going to tell us something different so let's take a look at ea
 We want to plot monthly counts for each type of crime, then have a separate plot for each year.
 That plot will tell us which crimes are most (least) prevalent across years.
 
-We can use `facet_wrap()` to create a separate plot (or **facet**) for *each* year.
+We can use `facet_wrap()` to create a separate plot (or facet) for *each* year.
 All we do is add the function with the faceting variable to the plot:
 
 ```{r, fig.height = 8}
@@ -411,14 +415,17 @@ We will see below how to address this issue, but now let's look at presenting th
 What if we were interested in yearly differences for each type of crime.
 We want to plot monthly counts for each year (as we did in the prior chapter), then have a separate plot for each type of crime.
 
-We can use `facet_wrap()` to create a separate plot (or **facet**) for each type of crime.
+We can use `facet_wrap()` to create a separate plot (or facet) for each type of crime.
 All we do is add "crime_type_clean" to the faceting function and make "year" our grouping variable:
 
 ```{r}
 
 crime_type_plot2 <- ggplot( 
   data = crime_type_monthly, 
-  mapping = aes( x = month, y = crimes, group = year, color = factor( year ) ) )
+  mapping = aes( 
+    x = month, y = crimes, 
+    group = year, color = factor( year ) 
+    ) )
 
 crime_type_plot2 +
   geom_point() +
@@ -456,7 +463,7 @@ What a difference, right!?!
 It is important to note that free scales improve visibility within panels, but they *reduce* direct comparability between panels.
 For example, compare the panel for **Arson** with the panel for **Drugs**.
 The scale for the latter is nearly 10x greater.
-This means that we can't just compare across (and we should alert the reader of this issue as well to prevent misinterpretation).
+This means that we can't just compare across plots (and we should alert the reader of this issue as well to prevent misinterpretation).
 
 This creates an important visualization tradeoff: fixed scales support comparison, but free scales support detail visibility.
 The choice depends on the goal of the visualization, but it is important to keep in mind when you are creating visualizations (AND when you are reviewing visualizations created by others!)
@@ -488,7 +495,7 @@ Combining plots allows us to organize information more clearly, guide readers th
 A collection of charts can answer several connected questions simultaneously.
 Combining plots helps readers move through the analysis more naturally.
 
-Several R packages support plot composition, but we will focus exclusively on `patchwork` because it uses simple and intuitive syntax and compatibility with `ggplot2`.
+Several R packages support plot composition, but we will focus exclusively on `patchwork` because it uses simple and intuitive syntax and for its compatibility with `ggplot2`.
 
 ### The `patchwork` package
 
@@ -558,7 +565,7 @@ type_crimes_plot
 
 ```
 
-Now we can put them together by using the `|` operator:
+Now we can put them side-by-side by using the `|` operator:
 
 ```{r, fig.height=8}
 
@@ -615,7 +622,7 @@ A strong visualization helps answer questions such as:
 
 We have already built some useful visualizations, now we want to add a few more aspects to the plots to "tell the story".
 
-One useful tool for doing this is annotation.
+One useful tool for doing this is **annotation**.
 `ggplot2` includes several useful annotation functions such as `annotate()`, `geom_text()`, `geom_label()`, `geom_vline()`, `geom_hline()`, `geom_segment()`.
 
 Let's take a look, again, at the monthly plot of crimes and think about where we might want to annotate for the reader:
@@ -772,7 +779,7 @@ annotate(
 ```
 
 As you can see, much of the process is a back-and-forth between what we want to show, what we want to draw attention to, and so on.
-While identifying these features *for* the reader, there are some nice tools for allowing the reader to do their own investigating.
+While we have mainly been identifying these features *for* the reader, there are some nice tools for allowing the reader to do their own investigating.
 
 ### Interactive storytelling
 
@@ -805,18 +812,18 @@ So, you can see how we get the plot layout set up using `ggplot2` functions and 
 
 <br>
 
-## Summary {.unnumbered}
+## Summary
 
 In the previous chapter, we covered the basic grammar of `ggplot2`.
 In this chapter, we extended that foundation by focusing on how visualizations can be refined and organized to communicate a story.
 Creating an accurate graph is important, but effective crime analysis also requires thinking carefully about what the reader should notice and how the design of a visualization can help them understand the patterns in the data.
 
-We began by using **themes and scales** to improve the appearance and readability of our plots.
+We began by using themes and scales to improve the appearance and readability of our plots.
 Themes control the non-data elements of a visualization, while scales determine how data values are translated into visual properties such as axes, labels, and colors.
 Functions such as `theme_minimal()`, `theme()`, and the various `scale_...()` functions allow us to reduce unnecessary clutter to improve readability and direct attention toward the information that matters.
 These choices should always serve the analytical purpose of the visualization rather than simply make a graph look more interesting.
 
-We then introduced **faceting** as a way to compare groups without placing everything into a single crowded visualization.
+We then introduced faceting as a way to compare groups without placing everything into a single crowded visualization.
 Using `facet_wrap()`, we created coordinated panels that allowed us to examine crime patterns across years and crime types.
 We also explored the choice between fixed and free scales.
 *Fixed* scales make comparisons across panels easier, while *free* scales can reveal variation that would otherwise be difficult to see.
@@ -835,11 +842,11 @@ The central lesson of this chapter is that effective visualization requires more
 Themes, scales, facets, layouts, annotations, and interactive features all influence what a reader notices and how they interpret the information presented to them.
 As a crime analyst, your goal is therefore not simply to create polished visualizations, but to make intentional choices that help transform data into a meaningful story.
 
-## Test Your Knowledge {.unnumbered}
+## Test Your Knowledge
 
 - In your own words, explain the difference between *creating* a visualization and using a visualization to *tell a story*.
 
-- Explain the difference between **themes** and **scales** in `ggplot2`.
+- Explain the difference between themes\*\* and scales in `ggplot2`.
   What parts of a visualization does each control?
   Give an example of a function that could be used to modify each.
 
@@ -848,7 +855,7 @@ As a crime analyst, your goal is therefore not simply to create polished visuali
   How do these changes affect the readability of the visualization?
 
 - Suppose one crime type occurs thousands of times per month while another occurs fewer than 20 times per month.
-  Would you use **fixed scales** or **free scales** to compare their monthly patterns?
+  Would you use fixed scales or free scales to compare their monthly patterns?
   Explain your choice and identify an important limitation that a reader should understand when interpreting the visualization.
 
 - Choose an important pattern in `crime_plot` and use `annotate()` to draw the reader's attention to it.
