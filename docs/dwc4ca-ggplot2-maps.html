@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Jacob T.N. Young">
 <title>Maps and ggplot2 – Data Wrangling &amp; Visualization for Crime Analysts</title>
@@ -10,10 +10,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -74,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-70606838c043939020f7d83e81782c39.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-bb70f3890ce631548f457652de1e04e2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -150,49 +153,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction to Data Wrangling and Visualization</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling and Visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Getting Started with R</span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Getting Started with R</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-rmarkdown.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Creating Data-Driven Documents using RMarkdown</span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-dplyr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Wrangling with <code>dplyr</code></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-tidy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Tidy Data</span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tidy Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-transform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Transformation</span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data Transformation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Visualization with <code>ggplot2</code></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Data Visualization with <code>ggplot2</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-advanced.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Advanced <code>ggplot2</code> and Storytelling</span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -204,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-shiny-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dynamic Visualization using Shiny</span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -376,15 +379,17 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |==                                                                    |   3%
   |                                                                            
+  |==                                                                    |   4%
+  |                                                                            
   |===                                                                   |   4%
+  |                                                                            
+  |===                                                                   |   5%
   |                                                                            
   |====                                                                  |   5%
   |                                                                            
   |====                                                                  |   6%
   |                                                                            
   |=====                                                                 |   7%
-  |                                                                            
-  |=====                                                                 |   8%
   |                                                                            
   |======                                                                |   8%
   |                                                                            
@@ -394,7 +399,7 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |=======                                                               |  10%
   |                                                                            
-  |=======                                                               |  11%
+  |========                                                              |  11%
   |                                                                            
   |========                                                              |  12%
   |                                                                            
@@ -405,8 +410,6 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |==========                                                            |  14%
   |                                                                            
   |==========                                                            |  15%
-  |                                                                            
-  |===========                                                           |  15%
   |                                                                            
   |===========                                                           |  16%
   |                                                                            
@@ -448,11 +451,15 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |======================                                                |  32%
   |                                                                            
+  |=======================                                               |  32%
+  |                                                                            
   |=======================                                               |  33%
   |                                                                            
   |========================                                              |  34%
   |                                                                            
   |========================                                              |  35%
+  |                                                                            
+  |=========================                                             |  35%
   |                                                                            
   |=========================                                             |  36%
   |                                                                            
@@ -464,13 +471,21 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |===========================                                           |  39%
   |                                                                            
+  |============================                                          |  39%
+  |                                                                            
   |============================                                          |  40%
+  |                                                                            
+  |============================                                          |  41%
   |                                                                            
   |=============================                                         |  41%
   |                                                                            
   |=============================                                         |  42%
   |                                                                            
+  |==============================                                        |  42%
+  |                                                                            
   |==============================                                        |  43%
+  |                                                                            
+  |==============================                                        |  44%
   |                                                                            
   |===============================                                       |  44%
   |                                                                            
@@ -479,6 +494,8 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |================================                                      |  45%
   |                                                                            
   |================================                                      |  46%
+  |                                                                            
+  |=================================                                     |  46%
   |                                                                            
   |=================================                                     |  47%
   |                                                                            
@@ -492,8 +509,6 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |===================================                                   |  50%
   |                                                                            
-  |===================================                                   |  51%
-  |                                                                            
   |====================================                                  |  51%
   |                                                                            
   |====================================                                  |  52%
@@ -501,8 +516,6 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |=====================================                                 |  52%
   |                                                                            
   |=====================================                                 |  53%
-  |                                                                            
-  |=====================================                                 |  54%
   |                                                                            
   |======================================                                |  54%
   |                                                                            
@@ -512,11 +525,7 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |=======================================                               |  56%
   |                                                                            
-  |========================================                              |  56%
-  |                                                                            
   |========================================                              |  57%
-  |                                                                            
-  |========================================                              |  58%
   |                                                                            
   |=========================================                             |  58%
   |                                                                            
@@ -528,13 +537,9 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |===========================================                           |  62%
   |                                                                            
-  |============================================                          |  62%
-  |                                                                            
   |============================================                          |  63%
   |                                                                            
   |=============================================                         |  64%
-  |                                                                            
-  |=============================================                         |  65%
   |                                                                            
   |==============================================                        |  65%
   |                                                                            
@@ -564,8 +569,6 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |======================================================                |  77%
   |                                                                            
-  |======================================================                |  78%
-  |                                                                            
   |=======================================================               |  78%
   |                                                                            
   |=======================================================               |  79%
@@ -576,27 +579,37 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |=========================================================             |  82%
   |                                                                            
-  |==========================================================            |  82%
-  |                                                                            
   |==========================================================            |  83%
+  |                                                                            
+  |==========================================================            |  84%
   |                                                                            
   |===========================================================           |  84%
   |                                                                            
   |===========================================================           |  85%
   |                                                                            
+  |============================================================          |  85%
+  |                                                                            
   |============================================================          |  86%
   |                                                                            
+  |=============================================================         |  86%
+  |                                                                            
   |=============================================================         |  87%
+  |                                                                            
+  |=============================================================         |  88%
   |                                                                            
   |==============================================================        |  88%
   |                                                                            
   |==============================================================        |  89%
+  |                                                                            
+  |===============================================================       |  89%
   |                                                                            
   |===============================================================       |  90%
   |                                                                            
   |================================================================      |  91%
   |                                                                            
   |================================================================      |  92%
+  |                                                                            
+  |=================================================================     |  92%
   |                                                                            
   |=================================================================     |  93%
   |                                                                            
@@ -609,8 +622,6 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |===================================================================   |  96%
   |                                                                            
   |====================================================================  |  97%
-  |                                                                            
-  |====================================================================  |  98%
   |                                                                            
   |===================================================================== |  98%
   |                                                                            
@@ -1331,12 +1342,12 @@ First 5 geometries:</code></pre>
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./dwc4ca-ggplot2-advanced.html" class="pagination-link" aria-label="Advanced `ggplot2` and Storytelling">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Advanced <code>ggplot2</code> and Storytelling</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./dwc4ca-shiny-intro.html" class="pagination-link" aria-label="Dynamic Visualization using Shiny">
-        <span class="nav-page-text">Dynamic Visualization using Shiny</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

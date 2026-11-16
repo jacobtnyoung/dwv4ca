@@ -2,18 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Jacob T.N. Young">
-<title>Getting Started with R – Data Wrangling &amp; Visualization for Crime Analysts</title>
+<title>2&nbsp; Getting Started with R – Data Wrangling &amp; Visualization for Crime Analysts</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -74,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-70606838c043939020f7d83e81782c39.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap-bb70f3890ce631548f457652de1e04e2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -112,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-r-intro.html">Getting Started with R</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-r-intro.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Getting Started with R</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -150,49 +153,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Introduction to Data Wrangling and Visualization</span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling and Visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Getting Started with R</span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Getting Started with R</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-rmarkdown.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Creating Data-Driven Documents using RMarkdown</span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-dplyr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Wrangling with <code>dplyr</code></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-tidy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Tidy Data</span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tidy Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-transform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Transformation</span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data Transformation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Visualization with <code>ggplot2</code></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Data Visualization with <code>ggplot2</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-advanced.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Advanced <code>ggplot2</code> and Storytelling</span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -204,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-shiny-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Dynamic Visualization using Shiny</span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -221,33 +224,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#what-is-r" id="toc-what-is-r" class="nav-link active" data-scroll-target="#what-is-r">What is R</a></li>
-  <li><a href="#installing-and-starting" id="toc-installing-and-starting" class="nav-link" data-scroll-target="#installing-and-starting">Installing and Starting</a></li>
-  <li><a href="#objects-in-r" id="toc-objects-in-r" class="nav-link" data-scroll-target="#objects-in-r">Objects in R</a></li>
-  <li><a href="#functions-in-r" id="toc-functions-in-r" class="nav-link" data-scroll-target="#functions-in-r">Functions in R</a></li>
-  <li><a href="#referencing-and-indexing-objects-in-r" id="toc-referencing-and-indexing-objects-in-r" class="nav-link" data-scroll-target="#referencing-and-indexing-objects-in-r">Referencing and Indexing Objects in R</a></li>
-  <li><a href="#types-of-objects-classes-in-r" id="toc-types-of-objects-classes-in-r" class="nav-link" data-scroll-target="#types-of-objects-classes-in-r">Types of objects (“classes”) in R</a></li>
-  <li><a href="#matrices-in-r" id="toc-matrices-in-r" class="nav-link" data-scroll-target="#matrices-in-r">Matrices in R</a></li>
-  <li><a href="#one-of-the-most-important-functions-in-r-help" id="toc-one-of-the-most-important-functions-in-r-help" class="nav-link" data-scroll-target="#one-of-the-most-important-functions-in-r-help">One of the most important functions in R: <code>help()</code></a></li>
+<li><a href="#what-is-r" id="toc-what-is-r" class="nav-link active" data-scroll-target="#what-is-r"><span class="header-section-number">2.1</span> What is R</a></li>
+  <li><a href="#installing-and-starting" id="toc-installing-and-starting" class="nav-link" data-scroll-target="#installing-and-starting"><span class="header-section-number">2.2</span> Installing and Starting</a></li>
+  <li><a href="#objects-in-r" id="toc-objects-in-r" class="nav-link" data-scroll-target="#objects-in-r"><span class="header-section-number">2.3</span> Objects in R</a></li>
+  <li><a href="#functions-in-r" id="toc-functions-in-r" class="nav-link" data-scroll-target="#functions-in-r"><span class="header-section-number">2.4</span> Functions in R</a></li>
+  <li><a href="#referencing-and-indexing-objects-in-r" id="toc-referencing-and-indexing-objects-in-r" class="nav-link" data-scroll-target="#referencing-and-indexing-objects-in-r"><span class="header-section-number">2.5</span> Referencing and Indexing Objects in R</a></li>
+  <li><a href="#types-of-objects-classes-in-r" id="toc-types-of-objects-classes-in-r" class="nav-link" data-scroll-target="#types-of-objects-classes-in-r"><span class="header-section-number">2.6</span> Types of objects (“classes”) in R</a></li>
+  <li><a href="#matrices-in-r" id="toc-matrices-in-r" class="nav-link" data-scroll-target="#matrices-in-r"><span class="header-section-number">2.7</span> Matrices in R</a></li>
+  <li><a href="#one-of-the-most-important-functions-in-r-help" id="toc-one-of-the-most-important-functions-in-r-help" class="nav-link" data-scroll-target="#one-of-the-most-important-functions-in-r-help"><span class="header-section-number">2.8</span> One of the most important functions in R: <code>help()</code></a></li>
+  <li><a href="#packages-and-the-install.packages-and-library-functions" id="toc-packages-and-the-install.packages-and-library-functions" class="nav-link" data-scroll-target="#packages-and-the-install.packages-and-library-functions"><span class="header-section-number">2.9</span> Packages and the <code>install.packages()</code> and <code>library()</code> Functions</a></li>
   <li>
-<a href="#packages-and-the-install.packages-and-library-functions" id="toc-packages-and-the-install.packages-and-library-functions" class="nav-link" data-scroll-target="#packages-and-the-install.packages-and-library-functions">Packages and the <code>install.packages()</code> and <code>library()</code> Functions</a>
+<a href="#rstudio" id="toc-rstudio" class="nav-link" data-scroll-target="#rstudio"><span class="header-section-number">2.10</span> RStudio</a>
   <ul class="collapse">
-<li><a href="#installing-tidyverse" id="toc-installing-tidyverse" class="nav-link" data-scroll-target="#installing-tidyverse">Installing tidyverse</a></li>
-  <li><a href="#installing-dwvpack" id="toc-installing-dwvpack" class="nav-link" data-scroll-target="#installing-dwvpack">Installing DWVpack</a></li>
+<li><a href="#installing-tidyverse" id="toc-installing-tidyverse" class="nav-link" data-scroll-target="#installing-tidyverse"><span class="header-section-number">2.10.1</span> Installing tidyverse</a></li>
+  <li><a href="#rstudio-workthrough" id="toc-rstudio-workthrough" class="nav-link" data-scroll-target="#rstudio-workthrough"><span class="header-section-number">2.10.2</span> RStudio workthrough</a></li>
+  <li><a href="#installing-dwvpack" id="toc-installing-dwvpack" class="nav-link" data-scroll-target="#installing-dwvpack"><span class="header-section-number">2.10.3</span> Installing DWVpack</a></li>
   </ul>
 </li>
-  <li>
-<a href="#rstudio" id="toc-rstudio" class="nav-link" data-scroll-target="#rstudio">RStudio</a>
-  <ul class="collapse">
-<li><a href="#rstudio-workthrough" id="toc-rstudio-workthrough" class="nav-link" data-scroll-target="#rstudio-workthrough">RStudio workthrough</a></li>
-  </ul>
-</li>
-  <li><a href="#test-your-knowledge-exercises" id="toc-test-your-knowledge-exercises" class="nav-link" data-scroll-target="#test-your-knowledge-exercises">Test Your Knowledge Exercises</a></li>
+  <li><a href="#test-your-knowledge-exercises" id="toc-test-your-knowledge-exercises" class="nav-link" data-scroll-target="#test-your-knowledge-exercises"><span class="header-section-number">2.11</span> Test Your Knowledge Exercises</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-r-intro.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">Getting Started with R</h1>
+<h1 class="title">
+<span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Getting Started with R</span>
+</h1>
 </div>
 
 
@@ -264,14 +265,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><p>In this chapter, you will be introduced to the programming language R. The chapter (and this book) is designed for those who have no experience with R. We begin with what R is, how you install it, and work through how to navigate the environment. We will also cover RStudio. Even if you have used R and/or RStudio before (awesome!), I would encourage you to review this chapter as a refresher.</p>
 <p>As a reminder, this chapter (and the chapters throughout this book) will contain R code, which is in “code chunks”. You will notice a code chunk because the font will change. Code chunks will have text that <code>looks like this</code>. There is also regular text. The R code chunks can be copied and pasted directly into R and RStudio. As you work through the chapters, follow along in the software by copying and pasting the <code>code</code> and seeing it work on your end.</p>
 <p><br></p>
-<section id="what-is-r" class="level2"><h2 class="anchored" data-anchor-id="what-is-r">What is R</h2>
+<section id="what-is-r" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="what-is-r">
+<span class="header-section-number">2.1</span> What is R</h2>
 <p>R is a dialect of the <em>S</em> language that was written by John Chambers and others at Bell Labs in the 70s. In the 90s, R was developed and made available to the public with the GNU General Public License. Importantly, R is <em>free</em>, meaning that you don’t have to pay for it (duh), but it is also <strong>open source</strong>, meaning that you have the freedom to use and modify it.</p>
 <p>Think of R as an operating system. Just as Windows allows you to turn on your computer, open a web browser, move files around, and write a paper using MS Word, R allows you to install and run packages, perform analyses, and manage files while organizing data for crime analyst projects. Just like Windows would be a very boring piece of software without all of the applications you run while on the computer, R would be a boring language without all of the packages it can run.</p>
-</section><section id="installing-and-starting" class="level2"><h2 class="anchored" data-anchor-id="installing-and-starting">Installing and Starting</h2>
+</section><section id="installing-and-starting" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="installing-and-starting">
+<span class="header-section-number">2.2</span> Installing and Starting</h2>
 <p>Go to <a href="http://cran.r-project.org" class="uri">http://cran.r-project.org</a>. Find the “Download R for…” link that is appropriate for your operating system.</p>
 <p>When R starts, it loads some basic info and provides you with a prompt: <code>&gt;</code></p>
 <p>This prompt is the fundamental entry point for communicating with R. We type expressions at the prompt, R evaluates these expressions, and returns output.</p>
-</section><section id="objects-in-r" class="level2"><h2 class="anchored" data-anchor-id="objects-in-r">Objects in R</h2>
+</section><section id="objects-in-r" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="objects-in-r">
+<span class="header-section-number">2.3</span> Objects in R</h2>
 <p>R is a programming language. That means it allows us to give instructions to our computer to do stuff. We will see that there is a lot of “stuff” we can do. But the basic orientation to R is understanding <strong>objects</strong>.</p>
 <p>What is an <em>object</em>? Without getting too philosophical, an <em>object</em> is something we create in the R environment. To help, consider this analogy: think of an R session as a box. As we give different instructions to R, we are creating objects and putting them into the box. We are also telling R to do different things to these objects. This may seem unusual at first, as it is quite different from data analysis programs like SPSS or Stata, which are spreadsheet-oriented.</p>
 <p>We create objects by using the assignment operator: <code>&lt;-</code></p>
@@ -284,13 +288,15 @@ These two examples are treated the same in R:<br><code>x &lt;- 2</code><br><code
 <p>To have R ignore text, use the <code>#</code> sign to make comments.<br>
 For example: <code>x &lt;- 2 # this assigns the value 2 to object x.</code></p>
 <p>In R, there are no carriage returns (e.g., Stata uses <code>///</code> in code). Sorry :(</p>
-</section><section id="functions-in-r" class="level2"><h2 class="anchored" data-anchor-id="functions-in-r">Functions in R</h2>
+</section><section id="functions-in-r" class="level2" data-number="2.4"><h2 data-number="2.4" class="anchored" data-anchor-id="functions-in-r">
+<span class="header-section-number">2.4</span> Functions in R</h2>
 <p>A major strength of R is the ability to manipulate objects using functions. A function takes an argument (aka input) and returns some value (aka output).</p>
 <p>For example, suppose we wanted to create a list of numbers, called a <em>vector</em>. We want to create an object that is defined by a list of numbers. In R, there is a preprogrammed function <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>, which combines or <em>concatenates</em> values to create a single object. We can create an object <code>x</code>, that is a vector of 1, 2, 3, 4, and 5 using: <code>x &lt;- c(1,2,3,4,5)</code>.</p>
 <p>This reads: the object x is assigned the values 1, 2, 3, 4, and 5. The function is “<code>c</code>” and the argument is <code>1,2,3,4,5</code>.</p>
 <p>The number of values (aka elements) a vector contains is referred to as the “length”. We can use the <code><a href="https://rdrr.io/r/base/length.html">length()</a></code> function to return this information for us. For example, <code>length(x)</code> shows that the vector <code>x</code> has 5 values or elements.</p>
 <p><em>Reminder</em>: R is a language, so part of the learning curve is getting familiar with the names of functions.</p>
-</section><section id="referencing-and-indexing-objects-in-r" class="level2"><h2 class="anchored" data-anchor-id="referencing-and-indexing-objects-in-r">Referencing and Indexing Objects in R</h2>
+</section><section id="referencing-and-indexing-objects-in-r" class="level2" data-number="2.5"><h2 data-number="2.5" class="anchored" data-anchor-id="referencing-and-indexing-objects-in-r">
+<span class="header-section-number">2.5</span> Referencing and Indexing Objects in R</h2>
 <p>In R, specific elements in an object are referenced by using brackets (i.e., <code>[</code> or <code>]</code>).</p>
 <p>For example, let’s create a vector and work with it:</p>
 <div class="cell" data-layout-align="center">
@@ -307,7 +313,8 @@ For example: <code>x &lt;- 2 # this assigns the value 2 to object x.</code></p>
 <span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span> <span class="co"># change the first through fifth elements in x to 0.  </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Using brackets to identify particular elements, called <em>indexing</em>, is VERY useful. By using indexing, we can create objects from other objects, or reference particular locations. The utility of this will be more obvious later.</p>
-</section><section id="types-of-objects-classes-in-r" class="level2"><h2 class="anchored" data-anchor-id="types-of-objects-classes-in-r">Types of objects (“classes”) in R</h2>
+</section><section id="types-of-objects-classes-in-r" class="level2" data-number="2.6"><h2 data-number="2.6" class="anchored" data-anchor-id="types-of-objects-classes-in-r">
+<span class="header-section-number">2.6</span> Types of objects (“classes”) in R</h2>
 <p>Objects in R can be of different types or <strong>classes</strong>. There are four:</p>
 <ul>
 <li>numeric, a number (e.g., <code>1, 2</code>)</li>
@@ -353,7 +360,8 @@ For example: <code>x &lt;- 2 # this assigns the value 2 to object x.</code></p>
 <span><span class="va">y</span><span class="op">[</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span> <span class="va">y</span> <span class="op">)</span><span class="op">]</span> <span class="co">#subset meeting condition.</span></span>
 <span><span class="va">y</span><span class="op">[</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span> <span class="va">y</span> <span class="op">)</span><span class="op">]</span> <span class="co"># subset meeting a different condition.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="matrices-in-r" class="level2"><h2 class="anchored" data-anchor-id="matrices-in-r">Matrices in R</h2>
+</section><section id="matrices-in-r" class="level2" data-number="2.7"><h2 data-number="2.7" class="anchored" data-anchor-id="matrices-in-r">
+<span class="header-section-number">2.7</span> Matrices in R</h2>
 <p>In addition to vectors, we can create a matrix, which is a 2-dimensional representation of data. A matrix has dimensions <em>r X c</em> which means rows by columns. The number of rows and columns a matrix has is referred to as its “order” or “dimensionality”. This information is returned by using the <code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code> function. Matrices can be created by combining existing vectors using the <code><a href="https://rdrr.io/r/base/cbind.html">rbind()</a></code> and <code><a href="https://rdrr.io/r/base/cbind.html">cbind()</a></code> functions. The <code><a href="https://rdrr.io/r/base/cbind.html">rbind()</a></code> function means “row bind” and binds together vectors by rows. Think of it as stacking vectors on each other. The <code><a href="https://rdrr.io/r/base/cbind.html">cbind()</a></code> function means “column bind” and binds together vectors by rows. Think of it as placing them side by side. Let’s take a look:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">6</span>,<span class="fl">5</span>,<span class="fl">4</span>,<span class="fl">3</span>,<span class="fl">2</span> <span class="op">)</span></span>
@@ -388,7 +396,8 @@ Let’s see some examples:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span> <span class="op">)</span>,nrow<span class="op">=</span><span class="fl">3</span>,ncol<span class="op">=</span><span class="fl">3</span> <span class="op">)</span></span>
 <span><span class="va">m3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="one-of-the-most-important-functions-in-r-help" class="level2"><h2 class="anchored" data-anchor-id="one-of-the-most-important-functions-in-r-help">One of the most important functions in R: <code>help()</code>
+</section><section id="one-of-the-most-important-functions-in-r-help" class="level2" data-number="2.8"><h2 data-number="2.8" class="anchored" data-anchor-id="one-of-the-most-important-functions-in-r-help">
+<span class="header-section-number">2.8</span> One of the most important functions in R: <code>help()</code>
 </h2>
 <p>A useful feature of R is an extensive documentation of each of the functions. To access the main R help archive online, type: <code><a href="https://rdrr.io/r/utils/help.start.html">help.start()</a></code><br>
 The <code><a href="https://rdrr.io/r/utils/help.html">help()</a></code> function, or a simple <code>?</code>, can be used to get help about a specific function. For example: <code><a href="https://rdrr.io/r/base/c.html">help(c)</a></code> or <code><a href="https://rdrr.io/r/base/c.html">?c</a></code> returns the help page for the <code><a href="https://rdrr.io/r/base/c.html">c()</a></code> function.</p>
@@ -405,33 +414,40 @@ We could also have used the <code>length=</code> argument: <code>seq( from=1, to
 <p>Since R knows that <code>from=</code> or <code>to=</code> or <code>by=</code> or <code>length=</code> are arguments, we do not have to type them in the syntax: <code>seq( 1, 9, 2 )</code> is identical to <code>seq( from=1, to=9, by=2 )</code> (as far as R is concerned).</p>
 <p>For the help function to work, you need to know the exact name of the function. If you don’t know this, but have a fuzzy idea of what it might be or what you want the function to do, you can use the <code>help.search("</code>fuzzy notion<code>")</code> function (or just put <code>??</code> in front of the word).</p>
 <p>For example, say you want to calculate the standard deviation for an object, but do not know the function name. Try: <code>help.search( "standarddeviation" )</code> or <code>??standarddeviation</code> (note the absence of a space). This returns the list of help topics that contain the phrase. We see that the standard deviation function is called <code><a href="https://rdrr.io/r/stats/sd.html">sd()</a></code>.</p>
-</section><section id="packages-and-the-install.packages-and-library-functions" class="level2"><h2 class="anchored" data-anchor-id="packages-and-the-install.packages-and-library-functions">Packages and the <code>install.packages()</code> and <code>library()</code> Functions</h2>
+</section><section id="packages-and-the-install.packages-and-library-functions" class="level2" data-number="2.9"><h2 data-number="2.9" class="anchored" data-anchor-id="packages-and-the-install.packages-and-library-functions">
+<span class="header-section-number">2.9</span> Packages and the <code>install.packages()</code> and <code>library()</code> Functions</h2>
 <p>R has MANY preprogrammed functions that are automatically loaded when you open the program. Functions are stored in “packages”. Although there are many preprogrammed functions, there are even MORE functions that you can install on your own. A package in R is a collection of functions, usually written for a specific purpose.</p>
 <p>We can see the packages available from CRAN at <a href="http://cran.r-project.org">http://cran.r-project.org/</a>. Just click on the “packages” link or go to <a href="https://cran.r-project.org/web/packages/index.html" class="uri">https://cran.r-project.org/web/packages/index.html</a>. There is a WIDE variety of packages available (tens of thousands of packages are available!), this is another reason why R is awesome. If you can think it, someone has probably written a package for it in R (and if not, <em>you</em> can write one and contribute). Isn’t it great!!! What a time to be alive!</p>
 <p>Take a few moments and look through the packages by following this link: <a href="https://cran.r-project.org/web/packages/available_packages_by_name.html">packages by name</a>.</p>
 <p>If there is a particular package you want to add, you simply use the <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function like this: <code>install.packages("</code>package name<code>")</code>.</p>
 <p>After the package is installed on your machine, you do <u>not</u> (I repeat NOT) need to reinstall the package each time you open a new session. Rather, you just need to load the package using the <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> function like this: <code>library("</code>package name<code>")</code>. The <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function is getting the package contents and installing them on your machine. The <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> function is simply loading the package.</p>
-<p>Note that each time you open R, you have to load any packages that you manually loaded using the <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function. In other words, if we closed R and then reopened it, we would need to type <code><a href="https://statnet.org">library( "sna" )</a></code> to load the functions in <code>sna</code>. Note that we <em>do not</em> have to reinstall the package using <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, we just have to load the library.</p>
+<p>Note that each time you open R, you have to load any packages that you manually loaded using the <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function. In other words, if we closed R and then reopened it, we would need to type <code><a href="https://dplyr.tidyverse.org">library( "dplyr" )</a></code> to load the functions in <code>dplyr</code>. Note that we <em>do not</em> have to reinstall the package using <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, we just have to load the library.</p>
 <p>If you have installed the package, but have not loaded it, R will return an error saying that a particular function is not found.</p>
-<section id="installing-tidyverse" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="installing-tidyverse">Installing tidyverse</h3>
+</section><section id="rstudio" class="level2" data-number="2.10"><h2 data-number="2.10" class="anchored" data-anchor-id="rstudio">
+<span class="header-section-number">2.10</span> RStudio</h2>
+<p>You may be surprised to discover how little functionality is implemented in the standard R GUI (i.e., graphical user interface). The standard R GUI implements only very rudimentary functionality through menus: reading help, managing multiple graphics windows, editing some source and data files, and some other basic functionality. There are no menu items, buttons, or palettes for loading data, transforming data, plotting data, or doing any real work with data. Commercial applications like SAS, SPSS, and Stata include user interfaces with much more functionality.</p>
+<p>This was just the nature of working with R until some awesome human beings created RStudio. RStudio is one of several projects to build an easier-to-use GUI for R. It is a free, open-source IDE (i.e., integrated development environment) for working with R. Unlike the standard R GUI, RStudio tiles windows on the screen and puts different windows in different tabs. RStudio can be downloaded from: <a href="http://www.rstudio.com" class="uri">http://www.rstudio.com</a>.</p>
+<section id="installing-tidyverse" class="level3" data-number="2.10.1"><h3 data-number="2.10.1" class="anchored" data-anchor-id="installing-tidyverse">
+<span class="header-section-number">2.10.1</span> Installing tidyverse</h3>
 <p>Throughout this book we will use a package called <code>tidyverse</code>. This is actually a set of packages that are used for getting data “tidy”. We will discuss this in later chapters. But for now, you can install the <code>tidyverse</code> by typing: <code>install.packages( "tidyverse" )</code>. Now, if you type <code><a href="https://tidyverse.tidyverse.org">library( tidyverse )</a></code> it will load the functions and show you which packages it is using.</p>
-</section><section id="installing-dwvpack" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="installing-dwvpack">Installing DWVpack</h3>
-<p>Throughout this book, we will use a package called <code>DWVpack.</code> This is a package I wrote specifically for this book. The package contains datasets and other resources we will use through the book. Unlike packages such as <code>dplyr</code> and <code>ggplot2</code>, <code>DWVpack</code> is hosted on GitHub rather than CRAN. As a result, we need to take an additional step to install it.</p>
+</section><section id="rstudio-workthrough" class="level3" data-number="2.10.2"><h3 data-number="2.10.2" class="anchored" data-anchor-id="rstudio-workthrough">
+<span class="header-section-number">2.10.2</span> RStudio workthrough</h3>
+<p>Ok, now open RStudio and let’s take a look!</p>
+<p>Now that you have RStudio up and running, try rerunning some of the code above. You will see that R operates within the RStudio environment. So, you can do everything in RStudio that we did above in R. However, there are more tools available in RStudio.</p>
+</section><section id="installing-dwvpack" class="level3" data-number="2.10.3"><h3 data-number="2.10.3" class="anchored" data-anchor-id="installing-dwvpack">
+<span class="header-section-number">2.10.3</span> Installing DWVpack</h3>
+<p>We will also use a package called <code>DWVpack.</code> This is a package I wrote specifically for this book and it contains datasets and other resources we will use. All the data are openly available, but the <code>DWVpack</code> package makes them conveniently available. Unlike packages such as <code>dplyr</code> and <code>ggplot2</code>, <code>DWVpack</code> is hosted on GitHub rather than CRAN. As a result, we need to take an additional step to install it.</p>
 <p>First, install the <code>remotes</code> package. You only need to do this once on your computer: <code>install.packages("remotes")</code>.</p>
 <p>Next, use <code>remotes</code> to install <code>DWVpack</code> directly from GitHub using: <code>remotes::install_github( "jacobtnyoung/DWVpack" )</code>.</p>
 <p>You may see quite a bit of text appear in the Console window while the package is being downloaded and installed. That is normal. You may also be asked whether you want to update other packages. For now, you can select the option to skip package updates.</p>
 <p>Once the installation is complete, load <code>DWVpack</code> using: <code><a href="https://rdrr.io/r/base/library.html">library( DWVpack )</a></code>.</p>
 <p>Remember that installing and loading a package are two different things. You generally install a package only once, but you must load it with <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> each time you start a new R session and want to use it.</p>
-<section id="checking-your-installation" class="level4"><h4 class="anchored" data-anchor-id="checking-your-installation">Checking Your Installation</h4>
+<section id="checking-your-installation" class="level4" data-number="2.10.3.1"><h4 data-number="2.10.3.1" class="anchored" data-anchor-id="checking-your-installation">
+<span class="header-section-number">2.10.3.1</span> Checking Your Installation</h4>
 <p>Let’s make sure everything worked. Run: <code><a href="https://rdrr.io/r/base/library.html">library( DWVpack )</a></code>. If the command runs without an error, you are ready to go! If you receive an error <code>saying that there is no package called DWVpack</code>, return to the installation step and make sure that <code>remotes::install_github("jacobtnyoung/DWVpack")</code> completed successfully. We will use <code>DWVpack</code> throughout the book, so getting it installed now will make it easier to follow along with the examples and exercises in the chapters ahead.</p>
-</section></section></section><section id="rstudio" class="level2"><h2 class="anchored" data-anchor-id="rstudio">RStudio</h2>
-<p>You may be surprised to discover how little functionality is implemented in the standard R GUI (i.e., graphical user interface). The standard R GUI implements only very rudimentary functionality through menus: reading help, managing multiple graphics windows, editing some source and data files, and some other basic functionality. There are no menu items, buttons, or palettes for loading data, transforming data, plotting data, or doing any real work with data. Commercial applications like SAS, SPSS, and Stata include user interfaces with much more functionality.</p>
-<p>This was just the nature of working with R until some awesome human beings created RStudio. RStudio is one of several projects to build an easier-to-use GUI for R. It is a free, open-source IDE (i.e., integrated development environment) for working with R. Unlike the standard R GUI, RStudio tiles windows on the screen and puts different windows in different tabs. RStudio can be downloaded from: <a href="http://www.rstudio.com" class="uri">http://www.rstudio.com</a>.</p>
-<section id="rstudio-workthrough" class="level3"><h3 class="anchored" data-anchor-id="rstudio-workthrough">RStudio workthrough</h3>
-<p>Ok, now open RStudio and let’s take a look!</p>
-<p>Now that you have RStudio up and running, try rerunning some of the code above. You will see that R operates within the RStudio environment. So, you can do everything in RStudio that we did above in R. However, there are more tools available in RStudio.</p>
 <p><br></p>
-</section></section><section id="test-your-knowledge-exercises" class="level2"><h2 class="anchored" data-anchor-id="test-your-knowledge-exercises">Test Your Knowledge Exercises</h2>
+</section></section></section><section id="test-your-knowledge-exercises" class="level2" data-number="2.11"><h2 data-number="2.11" class="anchored" data-anchor-id="test-your-knowledge-exercises">
+<span class="header-section-number">2.11</span> Test Your Knowledge Exercises</h2>
 <ul>
 <li>After installing R, what does the <code>&gt;</code> prompt represent?</li>
 <li>Create an object called <code>a</code> with the value 7.</li>
@@ -863,12 +879,12 @@ We could also have used the <code>length=</code> argument: <code>seq( from=1, to
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./dwc4ca-intro.html" class="pagination-link" aria-label="Introduction to Data Wrangling and Visualization">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introduction to Data Wrangling and Visualization</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling and Visualization</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./dwc4ca-r-rmarkdown.html" class="pagination-link" aria-label="Creating Data-Driven Documents using RMarkdown">
-        <span class="nav-page-text">Creating Data-Driven Documents using RMarkdown</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
