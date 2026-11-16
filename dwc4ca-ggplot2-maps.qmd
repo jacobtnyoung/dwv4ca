@@ -19,7 +19,7 @@ library( tigris )    # to get boundary data
  
 ```
 
-# Maps and `ggplot2` {.unnumbered}
+# Maps and `ggplot2`
 
 One of the most important characteristics of crime and public safety data is that it often contains a geographic component.
 Incidents occur at locations, calls for service happen within neighborhoods, and crime patterns frequently vary across space.
