@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.10.18">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Jacob T.N. Young">
-<title>9&nbsp; Maps and ggplot2 – Data Wrangling &amp; Visualization for Crime Analysts</title>
+<title>8&nbsp; Maps and ggplot2 – Data Wrangling &amp; Visualization for Crime Analysts</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-ggplot2-maps.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-ggplot2-maps.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -153,61 +153,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling and Visualization</span></span></a>
+ <span class="menu-text">Introduction to Data Wrangling and Visualization</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Getting Started with R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started with R</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-rmarkdown.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-dplyr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-tidy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tidy Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tidy Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-transform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data Transformation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Transformation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Data Visualization with <code>ggplot2</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data Visualization with <code>ggplot2</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-advanced.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-maps.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-shiny-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -224,35 +224,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#mapping-as-an-extension-of-data-visualization" id="toc-mapping-as-an-extension-of-data-visualization" class="nav-link active" data-scroll-target="#mapping-as-an-extension-of-data-visualization"><span class="header-section-number">9.1</span> Mapping as an Extension of Data Visualization</a></li>
-  <li><a href="#a-practical-perspective-on-mapping" id="toc-a-practical-perspective-on-mapping" class="nav-link" data-scroll-target="#a-practical-perspective-on-mapping"><span class="header-section-number">9.2</span> A Practical Perspective on Mapping</a></li>
+<li><a href="#mapping-as-an-extension-of-data-visualization" id="toc-mapping-as-an-extension-of-data-visualization" class="nav-link active" data-scroll-target="#mapping-as-an-extension-of-data-visualization"><span class="header-section-number">8.1</span> Mapping as an Extension of Data Visualization</a></li>
+  <li><a href="#a-practical-perspective-on-mapping" id="toc-a-practical-perspective-on-mapping" class="nav-link" data-scroll-target="#a-practical-perspective-on-mapping"><span class="header-section-number">8.2</span> A Practical Perspective on Mapping</a></li>
+  <li><a href="#basic-mapping-workflow-in-ggplot2" id="toc-basic-mapping-workflow-in-ggplot2" class="nav-link" data-scroll-target="#basic-mapping-workflow-in-ggplot2"><span class="header-section-number">8.3</span> Basic Mapping Workflow in <code>ggplot2</code></a></li>
   <li>
-<a href="#basic-mapping-workflow-in-ggplot2" id="toc-basic-mapping-workflow-in-ggplot2" class="nav-link" data-scroll-target="#basic-mapping-workflow-in-ggplot2"><span class="header-section-number">10</span> Basic Mapping Workflow in <code>ggplot2</code></a>
+<a href="#create-a-basic-coordinate-plot" id="toc-create-a-basic-coordinate-plot" class="nav-link" data-scroll-target="#create-a-basic-coordinate-plot"><span class="header-section-number">8.4</span> Create a Basic Coordinate Plot</a>
   <ul class="collapse">
-<li>
-<a href="#create-a-basic-coordinate-plot" id="toc-create-a-basic-coordinate-plot" class="nav-link" data-scroll-target="#create-a-basic-coordinate-plot"><span class="header-section-number">10.1</span> Create a Basic Coordinate Plot</a>
-  <ul class="collapse">
-<li><a href="#adding-geographic-context" id="toc-adding-geographic-context" class="nav-link" data-scroll-target="#adding-geographic-context"><span class="header-section-number">10.1.1</span> Adding Geographic Context</a></li>
+<li><a href="#adding-geographic-context" id="toc-adding-geographic-context" class="nav-link" data-scroll-target="#adding-geographic-context"><span class="header-section-number">8.4.1</span> Adding Geographic Context</a></li>
   </ul>
 </li>
-  <li><a href="#the-tigris-package-and-the-sf-package" id="toc-the-tigris-package-and-the-sf-package" class="nav-link" data-scroll-target="#the-tigris-package-and-the-sf-package"><span class="header-section-number">10.2</span> The <code>tigris</code> Package and the <code>sf</code> Package</a></li>
-  </ul>
-</li>
+  <li><a href="#the-tigris-package-and-the-sf-package" id="toc-the-tigris-package-and-the-sf-package" class="nav-link" data-scroll-target="#the-tigris-package-and-the-sf-package"><span class="header-section-number">8.5</span> The <code>tigris</code> Package and the <code>sf</code> Package</a></li>
   <li>
-<a href="#improving-the-map-appearance" id="toc-improving-the-map-appearance" class="nav-link" data-scroll-target="#improving-the-map-appearance"><span class="header-section-number">11</span> Improving the Map Appearance</a>
+<a href="#improving-the-map-appearance" id="toc-improving-the-map-appearance" class="nav-link" data-scroll-target="#improving-the-map-appearance"><span class="header-section-number">8.6</span> Improving the Map Appearance</a>
   <ul class="collapse">
-<li><a href="#add-transparency" id="toc-add-transparency" class="nav-link" data-scroll-target="#add-transparency"><span class="header-section-number">11.1</span> Add transparency</a></li>
-  <li><a href="#change-the-color" id="toc-change-the-color" class="nav-link" data-scroll-target="#change-the-color"><span class="header-section-number">11.2</span> Change the color</a></li>
-  <li><a href="#adjust-point-size" id="toc-adjust-point-size" class="nav-link" data-scroll-target="#adjust-point-size"><span class="header-section-number">11.3</span> Adjust point size</a></li>
-  <li><a href="#use-a-cleaner-theme" id="toc-use-a-cleaner-theme" class="nav-link" data-scroll-target="#use-a-cleaner-theme"><span class="header-section-number">11.4</span> Use a cleaner theme</a></li>
-  <li><a href="#using-types-of-incidents" id="toc-using-types-of-incidents" class="nav-link" data-scroll-target="#using-types-of-incidents"><span class="header-section-number">11.5</span> Using types of incidents</a></li>
-  <li><a href="#additional-revisions" id="toc-additional-revisions" class="nav-link" data-scroll-target="#additional-revisions"><span class="header-section-number">11.6</span> Additional revisions</a></li>
+<li><a href="#add-transparency" id="toc-add-transparency" class="nav-link" data-scroll-target="#add-transparency"><span class="header-section-number">8.6.1</span> Add transparency</a></li>
+  <li><a href="#change-the-color" id="toc-change-the-color" class="nav-link" data-scroll-target="#change-the-color"><span class="header-section-number">8.6.2</span> Change the color</a></li>
+  <li><a href="#adjust-point-size" id="toc-adjust-point-size" class="nav-link" data-scroll-target="#adjust-point-size"><span class="header-section-number">8.6.3</span> Adjust point size</a></li>
+  <li><a href="#use-a-cleaner-theme" id="toc-use-a-cleaner-theme" class="nav-link" data-scroll-target="#use-a-cleaner-theme"><span class="header-section-number">8.6.4</span> Use a cleaner theme</a></li>
+  <li><a href="#using-types-of-incidents" id="toc-using-types-of-incidents" class="nav-link" data-scroll-target="#using-types-of-incidents"><span class="header-section-number">8.6.5</span> Using types of incidents</a></li>
+  <li><a href="#additional-revisions" id="toc-additional-revisions" class="nav-link" data-scroll-target="#additional-revisions"><span class="header-section-number">8.6.6</span> Additional revisions</a></li>
   </ul>
 </li>
   <li>
-<a href="#working-with-x-and-y-coordinate-data" id="toc-working-with-x-and-y-coordinate-data" class="nav-link" data-scroll-target="#working-with-x-and-y-coordinate-data"><span class="header-section-number">12</span> Working with X and Y Coordinate Data</a>
+<a href="#working-with-x-and-y-coordinate-data" id="toc-working-with-x-and-y-coordinate-data" class="nav-link" data-scroll-target="#working-with-x-and-y-coordinate-data"><span class="header-section-number">8.7</span> Working with X and Y Coordinate Data</a>
   <ul class="collapse">
-<li><a href="#boundary-and-position-data" id="toc-boundary-and-position-data" class="nav-link" data-scroll-target="#boundary-and-position-data"><span class="header-section-number">12.1</span> Boundary and Position Data</a></li>
+<li><a href="#boundary-and-position-data" id="toc-boundary-and-position-data" class="nav-link" data-scroll-target="#boundary-and-position-data"><span class="header-section-number">8.7.1</span> Boundary and Position Data</a></li>
   </ul>
 </li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-ggplot2-maps.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -260,7 +256,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span>
+<span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span>
 </h1>
 </div>
 
@@ -285,13 +281,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>communicate patterns more effectively to decision-makers</li>
 </ul>
 <p>In many ways, maps help transform raw coordinate data into information that can be interpreted visually and operationally. Just like we have seen with other visualizations, spatial visualization tools are tremendeously valuable for helping us tell a story about our data.</p>
-<section id="mapping-as-an-extension-of-data-visualization" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="mapping-as-an-extension-of-data-visualization">
-<span class="header-section-number">9.1</span> Mapping as an Extension of Data Visualization</h2>
+<section id="mapping-as-an-extension-of-data-visualization" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="mapping-as-an-extension-of-data-visualization">
+<span class="header-section-number">8.1</span> Mapping as an Extension of Data Visualization</h2>
 <p>Up to this point, we have used <code>ggplot2</code> to create visualizations. Mapping extends the same visualization principles we covered previously into geographic space. Rather than plotting variables like counts or categories, maps plot locations using coordinates. At its core, a map is simply another type of plot: <em>longitude</em> or <em>x</em>-coordinate on the <em>x</em>-axis and <em>latitude</em> or <em>y</em>-coordinate on the <em>y</em>-axis (we will cover both lat/lon and x/y coordinates).<br>
 This means that many of the same concepts already learned in <code>ggplot2</code> still apply, such as aesthetics, layers, geometries, color, and theming. The workflow remains largely the same. The primary difference is that the data now represents locations in geographic space.</p>
 <p>The goal of this lecture is <strong>not</strong> to turn students into GIS specialists. Instead, the objective is to demonstrate how spatial data can be incorporated into the same analytical workflow already used in the prior chapter.</p>
-</section><section id="a-practical-perspective-on-mapping" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="a-practical-perspective-on-mapping">
-<span class="header-section-number">9.2</span> A Practical Perspective on Mapping</h2>
+</section><section id="a-practical-perspective-on-mapping" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="a-practical-perspective-on-mapping">
+<span class="header-section-number">8.2</span> A Practical Perspective on Mapping</h2>
 <p>In real-world crime analysis and open-source data work, spatial data is often imperfect:</p>
 <ul>
 <li>coordinates may be missing</li>
@@ -300,9 +296,9 @@ This means that many of the same concepts already learned in <code>ggplot2</code
 <li>data may come from multiple agencies or formats</li>
 </ul>
 <p>For this reason, analysts must understand not only how to create maps, but also how to interpret and prepare coordinate-based data correctly.</p>
-</section><section id="basic-mapping-workflow-in-ggplot2" class="level1" data-number="10"><h1 data-number="10">
-<span class="header-section-number">10</span> Basic Mapping Workflow in <code>ggplot2</code>
-</h1>
+</section><section id="basic-mapping-workflow-in-ggplot2" class="level2" data-number="8.3"><h2 data-number="8.3" class="anchored" data-anchor-id="basic-mapping-workflow-in-ggplot2">
+<span class="header-section-number">8.3</span> Basic Mapping Workflow in <code>ggplot2</code>
+</h2>
 <p>You already understand the general structure of a <code>ggplot</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  geom_<span class="sc">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -339,8 +335,8 @@ This means that many of the same concepts already learned in <code>ggplot2</code
 </div>
 </div>
 <p>We can see that the <code>lat</code> column is the <em>latitude</em> and the <code>lon</code> column is the <em>longitude</em>. What we want to do now is map these to a <code>ggplot</code> object.</p>
-<section id="create-a-basic-coordinate-plot" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="create-a-basic-coordinate-plot">
-<span class="header-section-number">10.1</span> Create a Basic Coordinate Plot</h2>
+</section><section id="create-a-basic-coordinate-plot" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="create-a-basic-coordinate-plot">
+<span class="header-section-number">8.4</span> Create a Basic Coordinate Plot</h2>
 <p>The simplest map begins exactly like a scatterplot.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span> data <span class="op">=</span>  <span class="va">tidy_tempe_hate</span>,</span>
@@ -356,11 +352,11 @@ This means that many of the same concepts already learned in <code>ggplot2</code
 </div>
 <p>This should look familiar in that we have the basic structure of the <code>ggplot</code>: the <code>data =</code> and the <code>mapping = aes()</code> arguments. The only difference now is that we have used the <code>lon</code> variable as the aesthetic mapping for the <em>x-axis</em> and the <code>lat</code> variable for the aesthetic mapping for the <em>y-axis</em>. Then, <code>geom_point()</code> just adds points on the coordinates we have identified with <code>aes()</code>. This plot tells us: where the observations are located, whether there are visible clusters, how the points are distributed across physical space.</p>
 <p>But, this isn’t really that useful because it doesn’t look like a map! We don’t have a geographical context (unless you happen to know the lat/lon for Tempe, AZ).</p>
-<section id="adding-geographic-context" class="level3" data-number="10.1.1"><h3 data-number="10.1.1" class="anchored" data-anchor-id="adding-geographic-context">
-<span class="header-section-number">10.1.1</span> Adding Geographic Context</h3>
+<section id="adding-geographic-context" class="level3" data-number="8.4.1"><h3 data-number="8.4.1" class="anchored" data-anchor-id="adding-geographic-context">
+<span class="header-section-number">8.4.1</span> Adding Geographic Context</h3>
 <p>To make the plot feel like a real map, we need a boundary layer underneath the points. A boundary layer could be a city outline, a neighborhood map, a precinct boundary, a census tract layer, anything that allows to draw a shape to add geographic context. This gives the coordinate points a frame of reference. Instead of just seeing dots in space, students can see where those dots fall within an actual geographic area. That is also the point where we move from “plotting coordinates” to “mapping data.”</p>
-</section></section><section id="the-tigris-package-and-the-sf-package" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="the-tigris-package-and-the-sf-package">
-<span class="header-section-number">10.2</span> The <code>tigris</code> Package and the <code>sf</code> Package</h2>
+</section></section><section id="the-tigris-package-and-the-sf-package" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="the-tigris-package-and-the-sf-package">
+<span class="header-section-number">8.5</span> The <code>tigris</code> Package and the <code>sf</code> Package</h2>
 <p><code>tigris</code> is an R package that provides direct access to U.S. Census Bureau geographic boundary data. Rather than downloading files with geographic boundaries manually from a website, <code>tigris</code> allows us to retrieve map boundaries directly inside R using simple functions. These boundaries are returned as spatial (<code>sf</code>) objects, which means they work naturally with <code>ggplot2</code> and the layering function <code>geom_sf()</code>.</p>
 <p>As we begin working with maps in R, we need a way for R to recognize that our data represents geographic space rather than ordinary numbers. This is the purpose of the <code>sf</code> package where the term “sf” stands for: simple features. An <code>sf</code> object is a special type of data frame that stores the original dataset, the geographic coordinates, the spatial geometry, and information about the coordinate system. In other words, an <code>sf</code> object allows R to understand that the data contains locations.</p>
 <p>We will use <code>tigris</code> and <code>sf</code>, so first install the packages and then load the library for each:</p>
@@ -378,7 +374,11 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |                                                                      |   0%
   |                                                                            
+  |                                                                      |   1%
+  |                                                                            
   |=                                                                     |   1%
+  |                                                                            
+  |=                                                                     |   2%
   |                                                                            
   |==                                                                    |   2%
   |                                                                            
@@ -387,6 +387,8 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |==                                                                    |   4%
   |                                                                            
   |===                                                                   |   4%
+  |                                                                            
+  |===                                                                   |   5%
   |                                                                            
   |====                                                                  |   5%
   |                                                                            
@@ -403,8 +405,6 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |=======                                                               |   9%
   |                                                                            
   |=======                                                               |  10%
-  |                                                                            
-  |=======                                                               |  11%
   |                                                                            
   |========                                                              |  11%
   |                                                                            
@@ -424,9 +424,13 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |============                                                          |  17%
   |                                                                            
+  |============                                                          |  18%
+  |                                                                            
   |=============                                                         |  18%
   |                                                                            
   |=============                                                         |  19%
+  |                                                                            
+  |==============                                                        |  19%
   |                                                                            
   |==============                                                        |  20%
   |                                                                            
@@ -434,17 +438,19 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |===============                                                       |  22%
   |                                                                            
+  |================                                                      |  22%
+  |                                                                            
   |================                                                      |  23%
   |                                                                            
   |=================                                                     |  24%
   |                                                                            
   |=================                                                     |  25%
   |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
   |==================                                                    |  26%
   |                                                                            
   |===================                                                   |  27%
-  |                                                                            
-  |===================                                                   |  28%
   |                                                                            
   |====================                                                  |  28%
   |                                                                            
@@ -456,15 +462,11 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |======================                                                |  32%
   |                                                                            
-  |=======================                                               |  32%
-  |                                                                            
   |=======================                                               |  33%
   |                                                                            
   |========================                                              |  34%
   |                                                                            
   |========================                                              |  35%
-  |                                                                            
-  |=========================                                             |  35%
   |                                                                            
   |=========================                                             |  36%
   |                                                                            
@@ -514,6 +516,8 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |===================================                                   |  50%
   |                                                                            
+  |===================================                                   |  51%
+  |                                                                            
   |====================================                                  |  51%
   |                                                                            
   |====================================                                  |  52%
@@ -521,6 +525,8 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |=====================================                                 |  52%
   |                                                                            
   |=====================================                                 |  53%
+  |                                                                            
+  |=====================================                                 |  54%
   |                                                                            
   |======================================                                |  54%
   |                                                                            
@@ -530,11 +536,17 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |=======================================                               |  56%
   |                                                                            
+  |========================================                              |  56%
+  |                                                                            
   |========================================                              |  57%
+  |                                                                            
+  |========================================                              |  58%
   |                                                                            
   |=========================================                             |  58%
   |                                                                            
   |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  59%
   |                                                                            
   |==========================================                            |  60%
   |                                                                            
@@ -542,9 +554,13 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |                                                                            
   |===========================================                           |  62%
   |                                                                            
+  |============================================                          |  62%
+  |                                                                            
   |============================================                          |  63%
   |                                                                            
   |=============================================                         |  64%
+  |                                                                            
+  |=============================================                         |  65%
   |                                                                            
   |==============================================                        |  65%
   |                                                                            
@@ -617,8 +633,6 @@ This means that many of the same concepts already learned in <code>ggplot2</code
   |===============================================================       |  91%
   |                                                                            
   |================================================================      |  91%
-  |                                                                            
-  |================================================================      |  92%
   |                                                                            
   |=================================================================     |  92%
   |                                                                            
@@ -707,11 +721,11 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 <p>At this point, the geometry is handled automatically by <code>sf</code> so we no longer need to manually specify x = lon and y = lat in the aesthetic layer.</p>
-</section></section><section id="improving-the-map-appearance" class="level1" data-number="11"><h1 data-number="11">
-<span class="header-section-number">11</span> Improving the Map Appearance</h1>
+</section><section id="improving-the-map-appearance" class="level2" data-number="8.6"><h2 data-number="8.6" class="anchored" data-anchor-id="improving-the-map-appearance">
+<span class="header-section-number">8.6</span> Improving the Map Appearance</h2>
 <p>We have our basic plot of the points and the boundary for the city. This gives us the default spatial plot. It is useful, but it is still very plain. At this stage, the map shows the points, but it does not yet make the spatial pattern very easy to read. As we did with <code>geom_point</code> for <code>ggplot</code>, let’s take a look at some options for improving our plot. As we go through these, try different values to get a sense of how the arguments work.</p>
-<section id="add-transparency" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="add-transparency">
-<span class="header-section-number">11.1</span> Add transparency</h2>
+<section id="add-transparency" class="level3" data-number="8.6.1"><h3 data-number="8.6.1" class="anchored" data-anchor-id="add-transparency">
+<span class="header-section-number">8.6.1</span> Add transparency</h3>
 <p>When there are many overlapping points, transparency helps reveal where incidents are concentrated. The transparency of the points is controlled with the <code>alpha =</code> argument where higher values make the points less transparent (and lower values make it more transparent).</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -725,8 +739,8 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 <p>Transparency helps when we have a lot of cases because overlapping points become easier to see, dense areas appear darker, and clustering becomes more visually obvious. There are a few cases that appear darker, this is because they are actually overlapping cases. There are only 71 cases in the Tempe hate crime dataset, but if we were working with tens or hundreds of thousands of cases, then transparency can be very userful.</p>
-</section><section id="change-the-color" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="change-the-color">
-<span class="header-section-number">11.2</span> Change the color</h2>
+</section><section id="change-the-color" class="level3" data-number="8.6.2"><h3 data-number="8.6.2" class="anchored" data-anchor-id="change-the-color">
+<span class="header-section-number">8.6.2</span> Change the color</h3>
 <p>You can also make the points easier to interpret by changing the point color.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -752,8 +766,8 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 <p>Here, <code>color =</code> controls the color of the line that defines the boundary and <code>fill =</code> controls the color inside the boundary.</p>
-</section><section id="adjust-point-size" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="adjust-point-size">
-<span class="header-section-number">11.3</span> Adjust point size</h2>
+</section><section id="adjust-point-size" class="level3" data-number="8.6.3"><h3 data-number="8.6.3" class="anchored" data-anchor-id="adjust-point-size">
+<span class="header-section-number">8.6.3</span> Adjust point size</h3>
 <p>If the points are too small, the map may be hard to read. If they are too large, they may overwhelm the plot.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -766,8 +780,8 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 </div>
-</section><section id="use-a-cleaner-theme" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="use-a-cleaner-theme">
-<span class="header-section-number">11.4</span> Use a cleaner theme</h2>
+</section><section id="use-a-cleaner-theme" class="level3" data-number="8.6.4"><h3 data-number="8.6.4" class="anchored" data-anchor-id="use-a-cleaner-theme">
+<span class="header-section-number">8.6.4</span> Use a cleaner theme</h3>
 <p>A map usually looks better with a simpler background.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -781,8 +795,8 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 </div>
-</section><section id="using-types-of-incidents" class="level2" data-number="11.5"><h2 data-number="11.5" class="anchored" data-anchor-id="using-types-of-incidents">
-<span class="header-section-number">11.5</span> Using types of incidents</h2>
+</section><section id="using-types-of-incidents" class="level3" data-number="8.6.5"><h3 data-number="8.6.5" class="anchored" data-anchor-id="using-types-of-incidents">
+<span class="header-section-number">8.6.5</span> Using types of incidents</h3>
 <p>We could also include additional information such as the type of bias, <code>bias_type_clean</code>. or type of incident, <code>offense_type_clean</code>.</p>
 <p>Let’s start by coloring the plot based on bias type. To do so, we need to specify this in the <code>aes()</code> function using the <code>color =</code> argument:</p>
 <div class="cell" data-layout-align="center">
@@ -828,8 +842,8 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 <p>That looks better!</p>
-</section><section id="additional-revisions" class="level2" data-number="11.6"><h2 data-number="11.6" class="anchored" data-anchor-id="additional-revisions">
-<span class="header-section-number">11.6</span> Additional revisions</h2>
+</section><section id="additional-revisions" class="level3" data-number="8.6.6"><h3 data-number="8.6.6" class="anchored" data-anchor-id="additional-revisions">
+<span class="header-section-number">8.6.6</span> Additional revisions</h3>
 <p>As we saw with <code>ggplot</code>, we can alter the various elements in the plot such as the title, labels, etc. Since we are working within a <code>ggplot</code> framework, we can use all the same functions that we used before. Let’s make some revisions to improve the visibility of our plot.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -880,8 +894,8 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 </div>
-</section></section><section id="working-with-x-and-y-coordinate-data" class="level1" data-number="12"><h1 data-number="12">
-<span class="header-section-number">12</span> Working with X and Y Coordinate Data</h1>
+</section></section><section id="working-with-x-and-y-coordinate-data" class="level2" data-number="8.7"><h2 data-number="8.7" class="anchored" data-anchor-id="working-with-x-and-y-coordinate-data">
+<span class="header-section-number">8.7</span> Working with X and Y Coordinate Data</h2>
 <p>Up to this point, we have used latitude and longitude because those values are easy to recognize. Now we will look at a second common format: <em>projected coordinates</em>. Unlike latitude and longitude, these values are not in degrees. They are usually measured in feet or meters, depending on the coordinate system. We are still building a map, the only difference is that now the x and y values come from a projected coordinate system instead of geographic coordinates. So the basic plotting logic stays the same, we just uses a different coordinate format.</p>
 <p>Let’s take a look at the <code>tidy_tucson_bike</code> data, which are 1,837 bicycle related traffic incidents reported to the Tucson Police Department. These data do not have lat/lon coordinates, but have x and y coordinates, stored in <code>x_coord</code> and <code>y_coord</code>, respectively.</p>
 <div class="cell" data-layout-align="center">
@@ -911,8 +925,8 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 <p>The data still have one column for horizontal position and one column for vertical position, but <em>what coordinate system produced these values?</em> That is where the CRS matters again.</p>
-<section id="boundary-and-position-data" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="boundary-and-position-data">
-<span class="header-section-number">12.1</span> Boundary and Position Data</h2>
+<section id="boundary-and-position-data" class="level3" data-number="8.7.1"><h3 data-number="8.7.1" class="anchored" data-anchor-id="boundary-and-position-data">
+<span class="header-section-number">8.7.1</span> Boundary and Position Data</h3>
 <p>First, we need to get the boundary data from Tucson using the <code>tigris</code> package. Then, filter it to Tucson using <code>dyplr</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">az_places</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tigris/man/places.html">places</a></span><span class="op">(</span> state <span class="op">=</span> <span class="st">"AZ"</span>, year <span class="op">=</span> <span class="fl">2024</span> <span class="op">)</span></span>
@@ -959,8 +973,6 @@ First 5 geometries:</code></pre>
 </div>
 </div>
 </div>
-<p><br></p>
-<p>NEED EXERCISES FOR TEST YOUR KNOWLEDGE</p>
 
 
 </section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -1364,12 +1376,12 @@ First 5 geometries:</code></pre>
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./dwc4ca-ggplot2-advanced.html" class="pagination-link" aria-label="Advanced `ggplot2` and Storytelling">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./dwc4ca-shiny-intro.html" class="pagination-link" aria-label="Dynamic Visualization using Shiny">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

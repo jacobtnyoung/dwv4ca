@@ -455,7 +455,7 @@ data_wide
 In general, use `pivot_wider()` when you’re making a table for a report, you want side-by-side comparisons, you’re exporting data (Excel, dashboards), and so on.
 In comparing the two functions, think of it like this: `pivot_longer()` helps us prepare data for analysis, whereas `pivot_wider()` helps us present results.
 
-# Summary
+## Summary
 
 In this chapter, you learned that effective data wrangling is not just about changing the values in a dataset.
 It is also about getting those data into the right structure.

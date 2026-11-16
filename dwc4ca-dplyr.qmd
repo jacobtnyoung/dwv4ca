@@ -49,7 +49,7 @@ As you work through this section, the advantages of these features should become
 
 To facilitate that, let's look at some data on *use of force* incidents.
 
-# Use of Force in Phoenix
+## Use of Force in Phoenix
 
 Imagine you are a crime analyst working for a non-profit in Phoenix, Arizona.
 Your supervisor asks: "We’ve been getting questions from local constituents about use of force. Can you tell me what’s going on?" At first glance, this sounds straightforward: just open the data and look (since these are publicly available, it is easy to do so, right?).
@@ -109,7 +109,7 @@ We need to clean and structure the data.
 Just like if we were baking, where we would need to handle certain aspects of our ingredients and document the process.
 This is where data wrangling comes in.
 
-## Analytical Questions and Workflow
+### Analytical Questions and Workflow
 
 To guide our work, consider the types of questions we might want to answer:
 
@@ -143,7 +143,7 @@ library( dplyr )
 
 ```
 
-# `dplyr` Basics
+## `dplyr` Basics
 
 You’re about to learn the primary `dplyr` verbs (functions), which will allow you to solve the vast majority of your data manipulation challenges.
 But before we discuss their individual differences, it’s worth stating what they have in common:
@@ -190,14 +190,14 @@ We are going to go through each line, step-by-step.
 In the following sections, you’ll learn the most important verbs for rows, columns, and groups.
 Let’s dive in!
 
-## Rows
+### Rows
 
 The most important verbs that operate on rows of a dataset are `filter()`, which changes which rows are present without changing their order, and `arrange()`, which changes the order of the rows without changing which are present.
 Both functions only affect the rows, and the columns are left unchanged.
 We’ll also discuss `distinct()` which finds rows with unique values.
 Unlike `arrange()` and `filter()` it can also optionally modify the columns.
 
-### `filter()`
+#### `filter()`
 
 `filter()` allows you to keep rows based on the values of the columns.
 The first argument is the data frame.
@@ -280,7 +280,7 @@ View ( uof_2018_and_2025 )
   
 ```
 
-### `arrange()`
+#### `arrange()`
 
 `arrange()` sorts the data by changing the order of the rows based on the value of the columns.
 It takes a data frame and a set of column names.
@@ -297,7 +297,7 @@ phx_uof |>
 We get the earliest year first, then female, then male, then then next year, and so on.
 Note that we have not altered the values of the data, we have just arranged the data differently.
 
-### `distinct()`
+#### `distinct()`
 
 `distinct()` finds all the unique values of a column in a dataset.
 
@@ -346,12 +346,12 @@ Also, the `table()` function returns an object of a different class than the `di
 If the reason why that is important doesn't make sense, don't worry.
 It will become more clear as we start working with object classes.
 
-## Columns
+### Columns
 
 There are also verbs that operate on the columns.
 The two we will focus on here are `select()` and `mutate()`.
 
-### `select()`
+#### `select()`
 
 It’s not uncommon to get datasets with hundreds or even thousands of variables (or millions!).
 In this situation, the first challenge is often just focusing on the variables you’re interested in.
@@ -399,7 +399,7 @@ phx_uof |>
 
 This is a nice feature when you are building a data set and the variables names are long, confusing, or you just don't like it.
 
-### `mutate()`
+#### `mutate()`
 
 The job of `mutate()` is to add new columns that are calculated from the existing columns.
 For example, let's transform the `CIT_RACE` variable into a variable that defines the cases as "white" and "non-white".
@@ -427,13 +427,13 @@ First, we used `select()` to just keep the `CIT_RACE` column and we renamed it t
 Second, we created a variable called `white` using the `ifelse()` function.
 Simply, the function says "if `race` is equal to "White", then the variable `white` will be "White" and if not, then the variable `white` will be "Non-White".
 
-## Groups
+### Groups
 
 So far you’ve learned about functions that work with rows and columns.
 `dplyr` gets even more powerful when you add in the ability to work with groups.
 Here, we’ll focus on the most important functions: `summarize()` and `group_by()`.
 
-### `summarize()`
+#### `summarize()`
 
 The most important grouped operation is a summary, which, if being used to calculate a single summary statistic, reduces the data frame to have a single row for each group.
 In `dplyr`, this operation is performed by `summarize()`.
@@ -478,7 +478,7 @@ phx_uof |>
 
 ```
 
-### `group_by()`
+#### `group_by()`
 
 Many times we want to divide a dataset into groups and then perform calculations for each of those groups (e.g. mean, standard deviation, n, and so on).
 We can use `group_by()` to divide your dataset into groups in this way:
@@ -559,7 +559,7 @@ phx_uof |>
 
 ```
 
-# Analytical Questions and Workflow (revisited)
+## Analytical Questions and Workflow (revisited)
 
 Now that we know how to manipulate the dataset, lets revisit our questions:
 
@@ -606,7 +606,7 @@ phx_uof |>
 
 ```
 
-## How many incidents involve Male (vs. Female) individuals?
+### How many incidents involve Male (vs. Female) individuals?
 
 ```{r, eval=TRUE}
 
@@ -617,7 +617,7 @@ phx_uof |>
 
 ```
 
-## What proportion of incidents involve the suspect having a gun?
+### What proportion of incidents involve the suspect having a gun?
 
 ```{r, eval=TRUE}
 
@@ -629,7 +629,7 @@ phx_uof |>
 
 ```
 
-## Are non-white suspects more prevalent in the data than White suspects?
+### Are non-white suspects more prevalent in the data than White suspects?
 
 ```{r, eval=TRUE}
 

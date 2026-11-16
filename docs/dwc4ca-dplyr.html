@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.10.18">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Jacob T.N. Young">
-<title>4&nbsp; Data Wrangling with dplyr – Data Wrangling &amp; Visualization for Crime Analysts</title>
+<title>3&nbsp; Data Wrangling with dplyr – Data Wrangling &amp; Visualization for Crime Analysts</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-dplyr.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dwc4ca-dplyr.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -153,61 +153,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Data Wrangling and Visualization</span></span></a>
+ <span class="menu-text">Introduction to Data Wrangling and Visualization</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Getting Started with R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started with R</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-r-rmarkdown.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-dplyr.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-tidy.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tidy Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tidy Data</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-transform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data Transformation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Data Transformation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Data Visualization with <code>ggplot2</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data Visualization with <code>ggplot2</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-advanced.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Advanced <code>ggplot2</code> and Storytelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-ggplot2-maps.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Maps and <code>ggplot2</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dwc4ca-shiny-intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Dynamic Visualization using Shiny</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -225,61 +225,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#what-is-dplyr" id="toc-what-is-dplyr" class="nav-link active" data-scroll-target="#what-is-dplyr"><span class="header-section-number">4.1</span> What is <code>dplyr</code>?</a>
+<a href="#what-is-dplyr" id="toc-what-is-dplyr" class="nav-link active" data-scroll-target="#what-is-dplyr"><span class="header-section-number">3.1</span> What is <code>dplyr</code>?</a>
   <ul class="collapse">
-<li><a href="#why-this-matters-for-crime-analysts" id="toc-why-this-matters-for-crime-analysts" class="nav-link" data-scroll-target="#why-this-matters-for-crime-analysts"><span class="header-section-number">4.1.1</span> Why This Matters for Crime Analysts</a></li>
+<li><a href="#why-this-matters-for-crime-analysts" id="toc-why-this-matters-for-crime-analysts" class="nav-link" data-scroll-target="#why-this-matters-for-crime-analysts"><span class="header-section-number">3.1.1</span> Why This Matters for Crime Analysts</a></li>
   </ul>
 </li>
   <li>
-<a href="#use-of-force-in-phoenix" id="toc-use-of-force-in-phoenix" class="nav-link" data-scroll-target="#use-of-force-in-phoenix"><span class="header-section-number">5</span> Use of Force in Phoenix</a>
+<a href="#use-of-force-in-phoenix" id="toc-use-of-force-in-phoenix" class="nav-link" data-scroll-target="#use-of-force-in-phoenix"><span class="header-section-number">3.2</span> Use of Force in Phoenix</a>
   <ul class="collapse">
-<li><a href="#analytical-questions-and-workflow" id="toc-analytical-questions-and-workflow" class="nav-link" data-scroll-target="#analytical-questions-and-workflow"><span class="header-section-number">5.1</span> Analytical Questions and Workflow</a></li>
+<li><a href="#analytical-questions-and-workflow" id="toc-analytical-questions-and-workflow" class="nav-link" data-scroll-target="#analytical-questions-and-workflow"><span class="header-section-number">3.2.1</span> Analytical Questions and Workflow</a></li>
   </ul>
 </li>
   <li>
-<a href="#dplyr-basics" id="toc-dplyr-basics" class="nav-link" data-scroll-target="#dplyr-basics"><span class="header-section-number">6</span> <code>dplyr</code> Basics</a>
+<a href="#dplyr-basics" id="toc-dplyr-basics" class="nav-link" data-scroll-target="#dplyr-basics"><span class="header-section-number">3.3</span> <code>dplyr</code> Basics</a>
   <ul class="collapse">
-<li>
-<a href="#rows" id="toc-rows" class="nav-link" data-scroll-target="#rows"><span class="header-section-number">6.1</span> Rows</a>
-  <ul class="collapse">
-<li><a href="#filter" id="toc-filter" class="nav-link" data-scroll-target="#filter"><span class="header-section-number">6.1.1</span> <code>filter()</code></a></li>
-  <li><a href="#arrange" id="toc-arrange" class="nav-link" data-scroll-target="#arrange"><span class="header-section-number">6.1.2</span> <code>arrange()</code></a></li>
-  <li><a href="#distinct" id="toc-distinct" class="nav-link" data-scroll-target="#distinct"><span class="header-section-number">6.1.3</span> <code>distinct()</code></a></li>
+<li><a href="#rows" id="toc-rows" class="nav-link" data-scroll-target="#rows"><span class="header-section-number">3.3.1</span> Rows</a></li>
+  <li><a href="#columns" id="toc-columns" class="nav-link" data-scroll-target="#columns"><span class="header-section-number">3.3.2</span> Columns</a></li>
+  <li><a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups"><span class="header-section-number">3.3.3</span> Groups</a></li>
   </ul>
 </li>
+  <li><a href="#analytical-questions-and-workflow-revisited" id="toc-analytical-questions-and-workflow-revisited" class="nav-link" data-scroll-target="#analytical-questions-and-workflow-revisited"><span class="header-section-number">3.4</span> Analytical Questions and Workflow (revisited)</a></li>
   <li>
-<a href="#columns" id="toc-columns" class="nav-link" data-scroll-target="#columns"><span class="header-section-number">6.2</span> Columns</a>
+<a href="#are-incidents-increasing-or-decreasing-over-time" id="toc-are-incidents-increasing-or-decreasing-over-time" class="nav-link" data-scroll-target="#are-incidents-increasing-or-decreasing-over-time"><span class="header-section-number">3.5</span> Are incidents increasing or decreasing over time?</a>
   <ul class="collapse">
-<li><a href="#select" id="toc-select" class="nav-link" data-scroll-target="#select"><span class="header-section-number">6.2.1</span> <code>select()</code></a></li>
-  <li><a href="#mutate" id="toc-mutate" class="nav-link" data-scroll-target="#mutate"><span class="header-section-number">6.2.2</span> <code>mutate()</code></a></li>
+<li><a href="#how-many-incidents-involve-male-vs.-female-individuals" id="toc-how-many-incidents-involve-male-vs.-female-individuals" class="nav-link" data-scroll-target="#how-many-incidents-involve-male-vs.-female-individuals"><span class="header-section-number">3.5.1</span> How many incidents involve Male (vs.&nbsp;Female) individuals?</a></li>
+  <li><a href="#what-proportion-of-incidents-involve-the-suspect-having-a-gun" id="toc-what-proportion-of-incidents-involve-the-suspect-having-a-gun" class="nav-link" data-scroll-target="#what-proportion-of-incidents-involve-the-suspect-having-a-gun"><span class="header-section-number">3.5.2</span> What proportion of incidents involve the suspect having a gun?</a></li>
+  <li><a href="#are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" id="toc-are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" class="nav-link" data-scroll-target="#are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects"><span class="header-section-number">3.5.3</span> Are non-white suspects more prevalent in the data than White suspects?</a></li>
   </ul>
 </li>
-  <li>
-<a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups"><span class="header-section-number">6.3</span> Groups</a>
-  <ul class="collapse">
-<li><a href="#summarize" id="toc-summarize" class="nav-link" data-scroll-target="#summarize"><span class="header-section-number">6.3.1</span> <code>summarize()</code></a></li>
-  <li><a href="#group_by" id="toc-group_by" class="nav-link" data-scroll-target="#group_by"><span class="header-section-number">6.3.2</span> <code>group_by()</code></a></li>
-  </ul>
-</li>
-  </ul>
-</li>
-  <li>
-<a href="#analytical-questions-and-workflow-revisited" id="toc-analytical-questions-and-workflow-revisited" class="nav-link" data-scroll-target="#analytical-questions-and-workflow-revisited"><span class="header-section-number">7</span> Analytical Questions and Workflow (revisited)</a>
-  <ul class="collapse">
-<li><a href="#are-incidents-increasing-or-decreasing-over-time" id="toc-are-incidents-increasing-or-decreasing-over-time" class="nav-link" data-scroll-target="#are-incidents-increasing-or-decreasing-over-time"><span class="header-section-number">7.1</span> Are incidents increasing or decreasing over time?</a></li>
-  <li><a href="#how-many-incidents-involve-male-vs.-female-individuals" id="toc-how-many-incidents-involve-male-vs.-female-individuals" class="nav-link" data-scroll-target="#how-many-incidents-involve-male-vs.-female-individuals"><span class="header-section-number">7.2</span> How many incidents involve Male (vs.&nbsp;Female) individuals?</a></li>
-  <li><a href="#what-proportion-of-incidents-involve-the-suspect-having-a-gun" id="toc-what-proportion-of-incidents-involve-the-suspect-having-a-gun" class="nav-link" data-scroll-target="#what-proportion-of-incidents-involve-the-suspect-having-a-gun"><span class="header-section-number">7.3</span> What proportion of incidents involve the suspect having a gun?</a></li>
-  <li><a href="#are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" id="toc-are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" class="nav-link" data-scroll-target="#are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects"><span class="header-section-number">7.4</span> Are non-white suspects more prevalent in the data than White suspects?</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">7.5</span> Summary</a></li>
-  <li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge"><span class="header-section-number">7.6</span> Test Your Knowledge</a></li>
-  </ul>
-</li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">3.6</span> Summary</a></li>
+  <li><a href="#test-your-knowledge" id="toc-test-your-knowledge" class="nav-link" data-scroll-target="#test-your-knowledge"><span class="header-section-number">3.7</span> Test Your Knowledge</a></li>
   </ul><div class="toc-actions"><ul><li><a href="https://github.com/jacobtnyoung/dwv4ca/edit/main/dwc4ca-dplyr.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jacobtnyoung/dwv4ca/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">
-<span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span>
+<span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Wrangling with <code>dplyr</code></span>
 </h1>
 </div>
 
@@ -294,8 +275,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><section id="what-is-dplyr" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="what-is-dplyr">
-<span class="header-section-number">4.1</span> What is <code>dplyr</code>?</h2>
+</header><section id="what-is-dplyr" class="level2" data-number="3.1"><h2 data-number="3.1" class="anchored" data-anchor-id="what-is-dplyr">
+<span class="header-section-number">3.1</span> What is <code>dplyr</code>?</h2>
 <p>The <code>dplyr</code> package is designed to make data wrangling faster, clearer, and more intuitive by providing a consistent way to manipulate data. At its core, <code>dplyr</code> is built around the idea of <strong>“verbs”</strong> where each function represents a common action you perform on data:</p>
 <ul>
 <li>
@@ -312,8 +293,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>: apply operations within groups</li>
 </ul>
 <p>These verbs can be combined to create a step-by-step workflow that mirrors how analysts actually think. Another way to think of this is like a “data recipe” where we stipulate a set of steps to follow to give us a particular data set. Just as with baking, where you start with ingredients and follow a recipe to make bread (or cookies!), a data recipe starts with raw data and identifies the sequence of steps to return an analytic dataset.</p>
-<section id="why-this-matters-for-crime-analysts" class="level3" data-number="4.1.1"><h3 data-number="4.1.1" class="anchored" data-anchor-id="why-this-matters-for-crime-analysts">
-<span class="header-section-number">4.1.1</span> Why This Matters for Crime Analysts</h3>
+<section id="why-this-matters-for-crime-analysts" class="level3" data-number="3.1.1"><h3 data-number="3.1.1" class="anchored" data-anchor-id="why-this-matters-for-crime-analysts">
+<span class="header-section-number">3.1.1</span> Why This Matters for Crime Analysts</h3>
 <p>Crime data is often messy, complex, and large. In a word “wild”. Analysts regularly need to isolate specific types of incidents (e.g., use of force), focus on certain time periods or locations, create new variables (e.g., month, crime categories), summarize patterns across groups (e.g., by neighborhood or offense type), and many other tasks.</p>
 <p><code>dplyr</code> provides a way to make our work:</p>
 <ul>
@@ -326,8 +307,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Instead of manually filtering or copying data in spreadsheets, analysts can build a clear, repeatable workflow that turns raw data into meaningful insight (remember the “recipe” metaphor?). As you work through this section, the advantages of these features should become more clear.</p>
 <p>To facilitate that, let’s look at some data on <em>use of force</em> incidents.</p>
-</section></section><section id="use-of-force-in-phoenix" class="level1" data-number="5"><h1 data-number="5">
-<span class="header-section-number">5</span> Use of Force in Phoenix</h1>
+</section></section><section id="use-of-force-in-phoenix" class="level2" data-number="3.2"><h2 data-number="3.2" class="anchored" data-anchor-id="use-of-force-in-phoenix">
+<span class="header-section-number">3.2</span> Use of Force in Phoenix</h2>
 <p>Imagine you are a crime analyst working for a non-profit in Phoenix, Arizona. Your supervisor asks: “We’ve been getting questions from local constituents about use of force. Can you tell me what’s going on?” At first glance, this sounds straightforward: just open the data and look (since these are publicly available, it is easy to do so, right?). Let’s take a look at the data.</p>
 <p>The <code>DWVpack</code> package contains a data set for use of force incidents from 2018-2024 in Phoenix. These data were collected from the Phoenix <a href="https://www.phoenixopendata.com/dataset/uof">Open Data Portal</a> and have been restructured a bit to help with instruction. As a reminder, if you have not not installed the <code>DWVpack</code> package, please review the <a href="./dwc4ca-r-intro.html">Getting Started with R</a> chapter where this is covered (see the “Installing DWVpack” section).</p>
 <p>To look at the data, we need to first load the <code>DWVpack</code> package and then examine the data, called <code>phx_uof</code> in the package. We can do this by using the <code><a href="https://rdrr.io/r/utils/View.html">View()</a></code> function. This function takes an object and creates a separate viewing pane where we can “view” the data.</p>
@@ -352,8 +333,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>As you can see if you scroll through the incidents, there are some listed as “Not Available”, meaning that (for some reason) the location information was not entered.</p>
 <p>If you keep looking through the data (go ahead, I can wait), you will see that we can’t just dive into analyzing the data. We need to clean and structure the data. Just like if we were baking, where we would need to handle certain aspects of our ingredients and document the process. This is where data wrangling comes in.</p>
-<section id="analytical-questions-and-workflow" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="analytical-questions-and-workflow">
-<span class="header-section-number">5.1</span> Analytical Questions and Workflow</h2>
+<section id="analytical-questions-and-workflow" class="level3" data-number="3.2.1"><h3 data-number="3.2.1" class="anchored" data-anchor-id="analytical-questions-and-workflow">
+<span class="header-section-number">3.2.1</span> Analytical Questions and Workflow</h3>
 <p>To guide our work, consider the types of questions we might want to answer:</p>
 <p>Are incidents increasing or decreasing over time? What proportion of incidents involve Male (vs.&nbsp;Female) individuals? What proportion of incidents involve the suspect having a gun? Are non-white suspects more prevalent in the data than White suspects?</p>
 <p>Each of these questions requires transforming raw data into a usable format as raw datasets rarely arrive ready for analysis (as we saw above). Instead, we typically move through a series of steps (what we will call a <strong>workflow</strong>):</p>
@@ -373,8 +354,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span> <span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section></section><section id="dplyr-basics" class="level1" data-number="6"><h1 data-number="6">
-<span class="header-section-number">6</span> <code>dplyr</code> Basics</h1>
+</section></section><section id="dplyr-basics" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="dplyr-basics">
+<span class="header-section-number">3.3</span> <code>dplyr</code> Basics</h2>
 <p>You’re about to learn the primary <code>dplyr</code> verbs (functions), which will allow you to solve the vast majority of your data manipulation challenges. But before we discuss their individual differences, it’s worth stating what they have in common:</p>
 <ul>
 <li>The first argument is always a data frame.</li>
@@ -400,12 +381,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>What this says is: take the <code>phx_uof</code> data, then filter the variable <code>CIT_GENDER</code> such that we only include <code>Males</code>, then group by <code>INC_YEAR</code>, then summarize it. If that doesn’t make sense, no worries! We are going to go through each line, step-by-step.</p>
 <p><code>dplyr</code>’s verbs are organized into four groups based on what they operate on: rows, columns, groups, or tables. In the following sections, you’ll learn the most important verbs for rows, columns, and groups. Let’s dive in!</p>
-<section id="rows" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="rows">
-<span class="header-section-number">6.1</span> Rows</h2>
+<section id="rows" class="level3" data-number="3.3.1"><h3 data-number="3.3.1" class="anchored" data-anchor-id="rows">
+<span class="header-section-number">3.3.1</span> Rows</h3>
 <p>The most important verbs that operate on rows of a dataset are <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>, which changes which rows are present without changing their order, and <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>, which changes the order of the rows without changing which are present. Both functions only affect the rows, and the columns are left unchanged. We’ll also discuss <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code> which finds rows with unique values. Unlike <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> it can also optionally modify the columns.</p>
-<section id="filter" class="level3" data-number="6.1.1"><h3 data-number="6.1.1" class="anchored" data-anchor-id="filter">
-<span class="header-section-number">6.1.1</span> <code>filter()</code>
-</h3>
+<section id="filter" class="level4" data-number="3.3.1.1"><h4 data-number="3.3.1.1" class="anchored" data-anchor-id="filter">
+<span class="header-section-number">3.3.1.1</span> <code>filter()</code>
+</h4>
 <p><code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> allows you to keep rows based on the values of the columns. The first argument is the data frame. The second and subsequent arguments are the conditions that must be true to keep the row. For example, we could find all use of force incidents that involve “Male” suspects:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
@@ -454,18 +435,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  </span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/View.html">View</a></span> <span class="op">(</span> <span class="va">uof_2018_and_2025</span> <span class="op">)</span>  </span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section><section id="arrange" class="level3" data-number="6.1.2"><h3 data-number="6.1.2" class="anchored" data-anchor-id="arrange">
-<span class="header-section-number">6.1.2</span> <code>arrange()</code>
-</h3>
+</section><section id="arrange" class="level4" data-number="3.3.1.2"><h4 data-number="3.3.1.2" class="anchored" data-anchor-id="arrange">
+<span class="header-section-number">3.3.1.2</span> <code>arrange()</code>
+</h4>
 <p><code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> sorts the data by changing the order of the rows based on the value of the columns. It takes a data frame and a set of column names. If you provide more than one column name, each additional column will be used to break ties in the values of the preceding columns. For example, the following code sorts by <code>INC_YEAR</code> then by <code>CIT_GENDER</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span> <span class="va">INC_YEAR</span>, <span class="va">CIT_GENDER</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We get the earliest year first, then female, then male, then then next year, and so on. Note that we have not altered the values of the data, we have just arranged the data differently.</p>
-</section><section id="distinct" class="level3" data-number="6.1.3"><h3 data-number="6.1.3" class="anchored" data-anchor-id="distinct">
-<span class="header-section-number">6.1.3</span> <code>distinct()</code>
-</h3>
+</section><section id="distinct" class="level4" data-number="3.3.1.3"><h4 data-number="3.3.1.3" class="anchored" data-anchor-id="distinct">
+<span class="header-section-number">3.3.1.3</span> <code>distinct()</code>
+</h4>
 <p><code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code> finds all the unique values of a column in a dataset.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
@@ -490,12 +471,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>As we will see, we can string together many of these instructions for how we want to augment our data into a single command using the <code>|&gt;</code> operator.</p>
 <p>Also, the <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> function returns an object of a different class than the <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code> function. If the reason why that is important doesn’t make sense, don’t worry. It will become more clear as we start working with object classes.</p>
-</section></section><section id="columns" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="columns">
-<span class="header-section-number">6.2</span> Columns</h2>
+</section></section><section id="columns" class="level3" data-number="3.3.2"><h3 data-number="3.3.2" class="anchored" data-anchor-id="columns">
+<span class="header-section-number">3.3.2</span> Columns</h3>
 <p>There are also verbs that operate on the columns. The two we will focus on here are <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>.</p>
-<section id="select" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="select">
-<span class="header-section-number">6.2.1</span> <code>select()</code>
-</h3>
+<section id="select" class="level4" data-number="3.3.2.1"><h4 data-number="3.3.2.1" class="anchored" data-anchor-id="select">
+<span class="header-section-number">3.3.2.1</span> <code>select()</code>
+</h4>
 <p>It’s not uncommon to get datasets with hundreds or even thousands of variables (or millions!). In this situation, the first challenge is often just focusing on the variables you’re interested in. <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> allows you to rapidly zoom in on a useful subset using operations based on the names of the variables:</p>
 <ul>
 <li>Select columns by name</li>
@@ -530,9 +511,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> year <span class="op">=</span> <span class="va">INC_YEAR</span> <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is a nice feature when you are building a data set and the variables names are long, confusing, or you just don’t like it.</p>
-</section><section id="mutate" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="mutate">
-<span class="header-section-number">6.2.2</span> <code>mutate()</code>
-</h3>
+</section><section id="mutate" class="level4" data-number="3.3.2.2"><h4 data-number="3.3.2.2" class="anchored" data-anchor-id="mutate">
+<span class="header-section-number">3.3.2.2</span> <code>mutate()</code>
+</h4>
 <p>The job of <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> is to add new columns that are calculated from the existing columns. For example, let’s transform the <code>CIT_RACE</code> variable into a variable that defines the cases as “white” and “non-white”. First, let’s look at the values of the <code>CIT_RACE</code> variable:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
@@ -558,12 +539,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span> white <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span> <span class="va">race</span> <span class="op">==</span> <span class="st">"White"</span>, <span class="st">"White"</span>, <span class="st">"Non-White"</span> <span class="op">)</span> <span class="op">)</span></span>
 <span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Here, we did a few steps. First, we used <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> to just keep the <code>CIT_RACE</code> column and we renamed it to be <code>race</code>. Second, we created a variable called <code>white</code> using the <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code> function. Simply, the function says “if <code>race</code> is equal to”White”, then the variable <code>white</code> will be “White” and if not, then the variable <code>white</code> will be “Non-White”.</p>
-</section></section><section id="groups" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="groups">
-<span class="header-section-number">6.3</span> Groups</h2>
+</section></section><section id="groups" class="level3" data-number="3.3.3"><h3 data-number="3.3.3" class="anchored" data-anchor-id="groups">
+<span class="header-section-number">3.3.3</span> Groups</h3>
 <p>So far you’ve learned about functions that work with rows and columns. <code>dplyr</code> gets even more powerful when you add in the ability to work with groups. Here, we’ll focus on the most important functions: <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>.</p>
-<section id="summarize" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="summarize">
-<span class="header-section-number">6.3.1</span> <code>summarize()</code>
-</h3>
+<section id="summarize" class="level4" data-number="3.3.3.1"><h4 data-number="3.3.3.1" class="anchored" data-anchor-id="summarize">
+<span class="header-section-number">3.3.3.1</span> <code>summarize()</code>
+</h4>
 <p>The most important grouped operation is a summary, which, if being used to calculate a single summary statistic, reduces the data frame to have a single row for each group. In <code>dplyr</code>, this operation is performed by <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code>. For example, let’s compute the average age of citizens using the <code>CIT_AGE</code> column:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span> </span>
@@ -599,9 +580,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1 33.13641 12324</code></pre>
 </div>
 </div>
-</section><section id="group_by" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="group_by">
-<span class="header-section-number">6.3.2</span> <code>group_by()</code>
-</h3>
+</section><section id="group_by" class="level4" data-number="3.3.3.2"><h4 data-number="3.3.3.2" class="anchored" data-anchor-id="group_by">
+<span class="header-section-number">3.3.3.2</span> <code>group_by()</code>
+</h4>
 <p>Many times we want to divide a dataset into groups and then perform calculations for each of those groups (e.g.&nbsp;mean, standard deviation, n, and so on). We can use <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> to divide your dataset into groups in this way:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
@@ -728,8 +709,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # ℹ 30 more rows</code></pre>
 </div>
 </div>
-</section></section></section><section id="analytical-questions-and-workflow-revisited" class="level1" data-number="7"><h1 data-number="7">
-<span class="header-section-number">7</span> Analytical Questions and Workflow (revisited)</h1>
+</section></section></section><section id="analytical-questions-and-workflow-revisited" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="analytical-questions-and-workflow-revisited">
+<span class="header-section-number">3.4</span> Analytical Questions and Workflow (revisited)</h2>
 <p>Now that we know how to manipulate the dataset, lets revisit our questions:</p>
 <ul>
 <li>Are incidents increasing or decreasing over time?</li>
@@ -738,8 +719,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Are non-white suspects more prevalent in the data than White suspects?</li>
 </ul>
 <p>Before reviewing this section, I would encourage you to take a crack at it on your own, and then work through the solutions here.</p>
-<section id="are-incidents-increasing-or-decreasing-over-time" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="are-incidents-increasing-or-decreasing-over-time">
-<span class="header-section-number">7.1</span> Are incidents increasing or decreasing over time?</h2>
+</section><section id="are-incidents-increasing-or-decreasing-over-time" class="level2" data-number="3.5"><h2 data-number="3.5" class="anchored" data-anchor-id="are-incidents-increasing-or-decreasing-over-time">
+<span class="header-section-number">3.5</span> Are incidents increasing or decreasing over time?</h2>
 <p>We can answer this question by creating a simple count by year of incidents:</p>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
@@ -786,8 +767,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 7     2024  2642          0.214 </code></pre>
 </div>
 </div>
-</section><section id="how-many-incidents-involve-male-vs.-female-individuals" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="how-many-incidents-involve-male-vs.-female-individuals">
-<span class="header-section-number">7.2</span> How many incidents involve Male (vs.&nbsp;Female) individuals?</h2>
+<section id="how-many-incidents-involve-male-vs.-female-individuals" class="level3" data-number="3.5.1"><h3 data-number="3.5.1" class="anchored" data-anchor-id="how-many-incidents-involve-male-vs.-female-individuals">
+<span class="header-section-number">3.5.1</span> How many incidents involve Male (vs.&nbsp;Female) individuals?</h3>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">CIT_GENDER</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -803,8 +784,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 4 Unknown           1</code></pre>
 </div>
 </div>
-</section><section id="what-proportion-of-incidents-involve-the-suspect-having-a-gun" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="what-proportion-of-incidents-involve-the-suspect-having-a-gun">
-<span class="header-section-number">7.3</span> What proportion of incidents involve the suspect having a gun?</h2>
+</section><section id="what-proportion-of-incidents-involve-the-suspect-having-a-gun" class="level3" data-number="3.5.2"><h3 data-number="3.5.2" class="anchored" data-anchor-id="what-proportion-of-incidents-involve-the-suspect-having-a-gun">
+<span class="header-section-number">3.5.2</span> What proportion of incidents involve the suspect having a gun?</h3>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">SUBJ_ARMED_GUN</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -819,8 +800,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2 Yes              618         0.0501</code></pre>
 </div>
 </div>
-</section><section id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects">
-<span class="header-section-number">7.4</span> Are non-white suspects more prevalent in the data than White suspects?</h2>
+</section><section id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects" class="level3" data-number="3.5.3"><h3 data-number="3.5.3" class="anchored" data-anchor-id="are-non-white-suspects-more-prevalent-in-the-data-than-white-suspects">
+<span class="header-section-number">3.5.3</span> Are non-white suspects more prevalent in the data than White suspects?</h3>
 <div class="cell" data-layout-align="center">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phx_uof</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span> <span class="va">CIT_RACE</span> <span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -859,14 +840,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2 White      8361           0.678</code></pre>
 </div>
 </div>
-</section><section id="summary" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="summary">
-<span class="header-section-number">7.5</span> Summary</h2>
+</section></section><section id="summary" class="level2" data-number="3.6"><h2 data-number="3.6" class="anchored" data-anchor-id="summary">
+<span class="header-section-number">3.6</span> Summary</h2>
 <p>In this chapter, you learned the foundations of data wrangling with <code>dplyr</code>. Rather than manually modifying data, <code>dplyr</code> allows us to construct a reproducible “data recipe”: a sequence of explicit steps that transforms raw data into something we can use to answer analytical questions. You learned how to use <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> to work with rows, <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> to work with columns, and <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> to examine patterns across groups. You also learned how the pipe, <code>|&gt;</code>, connects these individual operations into a workflow that is readable, reproducible, and easy to modify.</p>
 <p>Using the Phoenix use-of-force data, we applied these tools to questions that crime analysts might encounter in practice. We filtered observations, selected relevant variables, created new categories, calculated counts and proportions, and summarized patterns across groups and over time. Importantly, the code we wrote documents exactly how we moved from the original data to our results. If our analytical question changes, or new data become available, we can modify or rerun the same recipe rather than starting over (like finding a new type of flour for that bread you love!).</p>
 <p>There is an important assumption behind much of what we did in this chapter, however: our data were already organized in a way that made these operations relatively straightforward. We generally had cases in rows, variables in columns, and values in cells. Real-world data do not always arrive in this convenient form. Sometimes information that should be stored in one variable is spread across several columns, multiple pieces of information are stored in a single column, or a single case is spread across multiple rows.</p>
 <p>Before we build more complicated data recipes, we therefore need to think about the <strong>structure</strong> of our data. In the next chapter, I introduce the concept of <strong>tidy</strong> data, a set of principles for organizing datasets so they are easier to manipulate, analyze, and visualize. As we will see, getting the structure of the data right can make everything we learned about <code>dplyr</code> much easier to use.</p>
-</section><section id="test-your-knowledge" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="test-your-knowledge">
-<span class="header-section-number">7.6</span> Test Your Knowledge</h2>
+</section><section id="test-your-knowledge" class="level2" data-number="3.7"><h2 data-number="3.7" class="anchored" data-anchor-id="test-your-knowledge">
+<span class="header-section-number">3.7</span> Test Your Knowledge</h2>
 <p>Before moving on, use the prompts below to test your understanding of the material in this chapter. Try to answer each question or write the R code needed to complete the task without looking back at the examples.</p>
 <ul>
 <li><p>In your own words, explain what data wrangling means and why it is an important part of crime analysis.</p></li>
@@ -882,7 +863,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1283,12 +1264,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./dwc4ca-r-rmarkdown.html" class="pagination-link" aria-label="Creating Data-Driven Documents using RMarkdown">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Creating Data-Driven Documents using RMarkdown</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./dwc4ca-tidy.html" class="pagination-link" aria-label="Tidy Data">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tidy Data</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Tidy Data</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

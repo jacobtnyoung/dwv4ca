@@ -108,13 +108,13 @@ By displaying this information visually, what do you learn?
 
 Now, take a look at a different way of using a visualization to convey this point: [visualization of sampling distributions](https://jacobtnyoung.shinyapps.io/sampling-distributions/){target="_blank" rel="noopener"}.
 
-## Static vs. Dynamic Visualization
+### Static vs. Dynamic Visualization
 
 The visualizations above are examples of static and dynamic visualizations, respectively.
 What makes the latter visualization *dynamic* is that the user can alter the inputs to change what the visualization shows.
 It is not simply fixed by the author/developer/etc, it is interactive: the **user** is able to alter what is rendered.
 
-## Other examples...
+### Other examples...
 
 What if you were interested in:
 
@@ -123,7 +123,7 @@ What if you were interested in:
 
 These are all built using [Shiny](https://shiny.posit.co/){target="_blank" rel="noopener"}!
 
-# What is Shiny and How it Works
+## What is Shiny and How it Works
 
 Shiny is an R framework for building interactive web applications directly from R code.
 It allows you to take static analyses and visualizations, like a `ggplot2`, and turn them into user-driven applications that run in a web browser.
@@ -135,7 +135,7 @@ With Shiny, users can:
 - Change model parameters
 - Instantly see updated visualizations and results
 
-## Core Concepts
+### Core Concepts
 
 Shiny apps are built around three simple ideas:
 
@@ -155,9 +155,9 @@ Shiny apps are built around three simple ideas:
 Let's go back to the [visualization of sampling distributions](https://jacobtnyoung.shinyapps.io/sampling-distributions/){target="_blank" rel="noopener"} app and take a closer look.
 ( you can take a closer look "under the hood" to see what it looks like [here](https://github.com/jacobtnyoung/dynamic-viz/blob/main/apps/sampling/app.R){target="_blank" rel="noopener"}).
 
-## An Example
+### An Example
 
-### Static Visualization
+#### Static Visualization
 
 Suppose we created a plot using this code:
 
@@ -180,7 +180,7 @@ We have a very simple plot of random draws from a standard normal distribution.
 What if we wanted to increase the number we took?
 Decrease it?
 
-### Dynamic Visualization
+#### Dynamic Visualization
 
 Let's create a very simple Shiny app.
 As we do this, ask yourself: What is part of the UI?
@@ -312,14 +312,14 @@ shinyApp(ui = ui, server = server)
 
 Here, we are just running the `shinyApp()` function and defining the arguments that function needs to operate: the UI and the server.
 
-# A Deeper Dive
+## A Deeper Dive
 
 Ok, that was a lot.
 What we want to do now is go back through the key parts of how shiny works in greater detail.
 We covered everything quickly above because I wanted you to have a sense of the scope of what we are doing.
 Now, we can go in more depth and think about what is occurring at each component.
 
-## User Interface
+### User Interface
 
 As a reminder, the User Interface (UI) controls what the user sees, where things appear, what users can click/type/select, etc.
 The UI does not perform calculations, rather it displays content, collects user input, organizes layout, and so on.
@@ -359,7 +359,7 @@ These elements generally fall into four categories:
 - Output placeholders
 - Layout/organization tools
 
-### Titles/Text
+#### Titles/Text
 
 These include UI layout/display components such as `titlePanel()` (which creates a large page title); `h1()`, `h2()`, `h3()` (heading text of different sizes); and `p()` (which creates a paragraph of text).
 
@@ -385,7 +385,7 @@ server <- function( input, output ) {
 shinyApp( ui, server )
 ```
 
-### Inputs
+#### Inputs
 
 These allow users to interact with the app and have various functions:
 
@@ -486,7 +486,7 @@ You can see this by interacting with the widgets on the app.
 If you move the slider, select from the drop-down, and/or check the box, nothing happens.
 This is because we have not connected the ID (e.g. `input$bins` or `input$crime` or `input$show_mean`) to some output on the server side (yet).
 
-### Outputs
+#### Outputs
 
 Outputs in the UI create placeholders that are later filled by the server function.
 Like inputs, outputs take a unique ID as their first argument: if your UI specification creates an output with ID `"plot"`, you’ll access it in the server function with `output$plot`.
@@ -537,7 +537,7 @@ It is actually a *static* plot because we have not added reactivity to it.
 We will come to this in the next section, but I just wanted to illustrate here what we have done.
 We created something to be plotted called `"plot"` using the `plotOutput` function (in the UI), and then on the server side we linked it to `output$plot` and defined the output using the `renderPlot` function.
 
-### Layout/organization tools
+#### Layout/organization tools
 
 These functions organize content on the page.
 
@@ -562,7 +562,7 @@ There are also many extensions that have been written:
 - [shinyWidgets](https://dreamrs.github.io/shinyWidgets/){target="_blank" rel="noopener"}
 - [awesome-shiny-extensions](https://github.com/nanxstats/awesome-shiny-extensions){target="_blank" rel="noopener"}
 
-## Connecting the UI to the Server
+### Connecting the UI to the Server
 
 The **server** is where calculations happen, plots are created, tables are generated, text is modified, and reactive behavior occurs.
 As we have seen it has this basic structure:
@@ -668,7 +668,7 @@ Now, we need to do two steps: define the output object, `output$speedPlot` using
 And there we have it!
 Those are our pieces.
 
-# Putting It All Together: An Interactive Crime Analysis
+## Putting It All Together: An Interactive Crime Analysis
 
 Ok, let's work through this one more time drawing on a plot we created in the [Advanced `ggplot2` and Storytelling](dwc4ca-ggplot2-advanced.qmd) chapter.
 If you recall, we created an object with monthly counts of each type of crime by year by using the `tidy_phx_crime` object in the `DWVpack` package.
@@ -816,7 +816,7 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
-## Publishing Your Shiny App with shinyapps.io
+### Publishing Your Shiny App with shinyapps.io
 
 Up to this point, we have been running our Shiny apps on our own computer.
 This is a great way to build and test an app, but it limits who can use it.
@@ -833,7 +833,7 @@ A static report can show someone what you found, but an interactive dashboard le
 For example, a user might want to filter by year, crime type, precinct, neighborhood, or month.
 Instead of creating dozens of separate plots, you can build one app that lets the user select what they want to see.
 
-### Before You Publish
+#### Before You Publish
 
 Before publishing a Shiny app, make sure the app works correctly on your own computer.
 Click “Run App” in RStudio and test the main features:
@@ -849,7 +849,7 @@ When you deploy an app, the user may not be sitting next to you.
 They may not know what the variables mean, where the data came from, or what the dashboard is designed to show.
 A good Shiny app should include enough context that someone can use it without needing a full explanation from the analyst.
 
-### Create a shinyapps.io Account
+#### Create a shinyapps.io Account
 
 To publish to shinyapps.io, you first need an account.
 Go to: [https://www.shinyapps.io/](https://www.shinyapps.io/){target="_blank" rel="noopener"}.
@@ -860,7 +860,7 @@ This is important because your deployed apps will use this account name in the a
 For example, if your account name were crime-analysis-demo and your app were called traffic-speed-histogram, the app URL would look something like: https://crime-analysis-demo.shinyapps.io/traffic-speed-histogram/.
 Your exact URL will depend on your own account name and the name you give your app.
 
-### Install the rsconnect Package
+#### Install the rsconnect Package
 
 To deploy a Shiny app from RStudio, we use the `rsconnect` package.
 This package connects RStudio on your computer to your shinyapps.io account.
@@ -880,7 +880,7 @@ library( rsconnect )
 You only need to install the package once.
 After that, you can load it whenever you need to deploy or update an app.
 
-### Publishing from RStudio
+#### Publishing from RStudio
 
 After installing the `rsconnect` package, the easiest way to publish your app is to use the "Publish" button in RStudio.
 
@@ -904,7 +904,7 @@ After you confirm the files, RStudio will deploy the app to shinyapps.io.
 When the process finishes, your app will open in a web browser.
 You can then copy the URL and share it with others.
 
-## Further Reading and Exploration
+### Further Reading and Exploration
 
 This is only scratching the surface.
 You can build very elaborate apps, but those are beyond the scope of what we will cover.

@@ -59,7 +59,7 @@ In real-world crime analysis and open-source data work, spatial data is often im
 
 For this reason, analysts must understand not only how to create maps, but also how to interpret and prepare coordinate-based data correctly.
 
-# Basic Mapping Workflow in `ggplot2`
+## Basic Mapping Workflow in `ggplot2`
 
 You already understand the general structure of a `ggplot`:
 
@@ -231,7 +231,7 @@ ggplot() +
 
 At this point, the geometry is handled automatically by `sf` so we no longer need to manually specify x = lon and y = lat in the aesthetic layer.
 
-# Improving the Map Appearance
+## Improving the Map Appearance
 
 We have our basic plot of the points and the boundary for the city.
 This gives us the default spatial plot.
@@ -240,7 +240,7 @@ At this stage, the map shows the points, but it does not yet make the spatial pa
 As we did with `geom_point` for `ggplot`, let's take a look at some options for improving our plot.
 As we go through these, try different values to get a sense of how the arguments work.
 
-## Add transparency
+### Add transparency
 
 When there are many overlapping points, transparency helps reveal where incidents are concentrated.
 The transparency of the points is controlled with the `alpha =` argument where higher values make the points less transparent (and lower values make it more transparent).
@@ -257,7 +257,7 @@ Transparency helps when we have a lot of cases because overlapping points become
 There are a few cases that appear darker, this is because they are actually overlapping cases.
 There are only `r dim(tidy_tempe_hate)[1]` cases in the Tempe hate crime dataset, but if we were working with tens or hundreds of thousands of cases, then transparency can be very userful.
 
-## Change the color
+### Change the color
 
 You can also make the points easier to interpret by changing the point color.
 
@@ -281,7 +281,7 @@ ggplot() +
 
 Here, `color =` controls the color of the line that defines the boundary and `fill =` controls the color inside the boundary.
 
-## Adjust point size
+### Adjust point size
 
 If the points are too small, the map may be hard to read.
 If they are too large, they may overwhelm the plot.
@@ -294,7 +294,7 @@ ggplot() +
 
 ```
 
-## Use a cleaner theme
+### Use a cleaner theme
 
 A map usually looks better with a simpler background.
 
@@ -307,7 +307,7 @@ ggplot() +
 
 ```
 
-## Using types of incidents
+### Using types of incidents
 
 We could also include additional information such as the type of bias, `bias_type_clean`.
 or type of incident, `offense_type_clean`.
@@ -355,7 +355,7 @@ ggplot() +
 
 That looks better!
 
-## Additional revisions
+### Additional revisions
 
 As we saw with `ggplot`, we can alter the various elements in the plot such as the title, labels, etc.
 Since we are working within a `ggplot` framework, we can use all the same functions that we used before.
@@ -407,7 +407,7 @@ ggplot() +
  
 ```
 
-# Working with X and Y Coordinate Data
+## Working with X and Y Coordinate Data
 
 Up to this point, we have used latitude and longitude because those values are easy to recognize.
 Now we will look at a second common format: *projected coordinates*.
@@ -427,7 +427,7 @@ head( cbind( tidy_tucson_bike$x_cord, tidy_tucson_bike$y_cord ), 20 )
 
 The data still have one column for horizontal position and one column for vertical position, but *what coordinate system produced these values?* That is where the CRS matters again.
 
-## Boundary and Position Data
+### Boundary and Position Data
 
 First, we need to get the boundary data from Tucson using the `tigris` package.
 Then, filter it to Tucson using `dyplr`.
@@ -489,7 +489,3 @@ ggplot() +
   )
  
 ```
-
-<br>
-
-NEED EXERCISES FOR TEST YOUR KNOWLEDGE
